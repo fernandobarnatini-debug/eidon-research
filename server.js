@@ -173,8 +173,8 @@ BUNDLES:
 - The Everything Stack — $200 (Save $35): ALL 4 peptides + BAC Water — BEST VALUE
 
 SHIPPING:
-- FREE shipping on orders $150+
-- $8 flat rate shipping under $150
+- FREE shipping on orders $60+
+- $8 flat rate shipping under $60
 - FREE local pickup — Sacramento/Placer County area
 - Orders before 1PM PST ship same day
 - Local deliveries typically arrive same day or next day
