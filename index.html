@@ -1281,6 +1281,40 @@
     updateCartUI();
   </script>
 
+  <!-- ========== AGE VERIFICATION MODAL ========== -->
+  <div id="age-gate" class="fixed inset-0 z-[200] flex items-center justify-center bg-navy/95 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-2xl shadow-floating max-w-sm w-full mx-4 p-8 text-center" style="animation: msgIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div class="flex flex-col items-center mb-6">
+        <span class="font-heading text-navy text-2xl font-extrabold tracking-tight">EIDON</span>
+        <span class="text-[#999] text-[9px] font-medium tracking-[0.2em] uppercase">Research</span>
+      </div>
+      <h2 class="font-heading font-bold text-xl text-navy mb-2">Age Verification</h2>
+      <p class="text-sm text-[#555] mb-1 leading-relaxed">You must be <strong>18 years or older</strong> to enter this site.</p>
+      <p class="text-xs text-[#999] mb-6">All products are for research use only. Not for human consumption.</p>
+      <div class="flex flex-col gap-3">
+        <button onclick="verifyAge(true)" class="btn-gold py-3.5 text-sm uppercase tracking-wider font-bold w-full">Yes, I am 18+</button>
+        <button onclick="verifyAge(false)" class="border-2 border-[#e5e5e5] text-[#999] font-semibold py-3 text-sm rounded-lg w-full hover:bg-off-white" style="transition: background 0.2s ease;">No, I am under 18</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      if (localStorage.getItem('eidon_age_verified') !== 'true') {
+        document.getElementById('age-gate').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    })();
+    function verifyAge(isAdult) {
+      if (isAdult) {
+        localStorage.setItem('eidon_age_verified', 'true');
+        document.getElementById('age-gate').classList.add('hidden');
+        document.body.style.overflow = '';
+      } else {
+        window.location.href = 'https://www.google.com';
+      }
+    }
+  </script>
+
   <script src="chat.js"></script>
 </body>
 </html>
