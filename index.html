@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EIDON Research — Premium Research Peptides</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0B1426',
+            'navy-light': '#111d38',
+            gold: '#D4AF37',
+            'gold-light': '#e8c84a',
+            'electric-blue': '#00D4FF',
+            'off-white': '#f8f9fa',
+          },
+          fontFamily: {
+            heading: ['"DM Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+            body: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* === BASE === */
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #333; line-height: 1.7; }
+    h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0B1426; }
+    .heading-tight { letter-spacing: -0.03em; }
+
+    /* === GRAIN TEXTURE === */
+    .grain-overlay { position: relative; }
+    .grain-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* === LAYERED SHADOWS === */
+    .shadow-elevated {
+      box-shadow: 0 1px 2px rgba(11,20,38,0.04), 0 4px 12px rgba(11,20,38,0.06), 0 8px 24px rgba(11,20,38,0.04);
+    }
+    .shadow-floating {
+      box-shadow: 0 2px 4px rgba(11,20,38,0.04), 0 8px 24px rgba(11,20,38,0.08), 0 16px 48px rgba(11,20,38,0.06);
+    }
+
+    /* === SCROLL REVEAL SYSTEM === */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    [data-reveal="left"] { transform: translateX(-32px); }
+    [data-reveal="right"] { transform: translateX(32px); }
+    [data-reveal="scale"] { transform: scale(0.95); }
+    [data-reveal].revealed {
+      opacity: 1;
+      transform: translateY(0) translateX(0) scale(1);
+    }
+    /* Stagger children */
+    [data-stagger] > [data-reveal] { transition-delay: calc(var(--stagger-index, 0) * 100ms); }
+
+    /* === PRODUCT CARD HOVER — lift + glow === */
+    .product-card {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, box-shadow;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow:
+        0 4px 8px rgba(11,20,38,0.06),
+        0 12px 32px rgba(11,20,38,0.10),
+        0 24px 60px rgba(11,20,38,0.08),
+        0 0 40px rgba(212,175,55,0.08);
+    }
+    .product-card:active { transform: translateY(-2px) scale(1.0); }
+    /* Inner image zoom on card hover */
+    .product-card .card-img {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-card:hover .card-img {
+      transform: scale(1.08);
+    }
+
+    /* === BUNDLE CARD HOVER === */
+    .bundle-card {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bundle-card:hover {
+      transform: translateY(-6px);
+      box-shadow:
+        0 4px 8px rgba(11,20,38,0.06),
+        0 12px 32px rgba(11,20,38,0.10),
+        0 20px 48px rgba(11,20,38,0.06);
+    }
+
+    /* === SHIMMER EFFECT ON SAVE BADGES === */
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .shimmer-badge {
+      background: linear-gradient(
+        110deg,
+        rgba(212,175,55,0.1) 0%,
+        rgba(212,175,55,0.1) 35%,
+        rgba(212,175,55,0.3) 50%,
+        rgba(212,175,55,0.1) 65%,
+        rgba(212,175,55,0.1) 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    .shimmer-badge-gold {
+      background: linear-gradient(
+        110deg,
+        #D4AF37 0%,
+        #D4AF37 35%,
+        #e8d678 50%,
+        #D4AF37 65%,
+        #D4AF37 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    /* === MARQUEE === */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      animation: marquee 25s linear infinite;
+      will-change: transform;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* === HERO PARALLAX LAYERS === */
+    .parallax-bg {
+      will-change: transform;
+      transition: transform 0.1s linear;
+    }
+
+    /* === HERO TEXT ENTRANCE === */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-text-1 { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+    .hero-text-2 { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+    .hero-text-3 { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+    .hero-text-4 { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both; }
+    .hero-text-5 { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both; }
+
+    /* === BUTTON MICRO-INTERACTIONS === */
+    .btn-gold {
+      background: #D4AF37;
+      color: #0B1426;
+      font-weight: 700;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+      box-shadow: 0 2px 8px rgba(212,175,55,0.2);
+    }
+    .btn-gold:hover {
+      background: #e8c84a;
+      transform: scale(1.03) translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212,175,55,0.35), 0 8px 32px rgba(212,175,55,0.15);
+    }
+    .btn-gold:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
+    .btn-gold:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 4px rgba(212,175,55,0.2);
+    }
+    .btn-outline {
+      border: 2px solid #D4AF37;
+      color: #D4AF37;
+      font-weight: 700;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+    }
+    .btn-outline:hover {
+      background: rgba(212,175,55,0.12);
+      transform: scale(1.03) translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212,175,55,0.15);
+    }
+    .btn-outline:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
+    .btn-outline:active { transform: scale(0.97); }
+
+    /* === ADD TO CART BUTTON === */
+    .add-btn {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+      box-shadow: 0 2px 6px rgba(212,175,55,0.15);
+    }
+    .add-btn:hover {
+      transform: scale(1.06) translateY(-1px);
+      box-shadow: 0 4px 14px rgba(212,175,55,0.3);
+      background: #e8c84a;
+    }
+    .add-btn:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
+    .add-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 1px 3px rgba(212,175,55,0.15);
+    }
+    /* Ripple on click */
+    .add-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(255,255,255,0.4) 0%, transparent 60%);
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+    .add-btn.ripple::after {
+      opacity: 1;
+      transform: scale(2.5);
+    }
+
+    /* === CART DRAWER === */
+    .cart-overlay {
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .cart-drawer {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -8px 0 32px rgba(11,20,38,0.15);
+    }
+    .cart-drawer.closed { transform: translateX(100%); }
+
+    /* === FAQ ACCORDION === */
+    .faq-item { transition: box-shadow 0.3s ease; }
+    .faq-item:hover { box-shadow: 0 2px 12px rgba(11,20,38,0.06); }
+    .faq-answer {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, padding 0.4s ease;
+    }
+    .faq-answer > div { overflow: hidden; }
+    .faq-answer.open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .faq-chevron { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .faq-chevron.rotated { transform: rotate(180deg); }
+
+    /* === TRUST BAR ICON PULSE === */
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .trust-icon { transition: transform 0.3s ease; }
+    .trust-icon:hover svg { animation: subtlePulse 0.6s ease; }
+
+    /* === NAV LINK UNDERLINE === */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #D4AF37;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* === CART COUNT BOUNCE === */
+    @keyframes cartBounce {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.4); }
+      60% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    .cart-bounce { animation: cartBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+    /* === FLOATING PARTICLES (hero) === */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+    }
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(212,175,55,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="bg-white">
+
+  <!-- ========== ANNOUNCEMENT BAR ========== -->
+  <div class="bg-navy-light text-white/80 text-[11px] py-2 tracking-wide border-b border-white/5 overflow-hidden">
+    <div class="marquee-track whitespace-nowrap inline-flex gap-16">
+      <span class="px-4">FREE SHIPPING ON ORDERS $150+</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">SAME-DAY SHIPPING BEFORE 1PM PST</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">PAY WITH CRYPTO &amp; SAVE 5%</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">FOR RESEARCH USE ONLY</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">&gt;99% PURITY GUARANTEED</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">FREE SHIPPING ON ORDERS $150+</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">SAME-DAY SHIPPING BEFORE 1PM PST</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">PAY WITH CRYPTO &amp; SAVE 5%</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">FOR RESEARCH USE ONLY</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">&gt;99% PURITY GUARANTEED</span>
+    </div>
+  </div>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="bg-navy sticky top-0 z-50">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="index.html" class="flex flex-col leading-none" style="transition: opacity 0.2s ease;">
+        <span class="font-heading text-white text-xl font-extrabold tracking-tight">EIDON</span>
+        <span class="text-white/60 text-[10px] font-medium tracking-[0.2em] uppercase">Research</span>
+      </a>
+      <!-- Nav Links (desktop) -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#products" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Products</a>
+        <a href="#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
+        <a href="#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
+      </div>
+      <!-- Cart Button -->
+      <button onclick="toggleCart()" class="relative text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-gold text-navy text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section id="hero" class="relative bg-navy grain-overlay overflow-hidden">
+    <!-- Layered radial gradients for atmospheric depth -->
+    <div id="hero-gradient" class="parallax-bg absolute inset-0" style="background: radial-gradient(ellipse at 30% 30%, rgba(0,212,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(212,175,55,0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 110%, rgba(17,29,56,0.9) 0%, transparent 50%);"></div>
+    <!-- Subtle vial silhouette background (parallax layer) -->
+    <div id="hero-vial" class="parallax-bg absolute inset-0 flex items-center justify-center opacity-[0.04]">
+      <svg width="300" height="500" viewBox="0 0 300 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="100" y="0" width="100" height="40" rx="4" fill="white"/>
+        <rect x="110" y="40" width="80" height="20" fill="white"/>
+        <rect x="90" y="60" width="120" height="350" rx="12" fill="white"/>
+        <rect x="90" y="390" width="120" height="40" rx="12" fill="white"/>
+      </svg>
+    </div>
+    <!-- Floating particles -->
+    <div id="hero-particles" class="absolute inset-0 pointer-events-none z-[2]"></div>
+    <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-24 sm:py-36 lg:py-44 text-center">
+      <p class="hero-text-1 text-gold text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-5">Direct Supply of Research-Grade Peptides</p>
+      <h1 class="hero-text-2 font-heading font-extrabold text-white text-4xl sm:text-6xl lg:text-7xl heading-tight leading-[1.05] mb-6">
+        Become the Form<br>God Intended
+      </h1>
+      <p class="hero-text-3 text-white/60 text-base sm:text-lg max-w-lg mx-auto mb-5 leading-relaxed">
+        Direct supply of research-grade peptides with worldwide shipping. Verified &gt;99% purity. Third-party tested.
+      </p>
+      <p class="hero-text-4 text-white/40 text-xs uppercase tracking-widest mb-8">For Laboratory &amp; Research Use Only</p>
+      <div class="hero-text-5 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="#products" class="btn-gold px-10 py-4 text-sm uppercase tracking-wider inline-block text-center">Shop Peptides</a>
+        <a href="#bundles" class="btn-outline px-10 py-4 text-sm uppercase tracking-wider inline-block text-center">View Bundles</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GRADIENT BRIDGE ========== -->
+  <div class="h-16 sm:h-24" style="background: linear-gradient(to bottom, #0B1426 0%, #111d38 40%, #f8f9fa 100%);"></div>
+
+  <!-- ========== TRUST BAR ========== -->
+  <section class="bg-off-white border-y border-[#e5e5e5]">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 py-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center" data-stagger>
+        <div class="trust-icon flex flex-col items-center gap-2" data-reveal style="--stagger-index: 0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#D4AF37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="text-xs sm:text-sm font-semibold text-navy">Third-Party Tested</span>
+        </div>
+        <div class="trust-icon flex flex-col items-center gap-2" data-reveal style="--stagger-index: 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#D4AF37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+          <span class="text-xs sm:text-sm font-semibold text-navy">&gt;99% Purity</span>
+        </div>
+        <div class="trust-icon flex flex-col items-center gap-2" data-reveal style="--stagger-index: 2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#D4AF37" stroke-width="1.5" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="m16 8 4 2.5v5L16 18"/><circle cx="12" cy="21" r="1"/><circle cx="5" cy="21" r="1"/><path d="M16 16h4"/></svg>
+          <span class="text-xs sm:text-sm font-semibold text-navy">Same-Day Shipping</span>
+        </div>
+        <div class="trust-icon flex flex-col items-center gap-2" data-reveal style="--stagger-index: 3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#D4AF37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 1v4m0 14v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M1 12h4m14 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+          <span class="text-xs sm:text-sm font-semibold text-navy">USA-Based</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRODUCTS SECTION ========== -->
+  <section id="products" class="bg-white py-16 sm:py-20">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-reveal>
+        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Premium Research Compounds</p>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Individual Peptides</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger>
+
+        <!-- Retatrutide -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);">
+            <div class="absolute inset-0 flex items-center justify-center card-img">
+              <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
+                <!-- Flip cap -->
+                <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
+                <rect x="37" y="0" width="26" height="4" rx="2" fill="#c4a030"/>
+                <!-- Aluminum crimp -->
+                <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
+                <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
+                <!-- Rubber stopper -->
+                <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
+                <!-- Glass vial body -->
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <!-- Liquid fill -->
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="#3b82f6" opacity="0.2"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidBlue)"/>
+                <!-- Label -->
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
+                <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
+                <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">Retatrutide</text>
+                <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">5mg</text>
+                <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
+                <!-- Vial bottom curve -->
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <defs><linearGradient id="liquidBlue" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#60a5fa" stop-opacity="0.3"/><stop offset="1" stop-color="#2563eb" stop-opacity="0.15"/></linearGradient></defs>
+              </svg>
+            </div>
+            <span class="absolute top-3 left-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Popular</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-base mb-1">Retatrutide 5mg</h3>
+            <div class="flex items-center gap-1 mb-2"><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-xs text-[#999] ml-1">(48)</span></div>
+            <p class="text-sm text-[#555] mb-3 leading-relaxed">Triple-receptor GLP-1/GIP/Glucagon research compound. Superior fat loss and appetite regulation.</p>
+            <div class="flex items-center justify-between">
+              <span class="font-heading font-bold text-xl text-navy">$60</span>
+              <button onclick="addToCart('RT5', 'Retatrutide 5mg', 60)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CJC-1295 + Ipamorelin -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f0f8f4 0%, #dff0e8 100%);">
+            <div class="absolute inset-0 flex items-center justify-center card-img">
+              <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
+                <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
+                <rect x="37" y="0" width="26" height="4" rx="2" fill="#c4a030"/>
+                <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
+                <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
+                <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="#22c55e" opacity="0.15"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidGreen)"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
+                <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
+                <text x="50" y="64" text-anchor="middle" fill="#0B1426" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="700">CJC-1295</text>
+                <text x="50" y="71" text-anchor="middle" fill="#0B1426" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="700">+ Ipamorelin</text>
+                <text x="50" y="79" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">10mg</text>
+                <text x="50" y="86" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <defs><linearGradient id="liquidGreen" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#4ade80" stop-opacity="0.25"/><stop offset="1" stop-color="#16a34a" stop-opacity="0.1"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-base mb-1">CJC-1295 + Ipamorelin 10mg</h3>
+            <div class="flex items-center gap-1 mb-2"><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-xs text-[#999] ml-1">(36)</span></div>
+            <p class="text-sm text-[#555] mb-3 leading-relaxed">Growth hormone secretagogue stack. Promotes deep sleep, recovery, and lean muscle development.</p>
+            <div class="flex items-center justify-between">
+              <span class="font-heading font-bold text-xl text-navy">$60</span>
+              <button onclick="addToCart('CP10', 'CJC-1295 + Ipamorelin 10mg', 60)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- GHK-Cu -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f5f0f8 0%, #e8dff0 100%);">
+            <div class="absolute inset-0 flex items-center justify-center card-img">
+              <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
+                <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
+                <rect x="37" y="0" width="26" height="4" rx="2" fill="#c4a030"/>
+                <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
+                <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
+                <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="#a855f7" opacity="0.12"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidPurple)"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
+                <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
+                <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">GHK-Cu</text>
+                <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">100mg</text>
+                <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <defs><linearGradient id="liquidPurple" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#c084fc" stop-opacity="0.25"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0.1"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-base mb-1">GHK-Cu 100mg</h3>
+            <div class="flex items-center gap-1 mb-2"><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#e5e5e5" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-xs text-[#999] ml-1">(29)</span></div>
+            <p class="text-sm text-[#555] mb-3 leading-relaxed">Copper peptide for tissue regeneration. Collagen synthesis, skin tightening, and wound healing.</p>
+            <div class="flex items-center justify-between">
+              <span class="font-heading font-bold text-xl text-navy">$50</span>
+              <button onclick="addToCart('CU100', 'GHK-Cu 100mg', 50)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Melanotan 2 -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #fdf8f0 0%, #f5ecd8 100%);">
+            <div class="absolute inset-0 flex items-center justify-center card-img">
+              <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
+                <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
+                <rect x="37" y="0" width="26" height="4" rx="2" fill="#c4a030"/>
+                <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
+                <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
+                <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="#f59e0b" opacity="0.12"/>
+                <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidAmber)"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
+                <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
+                <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">Melanotan 2</text>
+                <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">10mg</text>
+                <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <defs><linearGradient id="liquidAmber" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#fbbf24" stop-opacity="0.25"/><stop offset="1" stop-color="#d97706" stop-opacity="0.1"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-base mb-1">Melanotan 2 10mg</h3>
+            <div class="flex items-center gap-1 mb-2"><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-xs text-[#999] ml-1">(42)</span></div>
+            <p class="text-sm text-[#555] mb-3 leading-relaxed">Melanocortin receptor agonist. Enhanced pigmentation research without UV exposure.</p>
+            <div class="flex items-center justify-between">
+              <span class="font-heading font-bold text-xl text-navy">$45</span>
+              <button onclick="addToCart('MT2', 'Melanotan 2 10mg', 45)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAC Water -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
+            <div class="absolute inset-0 flex items-center justify-center card-img">
+              <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
+                <rect x="35" y="2" width="30" height="8" rx="2" fill="#999"/>
+                <rect x="37" y="0" width="26" height="4" rx="2" fill="#888"/>
+                <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
+                <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
+                <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="31" y="84" width="38" height="59" rx="3" fill="#e0e7ee" opacity="0.3"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
+                <line x1="38" y1="57" x2="62" y2="57" stroke="#999" stroke-width="0.5"/>
+                <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">BAC Water</text>
+                <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">3ml</text>
+                <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Bacteriostatic</text>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+              </svg>
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-base mb-1">BAC Water 3ml</h3>
+            <div class="flex items-center gap-1 mb-2"><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-xs text-[#999] ml-1">(67)</span></div>
+            <p class="text-sm text-[#555] mb-3 leading-relaxed">USP-grade bacteriostatic water with 0.9% benzyl alcohol. Required for reconstitution.</p>
+            <div class="flex items-center justify-between">
+              <span class="font-heading font-bold text-xl text-navy">$20</span>
+              <button onclick="addToCart('WA3', 'BAC Water 3ml', 20)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BUNDLES SECTION ========== -->
+  <section id="bundles" class="bg-off-white py-16 sm:py-20">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-reveal>
+        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Save More with Stacks</p>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Research Bundles</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger>
+
+        <!-- Summer Cut Stack -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated bundle-card p-6" data-reveal style="--stagger-index: 0">
+          <div class="flex items-center justify-between mb-3">
+            <span class="shimmer-badge text-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Save $10</span>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2">Summer Cut Stack</h3>
+          <ul class="text-sm text-[#555] mb-4 space-y-1">
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> GHK-Cu 100mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm text-[#999] line-through mr-2">$130</span>
+              <span class="font-heading font-bold text-xl text-navy">$120</span>
+            </div>
+            <button onclick="addBundle('summer-cut', 'Summer Cut Stack', 120, ['Retatrutide 5mg','GHK-Cu 100mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+          </div>
+        </div>
+
+        <!-- Gym Gains Stack -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated bundle-card p-6" data-reveal style="--stagger-index: 1">
+          <div class="flex items-center justify-between mb-3">
+            <span class="shimmer-badge text-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Save $5</span>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2">Gym Gains Stack</h3>
+          <ul class="text-sm text-[#555] mb-4 space-y-1">
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> CJC-1295 + Ipamorelin 10mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm text-[#999] line-through mr-2">$80</span>
+              <span class="font-heading font-bold text-xl text-navy">$75</span>
+            </div>
+            <button onclick="addBundle('gym-gains', 'Gym Gains Stack', 75, ['CJC-1295 + Ipamorelin 10mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+          </div>
+        </div>
+
+        <!-- Summer Shred MAX -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated bundle-card p-6" data-reveal style="--stagger-index: 2">
+          <div class="flex items-center justify-between mb-3">
+            <span class="shimmer-badge text-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Premium</span>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2">Summer Shred MAX</h3>
+          <ul class="text-sm text-[#555] mb-4 space-y-1">
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Melanotan 2 10mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="font-heading font-bold text-xl text-navy">$130</span>
+            </div>
+            <button onclick="addBundle('shred-max', 'Summer Shred MAX', 130, ['Retatrutide 5mg','Melanotan 2 10mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+          </div>
+        </div>
+
+        <!-- The Triple -->
+        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated bundle-card p-6" data-reveal style="--stagger-index: 3">
+          <div class="flex items-center justify-between mb-3">
+            <span class="shimmer-badge text-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Save $30</span>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2">The Triple</h3>
+          <ul class="text-sm text-[#555] mb-4 space-y-1">
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> CJC-1295 + Ipamorelin 10mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> GHK-Cu 100mg</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm text-[#999] line-through mr-2">$190</span>
+              <span class="font-heading font-bold text-xl text-navy">$160</span>
+            </div>
+            <button onclick="addBundle('the-triple', 'The Triple', 160, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+          </div>
+        </div>
+
+        <!-- The Everything Stack -->
+        <div class="relative bg-navy text-white rounded-xl shadow-floating bundle-card p-6 overflow-hidden sm:col-span-2 lg:col-span-2 border-2 border-gold" data-reveal style="--stagger-index: 4">
+          <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.1) 0%, transparent 60%);"></div>
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-3">
+              <span class="shimmer-badge-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Best Value — Save $35</span>
+            </div>
+            <h3 class="font-heading font-bold text-xl mb-2 text-white">The Everything Stack</h3>
+            <ul class="text-sm text-white/70 mb-4 space-y-1">
+              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
+              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> CJC-1295 + Ipamorelin 10mg</li>
+              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> GHK-Cu 100mg</li>
+              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Melanotan 2 10mg</li>
+              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+            </ul>
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-sm text-white/50 line-through mr-2">$235</span>
+                <span class="font-heading font-bold text-2xl text-gold">$200</span>
+              </div>
+              <button onclick="addBundle('everything', 'The Everything Stack', 200, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','Melanotan 2 10mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-5 py-2.5 rounded-lg">Add Bundle</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CUSTOMER REVIEWS ========== -->
+  <section class="bg-white py-16 sm:py-20">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-reveal>
+        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Trusted by Researchers</p>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">What Our Customers Say</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger>
+
+        <div class="bg-off-white rounded-xl p-6 shadow-elevated bundle-card" data-reveal style="--stagger-index: 0">
+          <div class="flex items-center gap-1 mb-3">
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-sm text-[#555] leading-relaxed mb-4">"Purity is unmatched. I've tested compounds from multiple suppliers and EIDON consistently delivers &gt;99% every time. Won't go anywhere else."</p>
+          <p class="font-heading font-bold text-sm text-navy">Marcus T.</p>
+          <p class="text-xs text-[#999]">Verified Buyer</p>
+        </div>
+
+        <div class="bg-off-white rounded-xl p-6 shadow-elevated bundle-card" data-reveal style="--stagger-index: 1">
+          <div class="flex items-center gap-1 mb-3">
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-sm text-[#555] leading-relaxed mb-4">"Ordered at noon, had it in my hands same day. Packaging was discreet and professional. These guys run a tight operation."</p>
+          <p class="font-heading font-bold text-sm text-navy">Jake R.</p>
+          <p class="text-xs text-[#999]">Verified Buyer</p>
+        </div>
+
+        <div class="bg-off-white rounded-xl p-6 shadow-elevated bundle-card" data-reveal style="--stagger-index: 2">
+          <div class="flex items-center gap-1 mb-3">
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-sm text-[#555] leading-relaxed mb-4">"The Everything Stack is insane value. Getting all five compounds for $200 saved me a ton compared to buying individually. Quality is top shelf."</p>
+          <p class="font-heading font-bold text-sm text-navy">Ryan K.</p>
+          <p class="text-xs text-[#999]">Verified Buyer</p>
+        </div>
+
+        <div class="bg-off-white rounded-xl p-6 shadow-elevated bundle-card" data-reveal style="--stagger-index: 3">
+          <div class="flex items-center gap-1 mb-3">
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4 text-gold" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-sm text-[#555] leading-relaxed mb-4">"Third order from EIDON. Consistent purity, fast shipping, and their customer service actually responds. Rare in this space."</p>
+          <p class="font-heading font-bold text-sm text-navy">Alex M.</p>
+          <p class="text-xs text-[#999]">Verified Buyer</p>
+        </div>
+
+        <div class="bg-off-white rounded-xl p-6 shadow-elevated bundle-card" data-reveal style="--stagger-index: 4">
+          <div class="flex items-center gap-1 mb-3">
+            <svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-sm text-[#555] leading-relaxed mb-4">"Switched from another supplier after quality issues. EIDON's stuff is legit — lab-tested, properly sealed, and shipped in cold packs. Professional."</p>
+          <p class="font-heading font-bold text-sm text-navy">Derek L.</p>
+          <p class="text-xs text-[#999]">Verified Buyer</p>
+        </div>
+
+        <div class="bg-off-white rounded-xl p-6 shadow-elevated bundle-card" data-reveal style="--stagger-index: 5">
+          <div class="flex items-center gap-1 mb-3">
+            <svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-sm text-[#555] leading-relaxed mb-4">"The GHK-Cu blew me away. Got the Summer Cut Stack and the results in my research were visible within weeks. Reordering the Everything Stack next."</p>
+          <p class="font-heading font-bold text-sm text-navy">Tyler W.</p>
+          <p class="text-xs text-[#999]">Verified Buyer</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FAQ SECTION ========== -->
+  <section id="faq" class="bg-off-white py-16 sm:py-20">
+    <div class="max-w-[800px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-reveal>
+        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Got Questions?</p>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Frequently Asked Questions</h2>
+      </div>
+      <div class="space-y-3" data-stagger>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">What are research peptides?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Research peptides are synthetic amino acid chains used exclusively in scientific and laboratory research. They are not intended for human consumption or medical use.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">Are your peptides tested for purity?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Yes. All EIDON Research peptides undergo third-party purity testing. We guarantee &gt;99% purity on all compounds.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">How do I reconstitute peptides?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Using bacteriostatic water and a sterile syringe, slowly add water into the vial along the glass wall. Gently swirl — never shake. Store reconstituted peptides refrigerated.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">What payment methods do you accept?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">We accept credit/debit cards via Square and cryptocurrency (Bitcoin/Ethereum) via Coinbase Commerce. Pay with crypto and receive 5% off your entire order.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">Do you offer shipping?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Yes. Free same-day local delivery on orders $150+. $8 flat rate shipping otherwise. Free local pickup available in the Sacramento/Placer County area.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">How quickly do orders process?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Orders placed before 1PM PST ship the same day. Local deliveries typically arrive same day or next day.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">Are peptides legal to purchase?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Yes. Research peptides are legal to purchase in the United States for research purposes. Buyer assumes responsibility for compliance with local regulations.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item border border-[#e5e5e5] rounded-xl overflow-hidden" data-reveal>
+          <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;">
+            <span class="font-heading font-semibold text-sm sm:text-base">What is your return policy?</span>
+            <svg class="faq-chevron w-5 h-5 text-[#999] flex-shrink-0 ml-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+          <div class="px-5 pb-5">
+            <p class="text-sm text-[#555] leading-relaxed">Due to the nature of research compounds, all sales are final. If you receive a damaged or incorrect product, contact us within 48 hours for a replacement.</p>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-navy text-white grain-overlay">
+    <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-10" data-reveal>
+        <!-- Brand -->
+        <div>
+          <div class="flex flex-col leading-none mb-4">
+            <span class="font-heading text-white text-xl font-extrabold tracking-tight">EIDON</span>
+            <span class="text-white/60 text-[10px] font-medium tracking-[0.2em] uppercase">Research</span>
+          </div>
+          <p class="text-white/50 text-sm leading-relaxed">Premium research peptides with verified &gt;99% purity. Third-party tested for quality assurance.</p>
+        </div>
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#products" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Products</a></li>
+            <li><a href="#bundles" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Bundles</a></li>
+            <li><a href="#faq" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">FAQ</a></li>
+          </ul>
+        </div>
+        <!-- Shipping -->
+        <div>
+          <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Shipping</h4>
+          <ul class="space-y-2 text-white/60 text-sm">
+            <li>Free shipping on orders $150+</li>
+            <li>$8 flat rate (under $150)</li>
+            <li>Same-day shipping before 1PM PST</li>
+            <li>Free local pickup — Sacramento area</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Legal Disclaimers -->
+      <div class="border-t border-white/10 pt-8">
+        <div class="bg-white/5 rounded-xl p-5 mb-6">
+          <p class="text-white/40 text-xs leading-relaxed mb-2"><strong class="text-white/60">Research Use Only:</strong> All products sold by EIDON Research are intended for laboratory and research use only. Not for human consumption. Must be 18+ to order.</p>
+          <p class="text-white/40 text-xs leading-relaxed mb-2"><strong class="text-white/60">FDA Disclaimer:</strong> These products have not been evaluated by the Food and Drug Administration. They are not intended to diagnose, treat, cure, or prevent any disease.</p>
+          <p class="text-white/40 text-xs leading-relaxed"><strong class="text-white/60">Liability:</strong> By purchasing from EIDON Research, the buyer assumes all responsibility for the use and handling of research compounds in compliance with all applicable laws and regulations.</p>
+        </div>
+        <p class="text-white/30 text-xs text-center">&copy; 2026 EIDON Research. All rights reserved. For research purposes only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== CART DRAWER ========== -->
+  <div id="cart-overlay" class="cart-overlay fixed inset-0 bg-black/50 z-[60] hidden" onclick="toggleCart()"></div>
+  <div id="cart-drawer" class="cart-drawer closed fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] flex flex-col">
+    <!-- Cart Header -->
+    <div class="flex items-center justify-between p-5 border-b border-[#e5e5e5]">
+      <h3 class="font-heading font-bold text-lg">Your Cart</h3>
+      <button onclick="toggleCart()" class="p-2 rounded-lg hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Close cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Cart Items -->
+    <div id="cart-items" class="flex-1 overflow-y-auto p-5">
+      <p id="cart-empty" class="text-center text-[#999] text-sm py-12">Your cart is empty</p>
+    </div>
+    <!-- Cart Footer -->
+    <div id="cart-footer" class="hidden border-t border-[#e5e5e5] p-5">
+      <div class="flex items-center justify-between mb-4">
+        <span class="font-heading font-semibold text-base">Subtotal</span>
+        <span id="cart-subtotal" class="font-heading font-bold text-xl text-navy">$0</span>
+      </div>
+      <p class="text-xs text-[#999] mb-4">Shipping calculated at checkout</p>
+      <a href="checkout.html" class="btn-gold block text-center py-3.5 text-sm uppercase tracking-wider w-full">Checkout</a>
+    </div>
+  </div>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // ====== SCROLL REVEAL (IntersectionObserver) ======
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('[data-reveal]').forEach((el, i) => {
+      // Auto-assign stagger index if inside a stagger container and not already set
+      if (el.parentElement?.hasAttribute('data-stagger') && !el.style.getPropertyValue('--stagger-index')) {
+        const siblings = [...el.parentElement.querySelectorAll(':scope > [data-reveal]')];
+        el.style.setProperty('--stagger-index', siblings.indexOf(el));
+      }
+      revealObserver.observe(el);
+    });
+
+    // ====== HERO PARALLAX ======
+    const heroSection = document.getElementById('hero');
+    const heroGradient = document.getElementById('hero-gradient');
+    const heroVial = document.getElementById('hero-vial');
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const heroHeight = heroSection?.offsetHeight || 800;
+          if (scrollY < heroHeight) {
+            const factor = scrollY / heroHeight;
+            if (heroGradient) heroGradient.style.transform = `translateY(${scrollY * 0.3}px)`;
+            if (heroVial) heroVial.style.transform = `translateY(${scrollY * 0.15}px) scale(${1 + factor * 0.1})`;
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // ====== HERO FLOATING PARTICLES ======
+    (function createParticles() {
+      const container = document.getElementById('hero-particles');
+      if (!container) return;
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.width = (2 + Math.random() * 3) + 'px';
+        p.style.height = p.style.width;
+        p.style.animation = `float ${4 + Math.random() * 6}s ease-in-out ${Math.random() * 5}s infinite`;
+        p.style.opacity = (0.15 + Math.random() * 0.3).toString();
+        container.appendChild(p);
+      }
+    })();
+
+    // ====== BUTTON RIPPLE EFFECT ======
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width * 100);
+        const y = ((e.clientY - rect.top) / rect.height * 100);
+        this.style.setProperty('--ripple-x', x + '%');
+        this.style.setProperty('--ripple-y', y + '%');
+        this.classList.add('ripple');
+        setTimeout(() => this.classList.remove('ripple'), 500);
+      });
+    });
+
+    // ====== CART STATE ======
+    let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
+
+    function saveCart() {
+      localStorage.setItem('eidon_cart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function addToCart(sku, name, price) {
+      const existing = cart.find(item => item.sku === sku);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ sku, name, price, qty: 1 });
+      }
+      saveCart();
+      openCart();
+      bounceCartBadge();
+    }
+
+    function addBundle(sku, name, price, items) {
+      const existing = cart.find(item => item.sku === sku);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ sku, name, price, qty: 1, isBundle: true, bundleItems: items });
+      }
+      saveCart();
+      openCart();
+      bounceCartBadge();
+    }
+
+    function bounceCartBadge() {
+      const badge = document.getElementById('cart-count');
+      badge.classList.remove('cart-bounce');
+      void badge.offsetWidth; // force reflow
+      badge.classList.add('cart-bounce');
+    }
+
+    function removeFromCart(sku) {
+      cart = cart.filter(item => item.sku !== sku);
+      saveCart();
+    }
+
+    function updateQty(sku, delta) {
+      const item = cart.find(i => i.sku === sku);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.sku !== sku);
+      }
+      saveCart();
+    }
+
+    function getSubtotal() {
+      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    }
+
+    function updateCartUI() {
+      const countEl = document.getElementById('cart-count');
+      const itemsEl = document.getElementById('cart-items');
+      const emptyEl = document.getElementById('cart-empty');
+      const footerEl = document.getElementById('cart-footer');
+      const subtotalEl = document.getElementById('cart-subtotal');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+
+      if (totalItems > 0) {
+        countEl.textContent = totalItems;
+        countEl.classList.remove('hidden');
+      } else {
+        countEl.classList.add('hidden');
+      }
+
+      if (cart.length === 0) {
+        emptyEl.classList.remove('hidden');
+        footerEl.classList.add('hidden');
+        itemsEl.innerHTML = '<p id="cart-empty" class="text-center text-[#999] text-sm py-12">Your cart is empty</p>';
+        return;
+      }
+
+      emptyEl?.classList.add('hidden');
+      footerEl.classList.remove('hidden');
+      subtotalEl.textContent = '$' + getSubtotal().toFixed(2);
+
+      let html = '';
+      cart.forEach(item => {
+        html += `
+          <div class="flex items-start gap-4 py-4 border-b border-[#f0f0f0] last:border-0">
+            <div class="flex-1 min-w-0">
+              <p class="font-heading font-semibold text-sm truncate">${item.name}</p>
+              ${item.isBundle ? '<span class="text-[10px] text-gold font-semibold uppercase">Bundle</span>' : ''}
+              <p class="text-sm text-navy font-bold mt-1">$${(item.price * item.qty).toFixed(2)}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="updateQty('${item.sku}', -1)" class="w-7 h-7 rounded-md border border-[#e5e5e5] flex items-center justify-center text-sm hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Decrease quantity">−</button>
+              <span class="text-sm font-semibold w-6 text-center">${item.qty}</span>
+              <button onclick="updateQty('${item.sku}', 1)" class="w-7 h-7 rounded-md border border-[#e5e5e5] flex items-center justify-center text-sm hover:bg-off-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Increase quantity">+</button>
+            </div>
+            <button onclick="removeFromCart('${item.sku}')" class="text-[#ccc] hover:text-red-500 p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: color 0.2s ease;" aria-label="Remove item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        `;
+      });
+      itemsEl.innerHTML = html;
+    }
+
+    function toggleCart() {
+      const overlay = document.getElementById('cart-overlay');
+      const drawer = document.getElementById('cart-drawer');
+      const isOpen = !drawer.classList.contains('closed');
+      if (isOpen) {
+        drawer.classList.add('closed');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      } else {
+        openCart();
+      }
+    }
+
+    function openCart() {
+      const overlay = document.getElementById('cart-overlay');
+      const drawer = document.getElementById('cart-drawer');
+      overlay.classList.remove('hidden');
+      drawer.classList.remove('closed');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // ====== FAQ ACCORDION (smooth grid-rows) ======
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const chevron = btn.querySelector('.faq-chevron');
+      const isOpen = answer.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-chevron').forEach(c => c.classList.remove('rotated'));
+
+      if (!isOpen) {
+        answer.classList.add('open');
+        chevron.classList.add('rotated');
+      }
+    }
+
+    // Initialize
+    updateCartUI();
+  </script>
+
+  <script src="chat.js"></script>
+</body>
+</html>

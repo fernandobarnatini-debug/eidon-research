@@ -1,0 +1,14 @@
+{
+  "name": "eidon-research",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "puppeteer": "^24.39.1"
+  }
+}
