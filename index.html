@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EIDON Research — Premium Research Peptides</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="EIDON Research — Premium research peptides with >99% purity. Retatrutide, CJC-1295, GHK-Cu, Melanotan 2 & BAC Water. Third-party tested. Same-day shipping. For research use only.">
+  <meta name="keywords" content="research peptides, buy peptides, retatrutide, CJC-1295, ipamorelin, GHK-Cu, melanotan 2, BAC water, peptide supplier, research chemicals, lab supplies">
+  <meta property="og:title" content="EIDON Research — Premium Research Peptides">
+  <meta property="og:description" content="Direct supply of research-grade peptides with >99% purity. Third-party tested. Same-day shipping. Become the Form God Intended.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://eidonresearch.com">
+  <meta property="og:image" content="https://eidonresearch.com/og-image.png">
+  <meta property="og:site_name" content="EIDON Research">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EIDON Research — Premium Research Peptides">
+  <meta name="twitter:description" content="Research-grade peptides with >99% purity. Third-party tested. Same-day shipping.">
+  <meta name="twitter:image" content="https://eidonresearch.com/og-image.png">
+  <link rel="canonical" href="https://eidonresearch.com">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +44,7 @@
   </script>
   <style>
     /* === BASE === */
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #333; line-height: 1.7; }
     h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0B1426; }
     .heading-tight { letter-spacing: -0.03em; }
@@ -340,7 +354,7 @@
   </div>
 
   <!-- ========== NAVIGATION ========== -->
-  <nav class="bg-navy sticky top-0 z-50">
+  <nav class="bg-navy sticky top-0 z-[100]">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
       <!-- Logo -->
       <a href="index.html" class="flex flex-col leading-none" style="transition: opacity 0.2s ease;">
@@ -353,11 +367,28 @@
         <a href="#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
         <a href="#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
       </div>
-      <!-- Cart Button -->
-      <button onclick="toggleCart()" class="relative text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open cart">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-gold text-navy text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
-      </button>
+      <!-- Right side: Cart + Hamburger -->
+      <div class="flex items-center gap-2">
+        <!-- Cart Button -->
+        <button onclick="toggleCart()" class="relative text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-gold text-navy text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+        <!-- Hamburger (mobile only) -->
+        <button onclick="toggleMobileMenu()" id="hamburger-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open menu">
+          <svg id="hamburger-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="hamburger-close" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="hidden"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden" style="max-height: 0; opacity: 0; transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;">
+      <div class="px-4 pb-4 pt-1 flex flex-col gap-1 border-t border-white/10">
+        <a href="#products" onclick="closeMobileMenu()" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Products</a>
+        <a href="#bundles" onclick="closeMobileMenu()" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Bundles</a>
+        <a href="#faq" onclick="closeMobileMenu()" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">FAQ</a>
+        <a href="mailto:support@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
+      </div>
     </div>
   </nav>
 
@@ -376,24 +407,24 @@
     </div>
     <!-- Floating particles -->
     <div id="hero-particles" class="absolute inset-0 pointer-events-none z-[2]"></div>
-    <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-24 sm:py-36 lg:py-44 text-center">
-      <p class="hero-text-1 text-gold text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-5">Direct Supply of Research-Grade Peptides</p>
-      <h1 class="hero-text-2 font-heading font-extrabold text-white text-4xl sm:text-6xl lg:text-7xl heading-tight leading-[1.05] mb-6">
+    <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-36 lg:py-44 text-center">
+      <p class="hero-text-1 text-gold text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-3 sm:mb-5">Direct Supply of Research-Grade Peptides</p>
+      <h1 class="hero-text-2 font-heading font-extrabold text-white text-3xl sm:text-6xl lg:text-7xl heading-tight leading-[1.05] mb-4 sm:mb-6">
         Become the Form<br>God Intended
       </h1>
-      <p class="hero-text-3 text-white/60 text-base sm:text-lg max-w-lg mx-auto mb-5 leading-relaxed">
+      <p class="hero-text-3 text-white/60 text-sm sm:text-lg max-w-lg mx-auto mb-3 sm:mb-5 leading-relaxed">
         Direct supply of research-grade peptides with worldwide shipping. Verified &gt;99% purity. Third-party tested.
       </p>
-      <p class="hero-text-4 text-white/40 text-xs uppercase tracking-widest mb-8">For Laboratory &amp; Research Use Only</p>
+      <p class="hero-text-4 text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-5 sm:mb-8">For Laboratory &amp; Research Use Only</p>
       <div class="hero-text-5 flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="#products" class="btn-gold px-10 py-4 text-sm uppercase tracking-wider inline-block text-center">Shop Peptides</a>
-        <a href="#bundles" class="btn-outline px-10 py-4 text-sm uppercase tracking-wider inline-block text-center">View Bundles</a>
+        <a href="#products" class="btn-gold px-8 sm:px-10 py-3.5 sm:py-4 text-sm uppercase tracking-wider inline-block text-center">Shop Peptides</a>
+        <a href="#bundles" class="btn-outline px-8 sm:px-10 py-3.5 sm:py-4 text-sm uppercase tracking-wider inline-block text-center">View Bundles</a>
       </div>
     </div>
   </section>
 
   <!-- ========== GRADIENT BRIDGE ========== -->
-  <div class="h-16 sm:h-24" style="background: linear-gradient(to bottom, #0B1426 0%, #111d38 40%, #f8f9fa 100%);"></div>
+  <div class="h-8 sm:h-24" style="background: linear-gradient(to bottom, #0B1426 0%, #111d38 40%, #f8f9fa 100%);"></div>
 
   <!-- ========== TRUST BAR ========== -->
   <section class="bg-off-white border-y border-[#e5e5e5]">
@@ -430,7 +461,7 @@
 
         <!-- Retatrutide -->
         <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
-          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);">
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
                 <!-- Flip cap -->
@@ -442,19 +473,19 @@
                 <!-- Rubber stopper -->
                 <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
                 <!-- Glass vial body -->
-                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <!-- Liquid fill -->
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="#3b82f6" opacity="0.2"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidBlue)"/>
                 <!-- Label -->
-                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
                 <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
                 <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
                 <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">Retatrutide</text>
                 <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">5mg</text>
                 <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
                 <!-- Vial bottom curve -->
-                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <defs><linearGradient id="liquidBlue" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#60a5fa" stop-opacity="0.3"/><stop offset="1" stop-color="#2563eb" stop-opacity="0.15"/></linearGradient></defs>
               </svg>
             </div>
@@ -473,7 +504,7 @@
 
         <!-- CJC-1295 + Ipamorelin -->
         <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
-          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f0f8f4 0%, #dff0e8 100%);">
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
                 <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
@@ -481,17 +512,17 @@
                 <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
                 <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
                 <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
-                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="#22c55e" opacity="0.15"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidGreen)"/>
-                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
                 <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
                 <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
                 <text x="50" y="64" text-anchor="middle" fill="#0B1426" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="700">CJC-1295</text>
                 <text x="50" y="71" text-anchor="middle" fill="#0B1426" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="700">+ Ipamorelin</text>
                 <text x="50" y="79" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">10mg</text>
                 <text x="50" y="86" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
-                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <defs><linearGradient id="liquidGreen" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#4ade80" stop-opacity="0.25"/><stop offset="1" stop-color="#16a34a" stop-opacity="0.1"/></linearGradient></defs>
               </svg>
             </div>
@@ -509,7 +540,7 @@
 
         <!-- GHK-Cu -->
         <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
-          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f5f0f8 0%, #e8dff0 100%);">
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
                 <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
@@ -517,16 +548,16 @@
                 <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
                 <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
                 <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
-                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="#a855f7" opacity="0.12"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidPurple)"/>
-                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
                 <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
                 <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
                 <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">GHK-Cu</text>
                 <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">100mg</text>
                 <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
-                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <defs><linearGradient id="liquidPurple" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#c084fc" stop-opacity="0.25"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0.1"/></linearGradient></defs>
               </svg>
             </div>
@@ -544,7 +575,7 @@
 
         <!-- Melanotan 2 -->
         <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
-          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #fdf8f0 0%, #f5ecd8 100%);">
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
                 <rect x="35" y="2" width="30" height="8" rx="2" fill="#D4AF37"/>
@@ -552,16 +583,16 @@
                 <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
                 <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
                 <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
-                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="#f59e0b" opacity="0.12"/>
                 <rect x="31" y="74" width="38" height="69" rx="3" fill="url(#liquidAmber)"/>
-                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
                 <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
                 <line x1="38" y1="57" x2="62" y2="57" stroke="#D4AF37" stroke-width="0.5"/>
                 <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">Melanotan 2</text>
                 <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">10mg</text>
                 <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Research Use Only</text>
-                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <defs><linearGradient id="liquidAmber" x1="50" y1="74" x2="50" y2="143" gradientUnits="userSpaceOnUse"><stop stop-color="#fbbf24" stop-opacity="0.25"/><stop offset="1" stop-color="#d97706" stop-opacity="0.1"/></linearGradient></defs>
               </svg>
             </div>
@@ -579,7 +610,7 @@
 
         <!-- BAC Water -->
         <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated product-card overflow-hidden" data-reveal>
-          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
+          <div class="relative h-56 overflow-hidden card-img-wrap" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <svg width="100" height="180" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.12));">
                 <rect x="35" y="2" width="30" height="8" rx="2" fill="#999"/>
@@ -587,25 +618,25 @@
                 <rect x="33" y="10" width="34" height="6" rx="1" fill="#c0c0c0" stroke="#b0b0b0" stroke-width="0.5"/>
                 <rect x="34" y="12" width="32" height="2" fill="#d4d4d4"/>
                 <rect x="36" y="16" width="28" height="8" rx="1" fill="#555"/>
-                <rect x="30" y="24" width="40" height="120" rx="4" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <rect x="30" y="24" width="40" height="120" rx="4" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
                 <rect x="31" y="84" width="38" height="59" rx="3" fill="#e0e7ee" opacity="0.3"/>
-                <rect x="34" y="40" width="32" height="50" rx="2" fill="white" stroke="#e5e5e5" stroke-width="0.5"/>
+                <rect x="34" y="40" width="32" height="50" rx="2" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
                 <text x="50" y="53" text-anchor="middle" fill="#0B1426" font-size="6" font-family="DM Sans, sans-serif" font-weight="800" letter-spacing="0.5">EIDON</text>
                 <line x1="38" y1="57" x2="62" y2="57" stroke="#999" stroke-width="0.5"/>
                 <text x="50" y="65" text-anchor="middle" fill="#0B1426" font-size="5" font-family="DM Sans, sans-serif" font-weight="700">BAC Water</text>
-                <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">3ml</text>
+                <text x="50" y="73" text-anchor="middle" fill="#666" font-size="4.5" font-family="DM Sans, sans-serif" font-weight="500">10ml</text>
                 <text x="50" y="83" text-anchor="middle" fill="#999" font-size="3.5" font-family="DM Sans, sans-serif">Bacteriostatic</text>
-                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="white" stroke="#d0d5dd" stroke-width="1"/>
+                <path d="M30 140 Q30 148 50 148 Q70 148 70 140" fill="rgba(255,255,255,0.95)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
               </svg>
             </div>
           </div>
           <div class="p-5">
-            <h3 class="font-heading font-bold text-base mb-1">BAC Water 3ml</h3>
+            <h3 class="font-heading font-bold text-base mb-1">BAC Water 10ml</h3>
             <div class="flex items-center gap-1 mb-2"><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-3.5 h-3.5" fill="#D4AF37" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-xs text-[#999] ml-1">(67)</span></div>
             <p class="text-sm text-[#555] mb-3 leading-relaxed">USP-grade bacteriostatic water with 0.9% benzyl alcohol. Required for reconstitution.</p>
             <div class="flex items-center justify-between">
               <span class="font-heading font-bold text-xl text-navy">$20</span>
-              <button onclick="addToCart('WA3', 'BAC Water 3ml', 20)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
+              <button onclick="addToCart('WA10', 'BAC Water 10ml', 20)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -632,14 +663,14 @@
           <ul class="text-sm text-[#555] mb-4 space-y-1">
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> GHK-Cu 100mg</li>
-            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 10ml</li>
           </ul>
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#999] line-through mr-2">$130</span>
               <span class="font-heading font-bold text-xl text-navy">$120</span>
             </div>
-            <button onclick="addBundle('summer-cut', 'Summer Cut Stack', 120, ['Retatrutide 5mg','GHK-Cu 100mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+            <button onclick="addBundle('summer-cut', 'Summer Cut Stack', 120, ['Retatrutide 5mg','GHK-Cu 100mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
         </div>
 
@@ -651,14 +682,14 @@
           <h3 class="font-heading font-bold text-lg mb-2">Gym Gains Stack</h3>
           <ul class="text-sm text-[#555] mb-4 space-y-1">
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> CJC-1295 + Ipamorelin 10mg</li>
-            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 10ml</li>
           </ul>
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#999] line-through mr-2">$80</span>
               <span class="font-heading font-bold text-xl text-navy">$75</span>
             </div>
-            <button onclick="addBundle('gym-gains', 'Gym Gains Stack', 75, ['CJC-1295 + Ipamorelin 10mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+            <button onclick="addBundle('gym-gains', 'Gym Gains Stack', 75, ['CJC-1295 + Ipamorelin 10mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
         </div>
 
@@ -671,13 +702,13 @@
           <ul class="text-sm text-[#555] mb-4 space-y-1">
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Melanotan 2 10mg</li>
-            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 10ml</li>
           </ul>
           <div class="flex items-center justify-between">
             <div>
               <span class="font-heading font-bold text-xl text-navy">$130</span>
             </div>
-            <button onclick="addBundle('shred-max', 'Summer Shred MAX', 130, ['Retatrutide 5mg','Melanotan 2 10mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+            <button onclick="addBundle('shred-max', 'Summer Shred MAX', 130, ['Retatrutide 5mg','Melanotan 2 10mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
         </div>
 
@@ -691,14 +722,14 @@
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Retatrutide 5mg</li>
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> CJC-1295 + Ipamorelin 10mg</li>
             <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> GHK-Cu 100mg</li>
-            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+            <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 10ml</li>
           </ul>
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#999] line-through mr-2">$190</span>
               <span class="font-heading font-bold text-xl text-navy">$160</span>
             </div>
-            <button onclick="addBundle('the-triple', 'The Triple', 160, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
+            <button onclick="addBundle('the-triple', 'The Triple', 160, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
         </div>
 
@@ -715,14 +746,14 @@
               <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> CJC-1295 + Ipamorelin 10mg</li>
               <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> GHK-Cu 100mg</li>
               <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> Melanotan 2 10mg</li>
-              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 3ml</li>
+              <li class="flex items-start gap-2"><span class="text-gold mt-0.5">&#x2022;</span> BAC Water 10ml</li>
             </ul>
             <div class="flex items-center justify-between">
               <div>
                 <span class="text-sm text-white/50 line-through mr-2">$235</span>
                 <span class="font-heading font-bold text-2xl text-gold">$200</span>
               </div>
-              <button onclick="addBundle('everything', 'The Everything Stack', 200, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','Melanotan 2 10mg','BAC Water 3ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-5 py-2.5 rounded-lg">Add Bundle</button>
+              <button onclick="addBundle('everything', 'The Everything Stack', 200, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','Melanotan 2 10mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-5 py-2.5 rounded-lg">Add Bundle</button>
             </div>
           </div>
         </div>
@@ -918,7 +949,7 @@
   <!-- ========== FOOTER ========== -->
   <footer class="bg-navy text-white grain-overlay">
     <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-10" data-reveal>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10" data-reveal>
         <!-- Brand -->
         <div>
           <div class="flex flex-col leading-none mb-4">
@@ -944,6 +975,15 @@
             <li>$8 flat rate (under $150)</li>
             <li>Same-day shipping before 1PM PST</li>
             <li>Free local pickup — Sacramento area</li>
+          </ul>
+        </div>
+        <!-- Contact -->
+        <div>
+          <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Contact</h4>
+          <ul class="space-y-2 text-white/60 text-sm">
+            <li><a href="mailto:support@eidonresearch.com" class="hover:text-white" style="transition: color 0.2s ease;">support@eidonresearch.com</a></li>
+            <li>Sacramento, CA</li>
+            <li>Mon–Fri, 9AM–5PM PST</li>
           </ul>
         </div>
       </div>
@@ -1200,6 +1240,33 @@
         answer.classList.add('open');
         chevron.classList.add('rotated');
       }
+    }
+
+    // ====== MOBILE MENU ======
+    let mobileMenuOpen = false;
+    function toggleMobileMenu() {
+      mobileMenuOpen = !mobileMenuOpen;
+      const menu = document.getElementById('mobile-menu');
+      const icon = document.getElementById('hamburger-icon');
+      const close = document.getElementById('hamburger-close');
+      if (mobileMenuOpen) {
+        menu.style.maxHeight = '300px';
+        menu.style.opacity = '1';
+        icon.classList.add('hidden');
+        close.classList.remove('hidden');
+      } else {
+        closeMobileMenu();
+      }
+    }
+    function closeMobileMenu() {
+      mobileMenuOpen = false;
+      const menu = document.getElementById('mobile-menu');
+      const icon = document.getElementById('hamburger-icon');
+      const close = document.getElementById('hamburger-close');
+      menu.style.maxHeight = '0';
+      menu.style.opacity = '0';
+      icon.classList.remove('hidden');
+      close.classList.add('hidden');
     }
 
     // Initialize

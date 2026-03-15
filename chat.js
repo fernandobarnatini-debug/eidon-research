@@ -30,6 +30,10 @@
   function createChatWidget() {
     const style = document.createElement('style');
     style.textContent = `
+      @media (max-width: 640px) {
+        #eidon-chat-bubble { bottom: 80px; right: 16px; width: 48px; height: 48px; }
+        #eidon-chat-window { bottom: 140px; right: 16px; height: 440px; }
+      }
       #eidon-chat-bubble {
         position: fixed;
         bottom: 24px;

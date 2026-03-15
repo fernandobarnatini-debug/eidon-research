@@ -123,8 +123,13 @@ app.post('/api/pay', async (req, res) => {
   }
 });
 
-// View all orders (admin)
+// View all orders (admin — requires token)
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 app.get('/api/orders', (req, res) => {
+  const token = req.query.token || req.headers.authorization?.replace('Bearer ', '');
+  if (!token || token !== ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
   res.json(loadOrders());
 });
 
@@ -142,6 +147,7 @@ CRITICAL RULES:
 - If anyone asks about human use, dosing for humans, or medical advice, firmly redirect: "Our products are strictly for research purposes. We cannot provide guidance on human use. Please consult a licensed professional for medical questions."
 - Must be 18+ to order
 - You are NOT a doctor. Never give medical advice.
+- If someone needs human support, direct them to email **support@eidonresearch.com** — available Mon–Fri, 9AM–5PM PST.
 
 PRODUCTS:
 1. Retatrutide 5mg — $60 (SKU: RT5)
@@ -156,7 +162,7 @@ PRODUCTS:
 4. Melanotan 2 10mg — $45 (SKU: MT2)
    Melanocortin receptor agonist. Stimulates melanogenesis for enhanced pigmentation without UV exposure. Additional research applications include appetite regulation.
 
-5. BAC Water 3ml — $20 (SKU: WA3)
+5. BAC Water 10ml — $20 (SKU: WA3)
    USP-grade bacteriostatic water with 0.9% benzyl alcohol. Required for reconstitution of all lyophilized peptides.
 
 BUNDLES:
