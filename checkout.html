@@ -223,6 +223,8 @@
       <div class="lg:col-span-2">
         <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated p-6 lg:sticky lg:top-24">
           <h2 class="font-heading font-bold text-lg mb-5">Order Summary</h2>
+          <!-- Delivery Method Badge -->
+          <div id="delivery-badge" class="mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2"></div>
           <div id="summary-items" class="space-y-3 mb-5 pb-5 border-b border-[#f0f0f0]"></div>
           <div class="space-y-2 text-sm">
             <div class="flex justify-between">
@@ -238,7 +240,7 @@
               <span id="summary-discount">-$0.00</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-[#555]">Shipping</span>
+              <span class="text-[#555]" id="shipping-label">Shipping</span>
               <span id="summary-shipping" class="font-semibold">$8.00</span>
             </div>
           </div>
@@ -384,7 +386,12 @@
       return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     }
 
+    const deliveryMethod = localStorage.getItem('deliveryMethod') || 'shipping';
+
     function getShippingRaw() {
+      if (deliveryMethod === 'pepdash') {
+        return getSubtotal() >= 60 ? 0 : 5;
+      }
       return getSubtotal() >= 60 ? 0 : 8;
     }
 
@@ -655,6 +662,21 @@
         renderSummary();
       }, 300);
     }
+
+    // ====== DELIVERY METHOD DISPLAY ======
+    (function renderDeliveryBadge() {
+      const badge = document.getElementById('delivery-badge');
+      const label = document.getElementById('shipping-label');
+      if (deliveryMethod === 'pepdash') {
+        badge.innerHTML = '🛵 <span>PepDash Delivery</span> <span class="ml-auto text-[10px] text-green-600">Est. 45 min – 1.5 hrs</span>';
+        badge.className = 'mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-green-50 border border-green-200 text-green-800';
+        if (label) label.textContent = 'Delivery Fee';
+      } else {
+        badge.innerHTML = '📦 <span>Standard Shipping</span> <span class="ml-auto text-[10px] text-blue-600">2–4 business days</span>';
+        badge.className = 'mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-800';
+        if (label) label.textContent = 'Shipping';
+      }
+    })();
 
     // ====== Initialize ======
     renderSummary();

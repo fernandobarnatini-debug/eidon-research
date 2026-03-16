@@ -1431,21 +1431,260 @@
       </div>
     </div>
   </div>
+  <!-- ========== PEPDASH DELIVERY SELECTION ========== -->
+  <div id="pepdash-screen" class="fixed inset-0 z-[190] bg-white hidden" style="overflow-y: auto;">
+    <div class="min-h-screen flex flex-col">
+      <!-- PepDash Header -->
+      <div class="bg-navy py-5 px-4 text-center">
+        <div class="flex items-center justify-center gap-2">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="#D4AF37"/><path d="M8 18l3-8h6l-2 5h4l-7 8 2-5H8z" fill="#0B1426"/></svg>
+          <span class="font-heading text-white text-2xl font-extrabold tracking-tight">PepDash</span>
+        </div>
+        <p class="text-white/50 text-xs mt-1 tracking-wide">Research compounds, delivered.</p>
+      </div>
+
+      <!-- Selection Area -->
+      <div class="flex-1 bg-[#f5f5f5] py-8 px-4">
+        <div class="max-w-[600px] mx-auto">
+          <h2 class="font-heading font-bold text-xl text-navy text-center mb-2">How would you like to receive your order?</h2>
+          <p class="text-sm text-[#999] text-center mb-8">Choose your preferred delivery method</p>
+
+          <div class="flex flex-col gap-4">
+
+            <!-- Option 1: PepDash Delivery -->
+            <button id="pepdash-card" onclick="selectDelivery('pepdash')" class="text-left bg-white rounded-2xl p-5 border-2 border-[#e5e5e5] w-full" style="transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-[#f0fdf4] rounded-xl flex items-center justify-center flex-shrink-0 text-2xl">🛵</div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="font-heading font-bold text-base text-navy">PepDash Delivery</span>
+                    <span id="pepdash-status-badge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"></span>
+                  </div>
+                  <p class="text-sm text-[#555] mb-2">Same-day local delivery</p>
+                  <div class="flex items-center gap-1.5 mb-3">
+                    <svg width="14" height="14" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span class="text-sm font-semibold text-navy" id="pepdash-eta">Est. 45 min – 1.5 hrs</span>
+                  </div>
+                  <p id="pepdash-location-msg" class="text-xs text-[#999] mb-3">Checking your location...</p>
+                  <!-- Zip fallback -->
+                  <div id="pepdash-zip-input" class="hidden mb-3">
+                    <div class="flex gap-2">
+                      <input id="pepdash-zip" type="text" maxlength="5" placeholder="Enter ZIP code" class="border border-[#e5e5e5] rounded-lg px-3 py-2 text-sm w-32 focus:outline-none focus:border-gold" style="transition: border-color 0.2s ease;">
+                      <button onclick="event.stopPropagation(); checkZip();" class="bg-navy text-white text-xs font-bold px-3 py-2 rounded-lg" style="transition: transform 0.2s ease;">Check</button>
+                    </div>
+                  </div>
+                  <div class="text-xs text-[#555] mb-3">
+                    <span class="text-green-600 font-semibold">Free delivery on $60+</span>
+                    <span class="text-[#999]"> · $5 fee under $60</span>
+                  </div>
+                  <div class="flex flex-wrap gap-3 text-[10px] text-[#777]">
+                    <span class="flex items-center gap-1">🌡️ Temperature-controlled</span>
+                    <span class="flex items-center gap-1">📦 Discreet packaging</span>
+                    <span class="flex items-center gap-1">⚡ Same-day</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            <!-- Option 2: Standard Shipping -->
+            <button id="shipping-card" onclick="selectDelivery('shipping')" class="text-left bg-white rounded-2xl p-5 border-2 border-[#e5e5e5] w-full" style="transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-[#f0f4ff] rounded-xl flex items-center justify-center flex-shrink-0 text-2xl">📦</div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="font-heading font-bold text-base text-navy">Standard Shipping</span>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-blue-50 text-blue-600">Nationwide</span>
+                  </div>
+                  <p class="text-sm text-[#555] mb-2">Ships anywhere in the US</p>
+                  <div class="flex items-center gap-1.5 mb-3">
+                    <svg width="14" height="14" fill="none" stroke="#3b82f6" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span class="text-sm font-semibold text-navy">2–4 business days</span>
+                  </div>
+                  <p class="text-xs text-[#555]">Same-day dispatch before 1PM PST</p>
+                  <div class="text-xs text-[#555] mt-1">
+                    <span class="text-green-600 font-semibold">Free shipping on $60+</span>
+                    <span class="text-[#999]"> · $8 flat rate under $60</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+
+          </div>
+
+          <p class="text-[10px] text-[#bbb] text-center mt-6">You can change this anytime from the menu</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="pepdash-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-navy text-white text-sm font-semibold px-6 py-3 rounded-full shadow-floating hidden" style="transition: opacity 0.3s ease, transform 0.3s ease; z-index: 999;"></div>
+  </div>
+
   <script>
+    // ====== AGE GATE + PEPDASH FLOW ======
     (function() {
-      if (localStorage.getItem('eidon_age_verified') !== 'true') {
+      const ageVerified = localStorage.getItem('eidon_age_verified') === 'true';
+      const deliverySet = localStorage.getItem('deliveryMethod');
+
+      if (!ageVerified) {
         document.getElementById('age-gate').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+      } else if (!deliverySet) {
+        showPepDash();
       }
     })();
+
     function verifyAge(isAdult) {
       if (isAdult) {
         localStorage.setItem('eidon_age_verified', 'true');
         document.getElementById('age-gate').classList.add('hidden');
-        document.body.style.overflow = '';
+        // Show PepDash if delivery not set yet
+        if (!localStorage.getItem('deliveryMethod')) {
+          showPepDash();
+        } else {
+          document.body.style.overflow = '';
+        }
       } else {
         window.location.href = 'https://www.google.com';
       }
+    }
+
+    function showPepDash() {
+      document.getElementById('pepdash-screen').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      checkLocation();
+    }
+
+    // ====== GEOLOCATION ======
+    const SAC_LAT = 38.5816;
+    const SAC_LNG = -121.4944;
+    const MAX_MILES = 30;
+    let pepdashAvailable = false;
+
+    function checkLocation() {
+      if (!navigator.geolocation) {
+        showZipFallback();
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const dist = getDistance(pos.coords.latitude, pos.coords.longitude, SAC_LAT, SAC_LNG);
+          if (dist <= MAX_MILES) {
+            setPepDashAvailable(true, `Delivering to your area!`);
+          } else {
+            setPepDashAvailable(false, `Outside delivery zone — try shipping`);
+          }
+        },
+        () => { showZipFallback(); },
+        { timeout: 5000 }
+      );
+    }
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 3959; // miles
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function showZipFallback() {
+      document.getElementById('pepdash-location-msg').textContent = 'Enter your ZIP to check availability';
+      document.getElementById('pepdash-zip-input').classList.remove('hidden');
+    }
+
+    function checkZip() {
+      const zip = parseInt(document.getElementById('pepdash-zip').value);
+      if (zip >= 95601 && zip <= 95999) {
+        setPepDashAvailable(true, `ZIP ${zip} is in our delivery zone!`);
+        document.getElementById('pepdash-zip-input').classList.add('hidden');
+      } else if (zip >= 94000 && zip <= 94999) {
+        setPepDashAvailable(false, `ZIP ${zip} is outside our delivery zone`);
+      } else if (!isNaN(zip) && zip >= 10000 && zip <= 99999) {
+        setPepDashAvailable(false, `ZIP ${zip} is outside our delivery zone`);
+      } else {
+        document.getElementById('pepdash-zip').style.borderColor = '#ef4444';
+        setTimeout(() => { document.getElementById('pepdash-zip').style.borderColor = '#e5e5e5'; }, 1500);
+      }
+    }
+
+    function setPepDashAvailable(available, msg) {
+      pepdashAvailable = available;
+      const card = document.getElementById('pepdash-card');
+      const badge = document.getElementById('pepdash-status-badge');
+      const locMsg = document.getElementById('pepdash-location-msg');
+
+      locMsg.textContent = msg;
+
+      if (available) {
+        badge.textContent = 'Available';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-green-50 text-green-600';
+        badge.classList.remove('hidden');
+        locMsg.className = 'text-xs text-green-600 font-semibold mb-3';
+        card.style.borderColor = '#22c55e';
+        card.style.boxShadow = '0 0 0 1px rgba(34,197,94,0.2), 0 4px 12px rgba(34,197,94,0.08)';
+      } else {
+        badge.textContent = 'Unavailable';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-[#f5f5f5] text-[#999]';
+        badge.classList.remove('hidden');
+        locMsg.className = 'text-xs text-[#999] mb-3';
+        card.style.borderColor = '#e5e5e5';
+        card.style.opacity = '0.55';
+        card.style.pointerEvents = 'none';
+      }
+    }
+
+    // ====== DELIVERY SELECTION ======
+    function selectDelivery(method) {
+      if (method === 'pepdash' && !pepdashAvailable) return;
+
+      localStorage.setItem('deliveryMethod', method);
+
+      // Highlight selected card
+      const pepdashCard = document.getElementById('pepdash-card');
+      const shippingCard = document.getElementById('shipping-card');
+
+      if (method === 'pepdash') {
+        pepdashCard.style.borderColor = '#D4AF37';
+        pepdashCard.style.boxShadow = '0 0 0 2px rgba(212,175,55,0.3), 0 4px 16px rgba(212,175,55,0.1)';
+        pepdashCard.style.transform = 'scale(1.02)';
+        shippingCard.style.borderColor = '#e5e5e5';
+        shippingCard.style.boxShadow = 'none';
+        shippingCard.style.transform = 'scale(1)';
+      } else {
+        shippingCard.style.borderColor = '#D4AF37';
+        shippingCard.style.boxShadow = '0 0 0 2px rgba(212,175,55,0.3), 0 4px 16px rgba(212,175,55,0.1)';
+        shippingCard.style.transform = 'scale(1.02)';
+        pepdashCard.style.transform = 'scale(1)';
+        if (pepdashAvailable) {
+          pepdashCard.style.borderColor = '#e5e5e5';
+          pepdashCard.style.boxShadow = 'none';
+        }
+      }
+
+      // Show toast
+      const toast = document.getElementById('pepdash-toast');
+      toast.textContent = method === 'pepdash' ? '🛵 PepDash Delivery selected!' : '📦 Standard Shipping selected!';
+      toast.classList.remove('hidden');
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+
+      // Transition to store
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(10px)';
+      }, 1000);
+
+      setTimeout(() => {
+        document.getElementById('pepdash-screen').style.opacity = '0';
+        document.getElementById('pepdash-screen').style.transition = 'opacity 0.4s ease';
+      }, 1300);
+
+      setTimeout(() => {
+        document.getElementById('pepdash-screen').classList.add('hidden');
+        document.getElementById('pepdash-screen').style.opacity = '1';
+        document.body.style.overflow = '';
+      }, 1700);
     }
   </script>
 
