@@ -407,7 +407,7 @@
       let html = '';
       cart.forEach(item => {
         html += `
-          <div class="flex justify-between items-center text-sm gap-2">
+          <div id="summary-item-${item.sku}" class="flex justify-between items-center text-sm gap-2 py-1" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 60px; overflow: hidden;">
             <div class="flex-1 min-w-0">
               <p class="font-semibold truncate">${item.name}</p>
               <p class="text-xs text-[#999]">Qty: ${item.qty}</p>
@@ -637,13 +637,23 @@
     }
 
     function removeFromCheckout(sku) {
-      cart = cart.filter(item => item.sku !== sku);
-      localStorage.setItem('eidon_cart', JSON.stringify(cart));
-      if (cart.length === 0) {
-        window.location.href = 'index.html';
-        return;
+      const el = document.getElementById('summary-item-' + sku);
+      if (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(20px)';
+        el.style.maxHeight = '0';
+        el.style.padding = '0';
+        el.style.margin = '0';
       }
-      renderSummary();
+      setTimeout(() => {
+        cart = cart.filter(item => item.sku !== sku);
+        localStorage.setItem('eidon_cart', JSON.stringify(cart));
+        if (cart.length === 0) {
+          window.location.href = 'index.html';
+          return;
+        }
+        renderSummary();
+      }, 300);
     }
 
     // ====== Initialize ======

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /checkout.html
+Disallow: /temporary_screenshots/
+
+Sitemap: https://eidonresearch.com/sitemap.xml
