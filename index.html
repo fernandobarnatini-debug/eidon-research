@@ -1263,9 +1263,23 @@
         el.style.paddingBottom = '0';
         el.style.borderColor = 'transparent';
       }
+      // Update cart data and subtotal immediately
+      cart = cart.filter(item => item.sku !== sku);
+      localStorage.setItem('eidon_cart', JSON.stringify(cart));
+      // Update count badge and subtotal right away
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const countEl = document.getElementById('cart-count');
+      const subtotalEl = document.getElementById('cart-subtotal');
+      if (totalItems > 0) {
+        countEl.textContent = totalItems;
+        countEl.classList.remove('hidden');
+      } else {
+        countEl.classList.add('hidden');
+      }
+      subtotalEl.textContent = '$' + getSubtotal().toFixed(2);
+      // After animation, rebuild the full UI
       setTimeout(() => {
-        cart = cart.filter(item => item.sku !== sku);
-        saveCart();
+        updateCartUI();
       }, 300);
     }
 
