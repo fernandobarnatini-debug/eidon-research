@@ -407,12 +407,15 @@
       let html = '';
       cart.forEach(item => {
         html += `
-          <div class="flex justify-between items-start text-sm">
-            <div class="flex-1 min-w-0 mr-3">
+          <div class="flex justify-between items-center text-sm gap-2">
+            <div class="flex-1 min-w-0">
               <p class="font-semibold truncate">${item.name}</p>
               <p class="text-xs text-[#999]">Qty: ${item.qty}</p>
             </div>
             <span class="font-semibold whitespace-nowrap">$${(item.price * item.qty).toFixed(2)}</span>
+            <button onclick="removeFromCheckout('${item.sku}')" class="text-[#ccc] hover:text-red-500 p-1 flex-shrink-0" style="transition: color 0.2s ease;" aria-label="Remove item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
           </div>
         `;
       });
@@ -631,6 +634,16 @@
       // Clear cart
       localStorage.removeItem('eidon_cart');
       cart = [];
+    }
+
+    function removeFromCheckout(sku) {
+      cart = cart.filter(item => item.sku !== sku);
+      localStorage.setItem('eidon_cart', JSON.stringify(cart));
+      if (cart.length === 0) {
+        window.location.href = 'index.html';
+        return;
+      }
+      renderSummary();
     }
 
     // ====== Initialize ======
