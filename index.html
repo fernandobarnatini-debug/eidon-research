@@ -1254,8 +1254,19 @@
     }
 
     function removeFromCart(sku) {
-      cart = cart.filter(item => item.sku !== sku);
-      saveCart();
+      const el = document.getElementById('cart-item-' + sku);
+      if (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(30px)';
+        el.style.maxHeight = '0';
+        el.style.paddingTop = '0';
+        el.style.paddingBottom = '0';
+        el.style.borderColor = 'transparent';
+      }
+      setTimeout(() => {
+        cart = cart.filter(item => item.sku !== sku);
+        saveCart();
+      }, 300);
     }
 
     function updateQty(sku, delta) {
@@ -1302,7 +1313,7 @@
       let html = '';
       cart.forEach(item => {
         html += `
-          <div class="flex items-start gap-4 py-4 border-b border-[#f0f0f0] last:border-0">
+          <div id="cart-item-${item.sku}" class="flex items-start gap-4 py-4 border-b border-[#f0f0f0] last:border-0" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 100px; overflow: hidden;">
             <div class="flex-1 min-w-0">
               <p class="font-heading font-semibold text-sm truncate">${item.name}</p>
               ${item.isBundle ? '<span class="text-[10px] text-gold font-semibold uppercase">Bundle</span>' : ''}
