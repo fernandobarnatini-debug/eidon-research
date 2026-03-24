@@ -42,11 +42,11 @@
     }
   </script>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #333; line-height: 1.7; }
-    h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0B1426; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #c0c8d8; line-height: 1.7; }
+    h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #ffffff; }
     .heading-tight { letter-spacing: -0.03em; }
     .shadow-elevated {
-      box-shadow: 0 1px 2px rgba(11,20,38,0.04), 0 4px 12px rgba(11,20,38,0.06), 0 8px 24px rgba(11,20,38,0.04);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.1);
     }
     .btn-gold {
       background: #D4AF37; color: #0B1426; font-weight: 700; border-radius: 8px;
@@ -60,18 +60,18 @@
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, background 0.2s ease;
     }
     .payment-tab:hover { transform: scale(1.01); }
-    .payment-tab.active { border-color: #D4AF37; background: rgba(212,175,55,0.04); }
+    .payment-tab.active { border-color: #D4AF37; background: rgba(212,175,55,0.08); }
     .payment-tab:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
     /* Square card container */
     #card-container { min-height: 90px; }
     /* Error message */
-    .error-banner { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .error-banner { background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
     /* Confirmation animation */
     @keyframes checkmark { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
     .check-anim { animation: checkmark 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
   </style>
 </head>
-<body class="bg-off-white min-h-screen">
+<body class="bg-[#0B1426] min-h-screen">
 
   <!-- ========== NAVIGATION ========== -->
   <nav class="bg-navy">
@@ -100,38 +100,38 @@
       <div class="lg:col-span-3 space-y-6">
 
         <!-- Shipping Information -->
-        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated p-6">
+        <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
           <h2 class="font-heading font-bold text-lg mb-5">Shipping Information</h2>
           <form autocomplete="on" id="shipping-form">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">First Name *</label>
-              <input id="first-name" name="given-name" autocomplete="given-name" type="text" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+              <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">First Name *</label>
+              <input id="first-name" name="given-name" autocomplete="given-name" type="text" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">Last Name *</label>
-              <input id="last-name" name="family-name" autocomplete="family-name" type="text" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+              <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">Last Name *</label>
+              <input id="last-name" name="family-name" autocomplete="family-name" type="text" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">Email *</label>
-              <input id="email" name="email" autocomplete="email" type="email" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+              <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">Email *</label>
+              <input id="email" name="email" autocomplete="email" type="email" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">Street Address *</label>
-              <input id="address" name="street-address" autocomplete="street-address" type="text" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+              <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">Street Address *</label>
+              <input id="address" name="street-address" autocomplete="street-address" type="text" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">City *</label>
-              <input id="city" name="city" autocomplete="address-level2" type="text" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+              <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">City *</label>
+              <input id="city" name="city" autocomplete="address-level2" type="text" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">State *</label>
-                <input id="state" name="state" autocomplete="address-level1" type="text" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+                <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">State *</label>
+                <input id="state" name="state" autocomplete="address-level1" type="text" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-[#555] mb-1.5 uppercase tracking-wider">ZIP *</label>
-                <input id="zip" name="postal-code" autocomplete="postal-code" type="text" required class="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+                <label class="block text-xs font-semibold text-[#7a8599] mb-1.5 uppercase tracking-wider">ZIP *</label>
+                <input id="zip" name="postal-code" autocomplete="postal-code" type="text" required class="w-full border border-[#1a2a45] rounded-lg px-4 py-3 text-sm bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
               </div>
             </div>
           </div>
@@ -139,21 +139,21 @@
         </div>
 
         <!-- Payment Method -->
-        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated p-6">
+        <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
           <h2 class="font-heading font-bold text-lg mb-5">Payment Method</h2>
 
           <!-- Payment Tabs -->
           <div class="grid grid-cols-2 gap-3 mb-6">
             <button onclick="selectPayment('card')" id="tab-card" class="payment-tab active border-2 rounded-xl p-4 text-center cursor-pointer">
               <div class="flex flex-col items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#0B1426" stroke-width="1.5" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
                 <span class="font-heading font-semibold text-sm">Credit / Debit</span>
-                <span class="text-[10px] text-[#999]">Powered by Square</span>
+                <span class="text-[10px] text-[#7a8599]">Powered by Square</span>
               </div>
             </button>
-            <button onclick="selectPayment('crypto')" id="tab-crypto" class="payment-tab border-2 border-[#e5e5e5] rounded-xl p-4 text-center cursor-pointer">
+            <button onclick="selectPayment('crypto')" id="tab-crypto" class="payment-tab border-2 border-[#1a2a45] rounded-xl p-4 text-center cursor-pointer">
               <div class="flex flex-col items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#0B1426" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/></svg>
                 <span class="font-heading font-semibold text-sm">Crypto</span>
                 <span class="text-[10px] text-green-600 font-bold">5% OFF</span>
               </div>
@@ -164,7 +164,7 @@
           <div id="payment-card">
             <div id="card-container" class="mb-3"></div>
             <p id="card-errors" class="text-xs text-red-500 mb-2 hidden"></p>
-            <p class="text-xs text-[#999] flex items-center gap-1.5">
+            <p class="text-xs text-[#7a8599] flex items-center gap-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Secured by Square. Your card information is encrypted end-to-end.
             </p>
@@ -172,35 +172,35 @@
 
           <!-- Crypto Payment -->
           <div id="payment-crypto" class="hidden">
-            <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
-              <p class="text-green-800 text-sm font-semibold flex items-center gap-2">
+            <div class="bg-green-900/20 border border-green-700/30 rounded-xl p-4 mb-4">
+              <p class="text-green-400 text-sm font-semibold flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
                 5% crypto discount applied!
               </p>
-              <p class="text-green-700 text-xs mt-1">You save <span id="crypto-savings">$0.00</span> by paying with cryptocurrency.</p>
+              <p class="text-green-400/80 text-xs mt-1">You save <span id="crypto-savings">$0.00</span> by paying with cryptocurrency.</p>
             </div>
-            <div class="bg-off-white rounded-xl p-6 text-center">
-              <p class="text-sm text-[#555] mb-4">Click below to complete payment via Coinbase Commerce. You can pay with Bitcoin, Ethereum, or other supported cryptocurrencies.</p>
+            <div class="bg-[#0e1a2e] rounded-xl p-6 text-center">
+              <p class="text-sm text-[#c0c8d8] mb-4">Click below to complete payment via Coinbase Commerce. You can pay with Bitcoin, Ethereum, or other supported cryptocurrencies.</p>
               <div class="flex items-center justify-center gap-4 mb-4">
-                <div class="flex items-center gap-1.5 text-xs text-[#999]">
+                <div class="flex items-center gap-1.5 text-xs text-[#7a8599]">
                   <span class="w-6 h-6 bg-[#F7931A] rounded-full flex items-center justify-center text-white text-[10px] font-bold">&#x20bf;</span>
                   Bitcoin
                 </div>
-                <div class="flex items-center gap-1.5 text-xs text-[#999]">
+                <div class="flex items-center gap-1.5 text-xs text-[#7a8599]">
                   <span class="w-6 h-6 bg-[#627EEA] rounded-full flex items-center justify-center text-white text-[10px] font-bold">&#x039E;</span>
                   Ethereum
                 </div>
               </div>
-              <p class="text-xs text-[#999]">Crypto checkout coming soon. Use card payment for now.</p>
+              <p class="text-xs text-[#7a8599]">Crypto checkout coming soon. Use card payment for now.</p>
             </div>
           </div>
         </div>
 
         <!-- Coupon Code -->
-        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated p-6">
+        <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
           <h2 class="font-heading font-bold text-lg mb-4">Coupon Code</h2>
           <div class="flex gap-3">
-            <input id="coupon-input" type="text" placeholder="Enter coupon code" class="flex-1 border border-[#e5e5e5] rounded-lg px-4 py-3 text-sm uppercase tracking-wider focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+            <input id="coupon-input" type="text" placeholder="Enter coupon code" class="flex-1 border border-[#1a2a45] rounded-lg px-4 py-3 text-sm uppercase tracking-wider bg-[#0B1426] text-white focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" style="transition: border-color 0.2s ease, box-shadow 0.2s ease;">
             <button onclick="applyCoupon()" id="coupon-btn" class="btn-gold px-6 py-3 text-sm uppercase tracking-wider whitespace-nowrap">Apply</button>
           </div>
           <p id="coupon-msg" class="hidden text-xs mt-2 font-semibold"></p>
@@ -216,19 +216,19 @@
         </button>
 
         <!-- Legal -->
-        <p class="text-xs text-[#999] text-center leading-relaxed">By placing this order, you confirm that you are 18+ years old and that all products are for research use only, not for human consumption.</p>
+        <p class="text-xs text-[#7a8599] text-center leading-relaxed">By placing this order, you confirm that you are 18+ years old and that all products are for research use only, not for human consumption.</p>
       </div>
 
       <!-- RIGHT: Order Summary (2 cols) -->
       <div class="lg:col-span-2">
-        <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated p-6 lg:sticky lg:top-24">
+        <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6 lg:sticky lg:top-24">
           <h2 class="font-heading font-bold text-lg mb-5">Order Summary</h2>
           <!-- Delivery Method Badge -->
           <div id="delivery-badge" class="mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2"></div>
-          <div id="summary-items" class="space-y-3 mb-5 pb-5 border-b border-[#f0f0f0]"></div>
+          <div id="summary-items" class="space-y-3 mb-5 pb-5 border-b border-[#1a2a45]"></div>
           <div class="space-y-2 text-sm">
             <div class="flex justify-between">
-              <span class="text-[#555]">Subtotal</span>
+              <span class="text-[#c0c8d8]">Subtotal</span>
               <span id="summary-subtotal" class="font-semibold">$0.00</span>
             </div>
             <div id="coupon-discount-row" class="hidden flex justify-between text-green-600">
@@ -240,13 +240,13 @@
               <span id="summary-discount">-$0.00</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-[#555]" id="shipping-label">Shipping</span>
+              <span class="text-[#c0c8d8]" id="shipping-label">Shipping</span>
               <span id="summary-shipping" class="font-semibold">$8.00</span>
             </div>
           </div>
-          <div class="flex justify-between items-center mt-4 pt-4 border-t border-[#e5e5e5]">
+          <div class="flex justify-between items-center mt-4 pt-4 border-t border-[#1a2a45]">
             <span class="font-heading font-bold text-base">Total</span>
-            <span id="summary-total" class="font-heading font-bold text-2xl text-navy">$0.00</span>
+            <span id="summary-total" class="font-heading font-bold text-2xl text-white">$0.00</span>
           </div>
           <p id="free-ship-msg" class="hidden text-xs text-green-600 font-semibold mt-2 text-right">Free shipping applied!</p>
         </div>
@@ -257,35 +257,35 @@
 
   <!-- ========== CONFIRMATION VIEW ========== -->
   <div id="confirmation-view" class="hidden max-w-[600px] mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
-    <div class="bg-white rounded-xl border border-[#e5e5e5] shadow-elevated p-8 sm:p-12">
-      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 check-anim">
+    <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-8 sm:p-12">
+      <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6 check-anim">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="#16a34a" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
       <h1 class="font-heading font-bold text-2xl sm:text-3xl heading-tight mb-3">Order Confirmed!</h1>
-      <p class="text-[#555] text-sm mb-6">Thank you for your order. A confirmation email will be sent to your address.</p>
-      <div class="bg-off-white rounded-xl p-5 mb-6 text-left">
+      <p class="text-[#c0c8d8] text-sm mb-6">Thank you for your order. A confirmation email will be sent to your address.</p>
+      <div class="bg-[#0e1a2e] rounded-xl p-5 mb-6 text-left">
         <div class="grid grid-cols-2 gap-3 text-sm">
           <div>
-            <p class="text-xs text-[#999] uppercase tracking-wider font-semibold">Order Number</p>
-            <p id="conf-order-num" class="font-heading font-bold text-navy mt-0.5">EIDON-000000</p>
+            <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Order Number</p>
+            <p id="conf-order-num" class="font-heading font-bold text-white mt-0.5">EIDON-000000</p>
           </div>
           <div>
-            <p class="text-xs text-[#999] uppercase tracking-wider font-semibold">Payment</p>
-            <p id="conf-payment" class="font-heading font-bold text-navy mt-0.5">Card</p>
+            <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Payment</p>
+            <p id="conf-payment" class="font-heading font-bold text-white mt-0.5">Card</p>
           </div>
           <div>
-            <p class="text-xs text-[#999] uppercase tracking-wider font-semibold">Total</p>
-            <p id="conf-total" class="font-heading font-bold text-navy mt-0.5">$0.00</p>
+            <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Total</p>
+            <p id="conf-total" class="font-heading font-bold text-white mt-0.5">$0.00</p>
           </div>
           <div>
-            <p class="text-xs text-[#999] uppercase tracking-wider font-semibold">Status</p>
+            <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Status</p>
             <p id="conf-status" class="font-heading font-bold text-green-600 mt-0.5">Paid</p>
           </div>
         </div>
       </div>
-      <div id="conf-item-list" class="text-left text-sm space-y-2 mb-6 pb-6 border-b border-[#f0f0f0]"></div>
+      <div id="conf-item-list" class="text-left text-sm space-y-2 mb-6 pb-6 border-b border-[#1a2a45]"></div>
       <a href="index.html" class="btn-gold inline-block px-8 py-3.5 text-sm uppercase tracking-wider">Continue Shopping</a>
-      <p class="text-xs text-[#999] mt-6">Products are for research use only. Not for human consumption.</p>
+      <p class="text-xs text-[#7a8599] mt-6">Products are for research use only. Not for human consumption.</p>
     </div>
   </div>
 
@@ -343,7 +343,7 @@
         msg.className = 'text-xs mt-2 font-semibold text-red-500';
         msg.classList.remove('hidden');
         input.style.borderColor = '#ef4444';
-        setTimeout(() => { input.style.borderColor = '#e5e5e5'; }, 2000);
+        setTimeout(() => { input.style.borderColor = '#1a2a45'; }, 2000);
       }
     }
 
@@ -414,10 +414,10 @@
           <div id="summary-item-${item.sku}" class="flex justify-between items-center text-sm gap-2 py-1" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 60px; overflow: hidden;">
             <div class="flex-1 min-w-0">
               <p class="font-semibold truncate">${item.name}</p>
-              <p class="text-xs text-[#999]">Qty: ${item.qty}</p>
+              <p class="text-xs text-[#7a8599]">Qty: ${item.qty}</p>
             </div>
             <span class="font-semibold whitespace-nowrap">$${(item.price * item.qty).toFixed(2)}</span>
-            <button onclick="removeFromCheckout('${item.sku}')" class="text-[#ccc] hover:text-red-500 p-1 flex-shrink-0" style="transition: color 0.2s ease;" aria-label="Remove item">
+            <button onclick="removeFromCheckout('${item.sku}')" class="text-[#7a8599] hover:text-red-500 p-1 flex-shrink-0" style="transition: color 0.2s ease;" aria-label="Remove item">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
           </div>
@@ -475,14 +475,14 @@
         cardTab.classList.add('active');
         cardTab.style.borderColor = '#D4AF37';
         cryptoTab.classList.remove('active');
-        cryptoTab.style.borderColor = '#e5e5e5';
+        cryptoTab.style.borderColor = '#1a2a45';
         cardForm.classList.remove('hidden');
         cryptoForm.classList.add('hidden');
       } else {
         cryptoTab.classList.add('active');
         cryptoTab.style.borderColor = '#D4AF37';
         cardTab.classList.remove('active');
-        cardTab.style.borderColor = '#e5e5e5';
+        cardTab.style.borderColor = '#1a2a45';
         cryptoForm.classList.remove('hidden');
         cardForm.classList.add('hidden');
       }
@@ -499,7 +499,7 @@
           el.style.borderColor = '#ef4444';
           valid = false;
         } else {
-          el.style.borderColor = '#e5e5e5';
+          el.style.borderColor = '#1a2a45';
         }
       });
       const email = document.getElementById('email');
@@ -628,7 +628,7 @@
 
       let itemHtml = '';
       cart.forEach(item => {
-        itemHtml += `<div class="flex justify-between"><span class="text-[#555]">${item.name} x${item.qty}</span><span class="font-semibold">$${(item.price * item.qty).toFixed(2)}</span></div>`;
+        itemHtml += `<div class="flex justify-between"><span class="text-[#c0c8d8]">${item.name} x${item.qty}</span><span class="font-semibold">$${(item.price * item.qty).toFixed(2)}</span></div>`;
       });
       document.getElementById('conf-item-list').innerHTML = itemHtml;
 
@@ -664,8 +664,8 @@
     (function renderDeliveryBadge() {
       const badge = document.getElementById('delivery-badge');
       const label = document.getElementById('shipping-label');
-      badge.innerHTML = '📦 <span>Standard Shipping</span> <span class="ml-auto text-[10px] text-blue-600">2–4 business days</span>';
-      badge.className = 'mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-800';
+      badge.innerHTML = '📦 <span>Standard Shipping</span> <span class="ml-auto text-[10px] text-blue-400">2–4 business days</span>';
+      badge.className = 'mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-blue-900/20 border border-blue-700/30 text-blue-400';
       if (label) label.textContent = 'Shipping';
     })();
 
@@ -676,17 +676,17 @@
 
   <!-- ========== AGE VERIFICATION MODAL ========== -->
   <div id="age-gate" class="fixed inset-0 z-[200] flex items-center justify-center bg-navy/95 backdrop-blur-sm hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full mx-4 p-8 text-center" style="box-shadow: 0 8px 32px rgba(11,20,38,0.15); animation: checkmark 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+    <div class="bg-[#111b30] rounded-2xl max-w-sm w-full mx-4 p-8 text-center" style="box-shadow: 0 8px 32px rgba(0,0,0,0.3); animation: checkmark 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
       <div class="flex flex-col items-center mb-6">
-        <span style="font-family: 'DM Sans', sans-serif; color: #0B1426; font-size: 24px; font-weight: 800; letter-spacing: -0.02em;">EIDON</span>
-        <span style="color: #999; font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;">Research</span>
+        <span style="font-family: 'DM Sans', sans-serif; color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: -0.02em;">EIDON</span>
+        <span style="color: #7a8599; font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;">Research</span>
       </div>
-      <h2 style="font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 20px; color: #0B1426; margin-bottom: 8px;">Age Verification</h2>
-      <p style="font-size: 14px; color: #555; margin-bottom: 4px;">You must be <strong>18 years or older</strong> to enter this site.</p>
-      <p style="font-size: 12px; color: #999; margin-bottom: 24px;">All products are for research use only. Not for human consumption.</p>
+      <h2 style="font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 20px; color: #ffffff; margin-bottom: 8px;">Age Verification</h2>
+      <p style="font-size: 14px; color: #c0c8d8; margin-bottom: 4px;">You must be <strong>18 years or older</strong> to enter this site.</p>
+      <p style="font-size: 12px; color: #7a8599; margin-bottom: 24px;">All products are for research use only. Not for human consumption.</p>
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <button onclick="verifyAge(true)" style="background: #D4AF37; color: #0B1426; font-weight: 700; border: none; border-radius: 8px; padding: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer;">Yes, I am 18+</button>
-        <button onclick="verifyAge(false)" style="background: none; border: 2px solid #e5e5e5; color: #999; font-weight: 600; border-radius: 8px; padding: 12px; font-size: 14px; cursor: pointer;">No, I am under 18</button>
+        <button onclick="verifyAge(false)" style="background: none; border: 2px solid #1a2a45; color: #7a8599; font-weight: 600; border-radius: 8px; padding: 12px; font-size: 14px; cursor: pointer;">No, I am under 18</button>
       </div>
     </div>
   </div>
