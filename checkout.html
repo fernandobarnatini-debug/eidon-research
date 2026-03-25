@@ -305,6 +305,18 @@
     const SQUARE_APP_ID = 'sq0idp-SPOWLCELmrRGeJLIE0XWxA';
     const SQUARE_LOCATION_ID = 'LW3Y8XE4HPT9G';
 
+    const productImages = {
+      'RT5': 'images/retatrutide.jpg',
+      'CP10': 'images/cjc1295.jpg',
+      'CU100': 'images/ghkcu.jpg',
+      'MT2': 'images/melanotan2.jpg',
+      'WA10': null,
+      'summer-cut': 'images/retatrutide.jpg',
+      'gym-gains': 'images/cjc1295.jpg',
+      'shred-max': 'images/retatrutide.jpg',
+      'the-triple': 'images/retatrutide.jpg',
+      'everything': 'images/retatrutide.jpg',
+    };
     let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
     let paymentMethod = 'card';
     let card = null; // Square Card instance
@@ -410,8 +422,14 @@
       const itemsEl = document.getElementById('summary-items');
       let html = '';
       cart.forEach(item => {
+        const img = productImages[item.sku];
         html += `
           <div id="summary-item-${item.sku}" class="flex justify-between items-center text-sm gap-2 py-1" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 60px; overflow: hidden;">
+            ${img ? `<div class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+              <img src="${img}" alt="${item.name}" class="w-full h-full object-cover">
+            </div>` : `<div class="w-10 h-10 rounded-md flex-shrink-0 flex items-center justify-center" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a8599" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="6" x2="14" y2="6"/></svg>
+            </div>`}
             <div class="flex-1 min-w-0">
               <p class="font-semibold truncate">${item.name}</p>
               <p class="text-xs text-[#7a8599]">Qty: ${item.qty}</p>

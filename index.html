@@ -1180,6 +1180,18 @@
     });
 
     // ====== CART STATE ======
+    const productImages = {
+      'RT5': 'images/retatrutide.jpg',
+      'CP10': 'images/cjc1295.jpg',
+      'CU100': 'images/ghkcu.jpg',
+      'MT2': 'images/melanotan2.jpg',
+      'WA10': null,
+      'summer-cut': 'images/retatrutide.jpg',
+      'gym-gains': 'images/cjc1295.jpg',
+      'shred-max': 'images/retatrutide.jpg',
+      'the-triple': 'images/retatrutide.jpg',
+      'everything': 'images/retatrutide.jpg',
+    };
     let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
 
     function saveCart() {
@@ -1291,8 +1303,14 @@
 
       let html = '';
       cart.forEach(item => {
+        const img = productImages[item.sku];
         html += `
-          <div id="cart-item-${item.sku}" class="flex items-start gap-4 py-4 border-b border-[#1a2a45] last:border-0" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 100px; overflow: hidden;">
+          <div id="cart-item-${item.sku}" class="flex items-start gap-3 py-4 border-b border-[#1a2a45] last:border-0" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 120px; overflow: hidden;">
+            ${img ? `<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+              <img src="${img}" alt="${item.name}" class="w-full h-full object-cover">
+            </div>` : `<div class="w-14 h-14 rounded-lg flex-shrink-0 flex items-center justify-center" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a8599" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="6" x2="14" y2="6"/></svg>
+            </div>`}
             <div class="flex-1 min-w-0">
               <p class="font-heading font-semibold text-sm truncate">${item.name}</p>
               ${item.isBundle ? '<span class="text-[10px] text-gold font-semibold uppercase">Bundle</span>' : ''}
