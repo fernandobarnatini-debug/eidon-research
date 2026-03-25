@@ -329,6 +329,7 @@
       'EIDON100': { discount: 1.0, label: 'EIDON100 (100% Off)' },
       'EIDON50': { discount: 0.5, label: 'EIDON50 (50% Off)' },
       'EIDON10': { discount: 0.1, label: 'EIDON10 (10% Off)' },
+      'ISAAC10': { discount: 0.1, label: 'ISAAC10 (10% Off)', minOrder: 60 },
     };
 
     function applyCoupon() {
@@ -339,7 +340,17 @@
       if (!code) return;
 
       if (COUPONS[code]) {
-        appliedCoupon = { code, ...COUPONS[code] };
+        const coupon = COUPONS[code];
+        if (coupon.minOrder && getSubtotal() < coupon.minOrder) {
+          appliedCoupon = null;
+          msg.textContent = 'Minimum order of $' + coupon.minOrder.toFixed(0) + '+ required for this code.';
+          msg.className = 'text-xs mt-2 font-semibold text-red-500';
+          msg.classList.remove('hidden');
+          input.style.borderColor = '#ef4444';
+          setTimeout(() => { input.style.borderColor = '#1a2a45'; }, 2000);
+          return;
+        }
+        appliedCoupon = { code, ...coupon };
         msg.textContent = appliedCoupon.label + ' applied!';
         msg.className = 'text-xs mt-2 font-semibold text-green-600';
         msg.classList.remove('hidden');
