@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC9K9ZLK3F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PC9K9ZLK3F');
+  </script>
+  <title>Shipping & Returns — EIDON Research</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="Free shipping on orders $50+. Same-day processing. USPS Ground Advantage. 30-day returns for unopened products. EIDON Research.">
+  <meta property="og:title" content="Shipping & Returns — EIDON Research">
+  <meta property="og:description" content="Free shipping on orders $50+. Same-day processing. USPS Ground Advantage. 30-day returns for unopened products.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://eidonresearch.com/shipping.html">
+  <meta property="og:site_name" content="EIDON Research">
+  <link rel="canonical" href="https://eidonresearch.com/shipping.html">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0B1426',
+            'navy-light': '#111d38',
+            gold: '#D4AF37',
+            'gold-light': '#e8c84a',
+            'electric-blue': '#00D4FF',
+            'off-white': '#f8f9fa',
+          },
+          fontFamily: {
+            heading: ['"DM Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+            body: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* === BASE === */
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #c0c8d8; line-height: 1.7; }
+    h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #ffffff; }
+    .heading-tight { letter-spacing: -0.03em; }
+
+    /* === GRAIN TEXTURE === */
+    .grain-overlay { position: relative; }
+    .grain-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* === LAYERED SHADOWS === */
+    .shadow-elevated {
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .shadow-floating {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.3);
+    }
+
+    /* === MARQUEE === */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      animation: marquee 25s linear infinite;
+      will-change: transform;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* === BUTTON STYLES === */
+    .btn-gold {
+      background: #D4AF37;
+      color: #0B1426;
+      font-weight: 700;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+      box-shadow: 0 2px 8px rgba(212,175,55,0.2);
+    }
+    .btn-gold:hover {
+      background: #e8c84a;
+      transform: scale(1.03) translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212,175,55,0.35), 0 8px 32px rgba(212,175,55,0.15);
+    }
+    .btn-gold:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
+    .btn-gold:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 4px rgba(212,175,55,0.2);
+    }
+
+    /* === CART DRAWER === */
+    .cart-overlay {
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .cart-drawer {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+    }
+    .cart-drawer.closed { transform: translateX(100%); }
+
+    /* === NAV LINK UNDERLINE === */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #D4AF37;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* === CART COUNT BOUNCE === */
+    @keyframes cartBounce {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.4); }
+      60% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    .cart-bounce { animation: cartBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  </style>
+</head>
+<body class="bg-[#0B1426]">
+
+  <!-- ========== ANNOUNCEMENT BAR ========== -->
+  <div class="bg-navy-light text-white/80 text-[11px] py-2 tracking-wide border-b border-white/5 overflow-hidden">
+    <div class="marquee-track whitespace-nowrap inline-flex gap-16">
+      <span class="px-4">50% OFF EVERYTHING — LIMITED TIME</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">FREE SHIPPING ON ORDERS $50+</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">SAME-DAY SHIPPING BEFORE 1PM PST</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">PAY WITH CRYPTO &amp; SAVE 5%</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">50% OFF EVERYTHING — LIMITED TIME</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">FREE SHIPPING ON ORDERS $50+</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">SAME-DAY SHIPPING BEFORE 1PM PST</span>
+      <span class="px-4">&bull;</span>
+      <span class="px-4">PAY WITH CRYPTO &amp; SAVE 5%</span>
+    </div>
+  </div>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="bg-navy sticky top-0 z-[100]">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="index.html" class="flex flex-col leading-none" style="transition: opacity 0.2s ease;">
+        <span class="font-heading text-white text-xl font-extrabold tracking-tight">EIDON</span>
+        <span class="text-white/60 text-[10px] font-medium tracking-[0.2em] uppercase">Research</span>
+      </a>
+      <!-- Nav Links (desktop) -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html#products" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Products</a>
+        <a href="index.html#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
+        <a href="index.html#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
+        <a href="shipping.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Shipping</a>
+      </div>
+      <!-- Right side: Cart + Hamburger -->
+      <div class="flex items-center gap-2">
+        <!-- Cart Button -->
+        <button onclick="toggleCart()" class="relative text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-gold text-navy text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+        <!-- Hamburger (mobile only) -->
+        <button onclick="toggleMobileMenu()" id="hamburger-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open menu">
+          <svg id="hamburger-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="hamburger-close" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="hidden"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden" style="max-height: 0; opacity: 0; transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;">
+      <div class="px-4 pb-4 pt-1 flex flex-col gap-1 border-t border-white/10">
+        <a href="index.html#products" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Products</a>
+        <a href="index.html#bundles" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Bundles</a>
+        <a href="index.html#faq" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">FAQ</a>
+        <a href="shipping.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Shipping &amp; Returns</a>
+        <a href="coa.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Certificates of Analysis</a>
+        <a href="mailto:support@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== BREADCRUMB ========== -->
+  <div class="bg-[#0e1a2e] border-b border-[#1a2a45]">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 py-3">
+      <nav class="flex items-center gap-2 text-xs text-[#7a8599]">
+        <a href="index.html" class="hover:text-white" style="transition: color 0.2s ease;">Home</a>
+        <span>/</span>
+        <span class="text-white font-medium">Shipping &amp; Returns</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ========== SHIPPING & RETURNS CONTENT ========== -->
+  <section class="bg-[#0B1426] py-16 sm:py-24">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
+      <!-- Section Label -->
+      <p class="text-xs text-gold uppercase tracking-[0.2em] font-semibold text-center mb-4">Delivery &amp; Policies</p>
+      <!-- Heading -->
+      <h1 class="font-heading font-bold text-3xl sm:text-4xl heading-tight text-center mb-12">Shipping &amp; Returns</h1>
+
+      <!-- Three Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Card 1: Shipping -->
+        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
+          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21a.75.75 0 00.75-.75v-3.375a.75.75 0 00-.188-.493L18.375 10.5M3.375 14.25h3.75m0 0h6.375L16.5 10.5m0 0L13.125 6H3.375m13.125 4.5H21"/></svg>
+          </div>
+          <h2 class="font-heading font-bold text-lg mb-4">Shipping Policy</h2>
+          <ul class="space-y-3 text-sm text-[#c0c8d8]">
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">Free shipping</strong> on orders $50+</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">$8 flat rate</strong> for orders under $50</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">Same-day processing</strong> for orders placed before 1PM PST</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">USPS Ground Advantage</strong> (2-5 business days)</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span>All packages shipped with <strong class="text-white">discreet packaging</strong> — no product descriptions visible</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card 2: Returns -->
+        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
+          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+          </div>
+          <h2 class="font-heading font-bold text-lg mb-4">Return Policy</h2>
+          <ul class="space-y-3 text-sm text-[#c0c8d8]">
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">30-day return window</strong> for unopened, sealed products</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span>Contact <a href="mailto:support@eidonresearch.com" class="text-gold hover:text-gold-light" style="transition: color 0.2s ease;">support@eidonresearch.com</a> to initiate a return</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span>Buyer pays <strong class="text-white">return shipping</strong></span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span>Refunds processed within <strong class="text-white">5-7 business days</strong></span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span>Damaged or incorrect orders <strong class="text-white">replaced at no cost</strong></span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card 3: Local Pickup -->
+        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
+          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+          </div>
+          <h2 class="font-heading font-bold text-lg mb-4">Local Pickup</h2>
+          <ul class="space-y-3 text-sm text-[#c0c8d8]">
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">Free local pickup</strong> available</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">Sacramento, CA</strong> area</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><strong class="text-white">Same-day availability</strong> for in-stock items</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <span><a href="mailto:support@eidonresearch.com" class="text-gold hover:text-gold-light" style="transition: color 0.2s ease;">Contact us</a> to arrange pickup</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-navy text-white grain-overlay">
+    <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+        <!-- Brand -->
+        <div>
+          <div class="flex flex-col leading-none mb-4">
+            <span class="font-heading text-white text-xl font-extrabold tracking-tight">EIDON</span>
+            <span class="text-white/60 text-[10px] font-medium tracking-[0.2em] uppercase">Research</span>
+          </div>
+          <p class="text-white/50 text-sm leading-relaxed">Premium research peptides with verified &gt;99% purity. Third-party tested for quality assurance.</p>
+        </div>
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html#products" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Products</a></li>
+            <li><a href="index.html#bundles" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Bundles</a></li>
+            <li><a href="index.html#faq" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">FAQ</a></li>
+          </ul>
+        </div>
+        <!-- Shipping -->
+        <div>
+          <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Shipping</h4>
+          <ul class="space-y-2 text-white/60 text-sm">
+            <li>Free shipping on orders $50+</li>
+            <li>$8 flat rate (under $50)</li>
+            <li>Same-day shipping before 1PM PST</li>
+            <li>Free local pickup — Sacramento area</li>
+          </ul>
+        </div>
+        <!-- Contact -->
+        <div>
+          <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Contact</h4>
+          <ul class="space-y-2 text-white/60 text-sm">
+            <li><a href="mailto:support@eidonresearch.com" class="hover:text-white" style="transition: color 0.2s ease;">support@eidonresearch.com</a></li>
+            <li>Sacramento, CA</li>
+            <li>Mon–Fri, 9AM–5PM PST</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Legal Disclaimers -->
+      <div class="border-t border-white/10 pt-8">
+        <div class="bg-white/5 rounded-xl p-5 mb-6">
+          <p class="text-white/40 text-xs leading-relaxed mb-2"><strong class="text-white/60">Research Use Only:</strong> All products sold by EIDON Research are intended for laboratory and research use only. Not for human consumption. Must be 18+ to order.</p>
+          <p class="text-white/40 text-xs leading-relaxed mb-2"><strong class="text-white/60">FDA Disclaimer:</strong> These products have not been evaluated by the Food and Drug Administration. They are not intended to diagnose, treat, cure, or prevent any disease.</p>
+          <p class="text-white/40 text-xs leading-relaxed"><strong class="text-white/60">Liability:</strong> By purchasing from EIDON Research, the buyer assumes all responsibility for the use and handling of research compounds in compliance with all applicable laws and regulations.</p>
+        </div>
+        <p class="text-white/30 text-xs text-center">&copy; 2026 EIDON Research. All rights reserved. For research purposes only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== CART DRAWER ========== -->
+  <div id="cart-overlay" class="cart-overlay fixed inset-0 bg-black/50 z-[60] hidden" onclick="toggleCart()"></div>
+  <div id="cart-drawer" class="cart-drawer closed fixed top-0 right-0 h-full w-full max-w-md bg-[#0f1928] z-[70] flex flex-col">
+    <!-- Cart Header -->
+    <div class="flex items-center justify-between p-5 border-b border-[#1a2a45]">
+      <h3 class="font-heading font-bold text-lg">Your Cart</h3>
+      <button onclick="toggleCart()" class="p-2 rounded-lg hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Close cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Cart Items -->
+    <div id="cart-items" class="flex-1 overflow-y-auto p-5">
+      <p id="cart-empty" class="text-center text-[#7a8599] text-sm py-12">Your cart is empty</p>
+    </div>
+    <!-- Cart Footer -->
+    <div id="cart-footer" class="hidden border-t border-[#1a2a45] p-5">
+      <div class="flex items-center justify-between mb-4">
+        <span class="font-heading font-semibold text-base">Subtotal</span>
+        <span id="cart-subtotal" class="font-heading font-bold text-xl text-white">$0</span>
+      </div>
+      <p class="text-xs text-[#7a8599] mb-4">Shipping calculated at checkout</p>
+      <a href="checkout.html" class="btn-gold block text-center py-3.5 text-sm uppercase tracking-wider w-full">Checkout</a>
+    </div>
+  </div>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // ====== CART STATE ======
+    const productImages = {
+      'RT5': 'images/retatrutide.jpg',
+      'CP10': 'images/cjc1295.jpg',
+      'CU100': 'images/ghkcu.jpg',
+      'MT2': 'images/melanotan2.jpg',
+      'WA10': null,
+      'summer-cut': 'images/retatrutide.jpg',
+      'gym-gains': 'images/cjc1295.jpg',
+      'shred-max': 'images/retatrutide.jpg',
+      'the-triple': 'images/retatrutide.jpg',
+      'everything': 'images/retatrutide.jpg',
+    };
+    let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
+
+    function saveCart() {
+      localStorage.setItem('eidon_cart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function addToCart(sku, name, price) {
+      const existing = cart.find(item => item.sku === sku);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ sku, name, price, qty: 1 });
+      }
+      saveCart();
+      openCart();
+      bounceCartBadge();
+    }
+
+    function bounceCartBadge() {
+      const badge = document.getElementById('cart-count');
+      badge.classList.remove('cart-bounce');
+      void badge.offsetWidth;
+      badge.classList.add('cart-bounce');
+    }
+
+    function removeFromCart(sku) {
+      cart = cart.filter(item => item.sku !== sku);
+      saveCart();
+    }
+
+    function updateQty(sku, delta) {
+      const item = cart.find(i => i.sku === sku);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.sku !== sku);
+      }
+      saveCart();
+    }
+
+    function getSubtotal() {
+      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    }
+
+    function updateCartUI() {
+      const countEl = document.getElementById('cart-count');
+      const itemsEl = document.getElementById('cart-items');
+      const emptyEl = document.getElementById('cart-empty');
+      const footerEl = document.getElementById('cart-footer');
+      const subtotalEl = document.getElementById('cart-subtotal');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+
+      if (totalItems > 0) {
+        countEl.textContent = totalItems;
+        countEl.classList.remove('hidden');
+      } else {
+        countEl.classList.add('hidden');
+      }
+
+      if (cart.length === 0) {
+        emptyEl.classList.remove('hidden');
+        footerEl.classList.add('hidden');
+        itemsEl.innerHTML = '<p id="cart-empty" class="text-center text-[#7a8599] text-sm py-12">Your cart is empty</p>';
+        return;
+      }
+
+      emptyEl?.classList.add('hidden');
+      footerEl.classList.remove('hidden');
+      subtotalEl.textContent = '$' + getSubtotal().toFixed(2);
+
+      let html = '';
+      cart.forEach(item => {
+        const img = productImages[item.sku];
+        html += `
+          <div id="cart-item-${item.sku}" class="flex items-start gap-3 py-4 border-b border-[#1a2a45] last:border-0" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 120px; overflow: hidden;">
+            ${img ? `<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+              <img src="${img}" alt="${item.name}" class="w-full h-full object-cover">
+            </div>` : `<div class="w-14 h-14 rounded-lg flex-shrink-0 flex items-center justify-center" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a8599" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="6" x2="14" y2="6"/></svg>
+            </div>`}
+            <div class="flex-1 min-w-0">
+              <p class="font-heading font-semibold text-sm truncate">${item.name}</p>
+              ${item.isBundle ? '<span class="text-[10px] text-gold font-semibold uppercase">Bundle</span>' : ''}
+              <p class="text-sm text-white font-bold mt-1">$${(item.price * item.qty).toFixed(2)}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="updateQty('${item.sku}', -1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Decrease quantity">−</button>
+              <span class="text-sm font-semibold w-6 text-center">${item.qty}</span>
+              <button onclick="updateQty('${item.sku}', 1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Increase quantity">+</button>
+            </div>
+            <button onclick="removeFromCart('${item.sku}')" class="text-[#5a6478] hover:text-red-500 p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: color 0.2s ease;" aria-label="Remove item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        `;
+      });
+      itemsEl.innerHTML = html;
+    }
+
+    function toggleCart() {
+      const overlay = document.getElementById('cart-overlay');
+      const drawer = document.getElementById('cart-drawer');
+      const isOpen = !drawer.classList.contains('closed');
+      if (isOpen) {
+        drawer.classList.add('closed');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      } else {
+        openCart();
+      }
+    }
+
+    function openCart() {
+      const overlay = document.getElementById('cart-overlay');
+      const drawer = document.getElementById('cart-drawer');
+      overlay.classList.remove('hidden');
+      drawer.classList.remove('closed');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // ====== MOBILE MENU ======
+    let mobileMenuOpen = false;
+    function toggleMobileMenu() {
+      mobileMenuOpen = !mobileMenuOpen;
+      const menu = document.getElementById('mobile-menu');
+      const icon = document.getElementById('hamburger-icon');
+      const close = document.getElementById('hamburger-close');
+      if (mobileMenuOpen) {
+        menu.style.maxHeight = '300px';
+        menu.style.opacity = '1';
+        icon.classList.add('hidden');
+        close.classList.remove('hidden');
+      } else {
+        closeMobileMenu();
+      }
+    }
+    function closeMobileMenu() {
+      mobileMenuOpen = false;
+      const menu = document.getElementById('mobile-menu');
+      const icon = document.getElementById('hamburger-icon');
+      const close = document.getElementById('hamburger-close');
+      menu.style.maxHeight = '0';
+      menu.style.opacity = '0';
+      icon.classList.remove('hidden');
+      close.classList.add('hidden');
+    }
+
+    // Initialize
+    updateCartUI();
+  </script>
+
+  <!-- ========== AGE VERIFICATION MODAL ========== -->
+  <div id="age-gate" class="fixed inset-0 z-[200] flex items-center justify-center bg-navy/95 backdrop-blur-sm hidden">
+    <div class="bg-[#111b30] rounded-2xl shadow-floating max-w-sm w-full mx-4 p-8 text-center" style="animation: msgIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div class="flex flex-col items-center mb-6">
+        <span class="font-heading text-white text-2xl font-extrabold tracking-tight">EIDON</span>
+        <span class="text-[#7a8599] text-[9px] font-medium tracking-[0.2em] uppercase">Research</span>
+      </div>
+      <h2 class="font-heading font-bold text-xl text-white mb-2">Age Verification</h2>
+      <p class="text-sm text-[#c0c8d8] mb-1 leading-relaxed">You must be <strong>18 years or older</strong> to enter this site.</p>
+      <p class="text-xs text-[#7a8599] mb-6">All products are for research use only. Not for human consumption.</p>
+      <div class="flex flex-col gap-3">
+        <button onclick="verifyAge(true)" class="btn-gold py-3.5 text-sm uppercase tracking-wider font-bold w-full">Yes, I am 18+</button>
+        <button onclick="verifyAge(false)" class="border-2 border-[#1a2a45] text-[#7a8599] font-semibold py-3 text-sm rounded-lg w-full hover:bg-[#152035]" style="transition: background 0.2s ease;">No, I am under 18</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      if (localStorage.getItem('eidon_age_verified') !== 'true') {
+        document.getElementById('age-gate').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    })();
+    function verifyAge(isAdult) {
+      if (isAdult) {
+        localStorage.setItem('eidon_age_verified', 'true');
+        document.getElementById('age-gate').classList.add('hidden');
+        document.body.style.overflow = '';
+      } else {
+        window.location.href = 'https://www.google.com';
+      }
+    }
+  </script>
+
+  <script src="chat.js"></script>
+</body>
+</html>
