@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC9K9ZLK3F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,15 +10,15 @@
     gtag('js', new Date());
     gtag('config', 'G-PC9K9ZLK3F');
   </script>
-  <title>Shipping & Returns — EIDON Research</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta name="description" content="Free shipping on orders $50+. Same-day processing. USPS Ground Advantage. 30-day returns for unopened products. EIDON Research.">
-  <meta property="og:title" content="Shipping & Returns — EIDON Research">
-  <meta property="og:description" content="Free shipping on orders $50+. Same-day processing. USPS Ground Advantage. 30-day returns for unopened products.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://eidonresearch.com/shipping.html">
+  <title>What is Retatrutide? A Research Overview — EIDON Research</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="description" content="Comprehensive research overview of retatrutide, a novel triple-agonist peptide targeting GLP-1, GIP, and glucagon receptors. Molecular data, clinical research, and storage guidelines.">
+  <meta property="og:title" content="What is Retatrutide? A Research Overview — EIDON Research">
+  <meta property="og:description" content="Research overview of retatrutide, a novel triple-agonist peptide targeting GLP-1, GIP, and glucagon receptors.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://eidonresearch.com/research/retatrutide-overview.html">
   <meta property="og:site_name" content="EIDON Research">
-  <link rel="canonical" href="https://eidonresearch.com/shipping.html">
+  <link rel="canonical" href="https://eidonresearch.com/research/retatrutide-overview.html">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,13 +44,10 @@
     }
   </script>
   <style>
-    /* === BASE === */
     html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #c0c8d8; line-height: 1.7; }
     h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #ffffff; }
     .heading-tight { letter-spacing: -0.03em; }
-
-    /* === GRAIN TEXTURE === */
     .grain-overlay { position: relative; }
     .grain-overlay::after {
       content: '';
@@ -62,16 +58,12 @@
       pointer-events: none;
       z-index: 1;
     }
-
-    /* === LAYERED SHADOWS === */
     .shadow-elevated {
       box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.2);
     }
     .shadow-floating {
       box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.3);
     }
-
-    /* === MARQUEE === */
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
@@ -81,8 +73,6 @@
       will-change: transform;
     }
     .marquee-track:hover { animation-play-state: paused; }
-
-    /* === BUTTON STYLES === */
     .btn-gold {
       background: #D4AF37;
       color: #0B1426;
@@ -103,8 +93,6 @@
       transform: scale(0.97);
       box-shadow: 0 1px 4px rgba(212,175,55,0.2);
     }
-
-    /* === CART DRAWER === */
     .cart-overlay {
       transition: opacity 0.3s ease;
       backdrop-filter: blur(4px);
@@ -115,8 +103,6 @@
       box-shadow: -8px 0 32px rgba(0,0,0,0.5);
     }
     .cart-drawer.closed { transform: translateX(100%); }
-
-    /* === NAV LINK UNDERLINE === */
     .nav-link { position: relative; }
     .nav-link::after {
       content: '';
@@ -129,8 +115,7 @@
       transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .nav-link:hover::after { width: 100%; }
-
-    /* === CART COUNT BOUNCE === */
+    .nav-link-active::after { width: 100%; }
     @keyframes cartBounce {
       0% { transform: scale(1); }
       30% { transform: scale(1.4); }
@@ -166,47 +151,40 @@
   <!-- ========== NAVIGATION ========== -->
   <nav class="bg-navy sticky top-0 z-[100]">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-      <!-- Logo -->
-      <a href="index.html" class="flex flex-col leading-none" style="transition: opacity 0.2s ease;">
+      <a href="../index.html" class="flex flex-col leading-none" style="transition: opacity 0.2s ease;">
         <span class="font-heading text-white text-xl font-extrabold tracking-tight">EIDON</span>
         <span class="text-white/60 text-[10px] font-medium tracking-[0.2em] uppercase">Research</span>
       </a>
-      <!-- Nav Links (desktop) -->
       <div class="hidden md:flex items-center gap-8">
-        <a href="index.html#products" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Products</a>
-        <a href="index.html#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
-        <a href="index.html#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
-        <a href="shipping.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Shipping</a>
-        <a href="research.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Research</a>
+        <a href="../index.html#products" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Products</a>
+        <a href="../index.html#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
+        <a href="../index.html#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
+        <a href="../shipping.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Shipping</a>
+        <a href="../research.html" class="nav-link nav-link-active text-white text-sm font-medium" style="transition: color 0.2s ease;">Research</a>
       </div>
-      <!-- Right side: Cart + Hamburger -->
       <div class="flex items-center gap-2">
-        <!-- Search Button -->
         <button onclick="toggleSearch()" class="text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Search">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </button>
-        <!-- Cart Button -->
         <button onclick="toggleCart()" class="relative text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open cart">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           <span id="cart-count" class="absolute -top-1 -right-1 bg-gold text-navy text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
         </button>
-        <!-- Hamburger (mobile only) -->
         <button onclick="toggleMobileMenu()" id="hamburger-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open menu">
           <svg id="hamburger-icon" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           <svg id="hamburger-close" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="hidden"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
     </div>
-    <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden overflow-hidden" style="max-height: 0; opacity: 0; transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;">
       <div class="px-4 pb-4 pt-1 flex flex-col gap-1 border-t border-white/10">
-        <a href="index.html#products" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Products</a>
-        <a href="index.html#bundles" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Bundles</a>
-        <a href="index.html#faq" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">FAQ</a>
-        <a href="shipping.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Shipping &amp; Returns</a>
-        <a href="research.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Research</a>
-        <a href="referral.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Refer &amp; Earn</a>
-        <a href="mailto:support@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
+        <a href="../index.html#products" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Products</a>
+        <a href="../index.html#bundles" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Bundles</a>
+        <a href="../index.html#faq" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">FAQ</a>
+        <a href="../shipping.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Shipping &amp; Returns</a>
+        <a href="../research.html" class="text-white text-sm font-semibold py-3 px-3 rounded-lg bg-white/5" style="transition: background 0.2s ease, color 0.2s ease;">Research</a>
+        <a href="../referral.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Refer &amp; Earn</a>
+        <a href="mailto:research@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
       </div>
     </div>
   </nav>
@@ -215,110 +193,62 @@
   <div class="bg-[#0e1a2e] border-b border-[#1a2a45]">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 py-3">
       <nav class="flex items-center gap-2 text-xs text-[#7a8599]">
-        <a href="index.html" class="hover:text-white" style="transition: color 0.2s ease;">Home</a>
+        <a href="../index.html" class="hover:text-white" style="transition: color 0.2s ease;">Home</a>
         <span>/</span>
-        <span class="text-white font-medium">Shipping &amp; Returns</span>
+        <a href="../research.html" class="hover:text-white" style="transition: color 0.2s ease;">Research</a>
+        <span>/</span>
+        <span class="text-white font-medium">Retatrutide Overview</span>
       </nav>
     </div>
   </div>
 
-  <!-- ========== SHIPPING & RETURNS CONTENT ========== -->
+  <!-- ========== ARTICLE CONTENT ========== -->
   <section class="bg-[#0B1426] py-16 sm:py-24">
-    <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
-      <!-- Section Label -->
-      <p class="text-xs text-gold uppercase tracking-[0.2em] font-semibold text-center mb-4">Delivery &amp; Policies</p>
+    <div class="max-w-[800px] mx-auto px-4 sm:px-6">
+      <!-- Label -->
+      <p class="text-xs text-gold uppercase tracking-[0.2em] font-semibold text-center mb-4">RESEARCH GUIDE</p>
       <!-- Heading -->
-      <h1 class="font-heading font-bold text-3xl sm:text-4xl heading-tight text-center mb-12">Shipping &amp; Returns</h1>
+      <h1 class="font-heading font-bold text-2xl sm:text-3xl heading-tight text-center mb-10">What is Retatrutide? A Research Overview</h1>
 
-      <!-- Three Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Article Body -->
+      <div class="space-y-6 mb-12">
+        <h2 class="font-heading font-bold text-lg text-white">Introduction</h2>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">Retatrutide (LY3437943) is a novel investigational peptide that has generated significant interest in the research community as the first triple-agonist compound targeting three distinct incretin and metabolic receptors simultaneously. Unlike earlier single- or dual-agonist peptides, retatrutide activates the glucagon-like peptide-1 (GLP-1), glucose-dependent insulinotropic polypeptide (GIP), and glucagon receptors, representing a new frontier in metabolic pathway research.</p>
 
-        <!-- Card 1: Shipping -->
-        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
-          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21a.75.75 0 00.75-.75v-3.375a.75.75 0 00-.188-.493L18.375 10.5M3.375 14.25h3.75m0 0h6.375L16.5 10.5m0 0L13.125 6H3.375m13.125 4.5H21"/></svg>
+        <h2 class="font-heading font-bold text-lg text-white">Molecular Profile</h2>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">Retatrutide is a synthetic peptide with a molecular weight of approximately 4113.58 Da and a CAS registry number of 2381089-83-2. It is a 39-amino acid peptide conjugated to a fatty acid moiety that extends its half-life, enabling less frequent administration in research protocols. The molecular design incorporates agonist activity at all three target receptors through carefully engineered sequence modifications derived from the native GIP peptide backbone.</p>
+
+        <h2 class="font-heading font-bold text-lg text-white">Triple-Agonist Mechanism</h2>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">What distinguishes retatrutide from other peptides in this research space is its simultaneous activation of three receptor pathways. The GLP-1 receptor pathway has been extensively studied for its role in glucose homeostasis and appetite regulation. The GIP receptor pathway is involved in nutrient-stimulated insulin secretion and lipid metabolism. The glucagon receptor pathway contributes to hepatic glucose output, lipid oxidation, and energy expenditure. Research suggests that the combined activation of all three pathways may produce effects that exceed what is observed with single- or dual-agonist compounds.</p>
+
+        <h2 class="font-heading font-bold text-lg text-white">Published Research</h2>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">The TRIUMPH-2 Phase 2 clinical trial, published in the New England Journal of Medicine, evaluated retatrutide across multiple research cohorts. Studies indicate that participants in the highest-evaluated groups demonstrated substantial changes in metabolic markers over a 48-week period. These findings have been widely cited in the research community as evidence of the multi-pathway activation hypothesis.</p>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">Additional preclinical research has examined retatrutide's effects on hepatic lipid content, with studies observing significant reductions in liver fat percentage. Researchers have noted that the glucagon receptor component may be particularly relevant to these hepatic observations, as glucagon signaling has been associated with lipid mobilization and oxidation in published literature.</p>
+
+        <h2 class="font-heading font-bold text-lg text-white">Why Researchers Are Interested</h2>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">As the first triple-agonist peptide to reach advanced clinical evaluation, retatrutide represents an entirely new class of research compound. The ability to modulate three metabolic pathways simultaneously offers researchers a unique tool for studying the interplay between incretin signaling, glucagon biology, and energy metabolism. The compound's extended pharmacokinetic profile also makes it practical for longitudinal research designs.</p>
+
+        <h2 class="font-heading font-bold text-lg text-white">Storage and Handling</h2>
+        <p class="text-[#c0c8d8] text-sm sm:text-base leading-relaxed">Retatrutide is supplied as a lyophilized (freeze-dried) powder for maximum stability. For long-term storage, the compound should be maintained at -20&deg;C in a dry environment. Once reconstituted with bacteriostatic water, the solution should be stored at 2&ndash;8&deg;C and used within a reasonable timeframe. Avoid repeated freeze-thaw cycles, as this may compromise peptide integrity. Researchers should handle the compound following standard laboratory protocols for peptide reagents.</p>
+      </div>
+
+      <!-- Product CTA Card -->
+      <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6 sm:p-8 mb-8">
+        <div class="flex items-start gap-4">
+          <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
+            <img src="../images/retatrutide.jpg" alt="Retatrutide" class="w-full h-full object-cover">
           </div>
-          <h2 class="font-heading font-bold text-lg mb-4">Shipping Policy</h2>
-          <ul class="space-y-3 text-sm text-[#c0c8d8]">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Free shipping</strong> on orders $50+</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">$8 flat rate</strong> for orders under $50</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Same-day processing</strong> for orders placed before 1PM PST</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">USPS Ground Advantage</strong> (2-5 business days)</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>All packages shipped with <strong class="text-white">discreet packaging</strong> — no product descriptions visible</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Card 2: Returns -->
-        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
-          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+          <div class="flex-1">
+            <h3 class="font-heading font-bold text-white text-base mb-1">Retatrutide 5mg</h3>
+            <p class="text-[#c0c8d8] text-sm mb-3">Research-grade retatrutide, &gt;99% purity, third-party tested via HPLC at Janoshik Analytical.</p>
+            <a href="../retatrutide.html" class="btn-gold inline-block px-5 py-2.5 text-sm">View Product</a>
           </div>
-          <h2 class="font-heading font-bold text-lg mb-4">Return Policy</h2>
-          <ul class="space-y-3 text-sm text-[#c0c8d8]">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">30-day return window</strong> for unopened, sealed products</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Contact <a href="mailto:support@eidonresearch.com" class="text-gold hover:text-gold-light" style="transition: color 0.2s ease;">support@eidonresearch.com</a> to initiate a return</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Buyer pays <strong class="text-white">return shipping</strong></span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Refunds processed within <strong class="text-white">5-7 business days</strong></span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Damaged or incorrect orders <strong class="text-white">replaced at no cost</strong></span>
-            </li>
-          </ul>
         </div>
+      </div>
 
-        <!-- Card 3: Local Pickup -->
-        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
-          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-          </div>
-          <h2 class="font-heading font-bold text-lg mb-4">Local Pickup</h2>
-          <ul class="space-y-3 text-sm text-[#c0c8d8]">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Free local pickup</strong> available</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Sacramento, CA</strong> area</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Same-day availability</strong> for in-stock items</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><a href="mailto:support@eidonresearch.com" class="text-gold hover:text-gold-light" style="transition: color 0.2s ease;">Contact us</a> to arrange pickup</span>
-            </li>
-          </ul>
-        </div>
-
+      <!-- Disclaimer -->
+      <div class="bg-white/5 rounded-xl p-4 text-center">
+        <p class="text-[#7a8599] text-xs leading-relaxed"><strong class="text-white/60">Disclaimer:</strong> For research use only. Not for human consumption. This article is provided for educational and informational purposes. It is not intended to diagnose, treat, cure, or prevent any disease. Must be 18+ to order.</p>
       </div>
     </div>
   </section>
@@ -327,7 +257,6 @@
   <footer class="bg-navy text-white grain-overlay">
     <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
-        <!-- Brand -->
         <div>
           <div class="flex flex-col leading-none mb-4">
             <span class="font-heading text-white text-xl font-extrabold tracking-tight">EIDON</span>
@@ -335,18 +264,16 @@
           </div>
           <p class="text-white/50 text-sm leading-relaxed">Premium research peptides with verified &gt;99% purity. Third-party tested for quality assurance.</p>
         </div>
-        <!-- Quick Links -->
         <div>
           <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Quick Links</h4>
           <ul class="space-y-2">
-            <li><a href="index.html#products" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Products</a></li>
-            <li><a href="index.html#bundles" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Bundles</a></li>
-            <li><a href="index.html#faq" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">FAQ</a></li>
-            <li><a href="research.html" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Research</a></li>
-            <li><a href="referral.html" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Refer &amp; Earn</a></li>
+            <li><a href="../index.html#products" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Products</a></li>
+            <li><a href="../index.html#bundles" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Bundles</a></li>
+            <li><a href="../index.html#faq" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">FAQ</a></li>
+            <li><a href="../research.html" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Research</a></li>
+            <li><a href="../referral.html" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Refer &amp; Earn</a></li>
           </ul>
         </div>
-        <!-- Shipping -->
         <div>
           <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Shipping</h4>
           <ul class="space-y-2 text-white/60 text-sm">
@@ -356,17 +283,15 @@
             <li>Free local pickup — Sacramento area</li>
           </ul>
         </div>
-        <!-- Contact -->
         <div>
           <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Contact</h4>
           <ul class="space-y-2 text-white/60 text-sm">
-            <li><a href="mailto:support@eidonresearch.com" class="hover:text-white" style="transition: color 0.2s ease;">support@eidonresearch.com</a></li>
+            <li><a href="mailto:research@eidonresearch.com" class="hover:text-white" style="transition: color 0.2s ease;">research@eidonresearch.com</a></li>
             <li>Sacramento, CA</li>
             <li>Mon–Fri, 9AM–5PM PST</li>
           </ul>
         </div>
       </div>
-      <!-- Legal Disclaimers -->
       <div class="border-t border-white/10 pt-8">
         <div class="bg-white/5 rounded-xl p-5 mb-6">
           <p class="text-white/40 text-xs leading-relaxed mb-2"><strong class="text-white/60">Research Use Only:</strong> All products sold by EIDON Research are intended for laboratory and research use only. Not for human consumption. Must be 18+ to order.</p>
@@ -380,7 +305,7 @@
           <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">DISC</text></svg>
           <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">₿</text></svg>
         </div>
-        <p class="text-white/30 text-xs text-center">EIDON Research LLC · Sacramento, CA · <a href="mailto:research@eidonresearch.com" class="hover:text-white/50" style="transition: color 0.2s ease;">research@eidonresearch.com</a></p>
+        <p class="text-white/30 text-xs text-center">EIDON Research LLC &middot; Sacramento, CA &middot; <a href="mailto:research@eidonresearch.com" class="hover:text-white/50" style="transition: color 0.2s ease;">research@eidonresearch.com</a></p>
         <p class="text-white/20 text-[10px] text-center mt-2">These products are intended for laboratory and research use only. Not for human consumption. Statements have not been evaluated by the FDA.</p>
       </div>
     </div>
@@ -400,42 +325,38 @@
 
   <div id="cart-overlay" class="cart-overlay fixed inset-0 bg-black/50 z-[110] hidden" onclick="toggleCart()"></div>
   <div id="cart-drawer" class="cart-drawer closed fixed top-0 right-0 h-full w-full max-w-md bg-[#0f1928] z-[120] flex flex-col">
-    <!-- Cart Header -->
     <div class="flex items-center justify-between p-5 border-b border-[#1a2a45]">
       <h3 class="font-heading font-bold text-lg">Your Cart</h3>
       <button onclick="toggleCart()" class="p-2 rounded-lg hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Close cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <!-- Cart Items -->
     <div id="cart-items" class="flex-1 overflow-y-auto p-5">
       <p id="cart-empty" class="text-center text-[#7a8599] text-sm py-12">Your cart is empty</p>
     </div>
-    <!-- Cart Footer -->
     <div id="cart-footer" class="hidden border-t border-[#1a2a45] p-5">
       <div class="flex items-center justify-between mb-4">
         <span class="font-heading font-semibold text-base">Subtotal</span>
         <span id="cart-subtotal" class="font-heading font-bold text-xl text-white">$0</span>
       </div>
       <p class="text-xs text-[#7a8599] mb-4">Shipping calculated at checkout</p>
-      <a href="checkout.html" class="btn-gold block text-center py-3.5 text-sm uppercase tracking-wider w-full">Checkout</a>
+      <a href="../checkout.html" class="btn-gold block text-center py-3.5 text-sm uppercase tracking-wider w-full">Checkout</a>
     </div>
   </div>
 
   <!-- ========== JAVASCRIPT ========== -->
   <script>
-    // ====== CART STATE ======
     const productImages = {
-      'RT5': 'images/retatrutide.jpg',
-      'CP10': 'images/cjc1295.jpg',
-      'CU100': 'images/ghkcu.jpg',
-      'MT2': 'images/melanotan2.jpg',
+      'RT5': '../images/retatrutide.jpg',
+      'CP10': '../images/cjc1295.jpg',
+      'CU100': '../images/ghkcu.jpg',
+      'MT2': '../images/melanotan2.jpg',
       'WA10': null,
-      'summer-cut': 'images/retatrutide.jpg',
-      'gym-gains': 'images/cjc1295.jpg',
-      'shred-max': 'images/retatrutide.jpg',
-      'the-triple': 'images/retatrutide.jpg',
-      'everything': 'images/retatrutide.jpg',
+      'summer-cut': '../images/retatrutide.jpg',
+      'gym-gains': '../images/cjc1295.jpg',
+      'shred-max': '../images/retatrutide.jpg',
+      'the-triple': '../images/retatrutide.jpg',
+      'everything': '../images/retatrutide.jpg',
     };
     let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
 
@@ -446,11 +367,7 @@
 
     function addToCart(sku, name, price) {
       const existing = cart.find(item => item.sku === sku);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({ sku, name, price, qty: 1 });
-      }
+      if (existing) { existing.qty += 1; } else { cart.push({ sku, name, price, qty: 1 }); }
       saveCart();
       openCart();
       bounceCartBadge();
@@ -463,24 +380,17 @@
       badge.classList.add('cart-bounce');
     }
 
-    function removeFromCart(sku) {
-      cart = cart.filter(item => item.sku !== sku);
-      saveCart();
-    }
+    function removeFromCart(sku) { cart = cart.filter(item => item.sku !== sku); saveCart(); }
 
     function updateQty(sku, delta) {
       const item = cart.find(i => i.sku === sku);
       if (!item) return;
       item.qty += delta;
-      if (item.qty <= 0) {
-        cart = cart.filter(i => i.sku !== sku);
-      }
+      if (item.qty <= 0) { cart = cart.filter(i => i.sku !== sku); }
       saveCart();
     }
 
-    function getSubtotal() {
-      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-    }
+    function getSubtotal() { return cart.reduce((sum, item) => sum + item.price * item.qty, 0); }
 
     function updateCartUI() {
       const countEl = document.getElementById('cart-count');
@@ -488,52 +398,35 @@
       const emptyEl = document.getElementById('cart-empty');
       const footerEl = document.getElementById('cart-footer');
       const subtotalEl = document.getElementById('cart-subtotal');
-
       const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-
-      if (totalItems > 0) {
-        countEl.textContent = totalItems;
-        countEl.classList.remove('hidden');
-      } else {
-        countEl.classList.add('hidden');
-      }
-
+      if (totalItems > 0) { countEl.textContent = totalItems; countEl.classList.remove('hidden'); } else { countEl.classList.add('hidden'); }
       if (cart.length === 0) {
         emptyEl.classList.remove('hidden');
         footerEl.classList.add('hidden');
         itemsEl.innerHTML = '<p id="cart-empty" class="text-center text-[#7a8599] text-sm py-12">Your cart is empty</p>';
         return;
       }
-
       emptyEl?.classList.add('hidden');
       footerEl.classList.remove('hidden');
       subtotalEl.textContent = '$' + getSubtotal().toFixed(2);
-
       let html = '';
       cart.forEach(item => {
         const img = productImages[item.sku];
         html += `
-          <div id="cart-item-${item.sku}" class="flex items-start gap-3 py-4 border-b border-[#1a2a45] last:border-0" style="transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease; max-height: 120px; overflow: hidden;">
-            ${img ? `<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
-              <img src="${img}" alt="${item.name}" class="w-full h-full object-cover">
-            </div>` : `<div class="w-14 h-14 rounded-lg flex-shrink-0 flex items-center justify-center" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a8599" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="6" x2="14" y2="6"/></svg>
-            </div>`}
+          <div class="flex items-start gap-3 py-4 border-b border-[#1a2a45] last:border-0">
+            ${img ? `<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);"><img src="${img}" alt="${item.name}" class="w-full h-full object-cover"></div>` : `<div class="w-14 h-14 rounded-lg flex-shrink-0 flex items-center justify-center" style="background: linear-gradient(180deg, #0f1d33 0%, #0B1426 100%);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a8599" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="6" x2="14" y2="6"/></svg></div>`}
             <div class="flex-1 min-w-0">
               <p class="font-heading font-semibold text-sm truncate">${item.name}</p>
               ${item.isBundle ? '<span class="text-[10px] text-gold font-semibold uppercase">Bundle</span>' : ''}
               <p class="text-sm text-white font-bold mt-1">$${(item.price * item.qty).toFixed(2)}</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="updateQty('${item.sku}', -1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Decrease quantity">−</button>
+              <button onclick="updateQty('${item.sku}', -1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035]" style="transition: background 0.2s ease;">−</button>
               <span class="text-sm font-semibold w-6 text-center">${item.qty}</span>
-              <button onclick="updateQty('${item.sku}', 1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Increase quantity">+</button>
+              <button onclick="updateQty('${item.sku}', 1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035]" style="transition: background 0.2s ease;">+</button>
             </div>
-            <button onclick="removeFromCart('${item.sku}')" class="text-[#5a6478] hover:text-red-500 p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: color 0.2s ease;" aria-label="Remove item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            </button>
-          </div>
-        `;
+            <button onclick="removeFromCart('${item.sku}')" class="text-[#5a6478] hover:text-red-500 p-1" style="transition: color 0.2s ease;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          </div>`;
       });
       itemsEl.innerHTML = html;
     }
@@ -542,57 +435,36 @@
       const overlay = document.getElementById('cart-overlay');
       const drawer = document.getElementById('cart-drawer');
       const isOpen = !drawer.classList.contains('closed');
-      if (isOpen) {
-        drawer.classList.add('closed');
-        overlay.classList.add('hidden');
-        document.body.style.overflow = '';
-      } else {
-        openCart();
-      }
+      if (isOpen) { drawer.classList.add('closed'); overlay.classList.add('hidden'); document.body.style.overflow = ''; } else { openCart(); }
     }
-
     function openCart() {
-      const overlay = document.getElementById('cart-overlay');
-      const drawer = document.getElementById('cart-drawer');
-      overlay.classList.remove('hidden');
-      drawer.classList.remove('closed');
+      document.getElementById('cart-overlay').classList.remove('hidden');
+      document.getElementById('cart-drawer').classList.remove('closed');
       document.body.style.overflow = 'hidden';
     }
 
-    // ====== MOBILE MENU ======
     let mobileMenuOpen = false;
     function toggleMobileMenu() {
       mobileMenuOpen = !mobileMenuOpen;
       const menu = document.getElementById('mobile-menu');
       const icon = document.getElementById('hamburger-icon');
       const close = document.getElementById('hamburger-close');
-      if (mobileMenuOpen) {
-        menu.style.maxHeight = '300px';
-        menu.style.opacity = '1';
-        icon.classList.add('hidden');
-        close.classList.remove('hidden');
-      } else {
-        closeMobileMenu();
-      }
+      if (mobileMenuOpen) { menu.style.maxHeight = '300px'; menu.style.opacity = '1'; icon.classList.add('hidden'); close.classList.remove('hidden'); } else { closeMobileMenu(); }
     }
     function closeMobileMenu() {
       mobileMenuOpen = false;
       const menu = document.getElementById('mobile-menu');
-      const icon = document.getElementById('hamburger-icon');
-      const close = document.getElementById('hamburger-close');
-      menu.style.maxHeight = '0';
-      menu.style.opacity = '0';
-      icon.classList.remove('hidden');
-      close.classList.add('hidden');
+      document.getElementById('hamburger-icon').classList.remove('hidden');
+      document.getElementById('hamburger-close').classList.add('hidden');
+      menu.style.maxHeight = '0'; menu.style.opacity = '0';
     }
 
     // ====== SEARCH ======
-    const searchData=[{type:'product',name:'Retatrutide 5mg',url:'retatrutide.html',desc:'Triple-receptor GLP-1/GIP/Glucagon',price:'$60'},{type:'product',name:'CJC-1295 + Ipamorelin 10mg',url:'cjc-1295.html',desc:'Growth hormone secretagogue stack',price:'$60'},{type:'product',name:'GHK-Cu 100mg',url:'ghk-cu.html',desc:'Copper peptide for tissue regeneration',price:'$50'},{type:'product',name:'Melanotan 2 10mg',url:'melanotan-2.html',desc:'Melanocortin receptor agonist',price:'$25'},{type:'product',name:'BAC Water 10ml',url:'bac-water.html',desc:'USP-grade bacteriostatic water',price:'$10'},{type:'article',name:'What is Retatrutide?',url:'research/retatrutide-overview.html',desc:'Triple-agonist mechanism and studies'},{type:'article',name:'GHK-Cu Research Guide',url:'research/ghk-cu-guide.html',desc:'Copper peptide tissue research'},{type:'article',name:'CJC-1295 & Ipamorelin',url:'research/cjc-1295-ipamorelin.html',desc:'Growth hormone research'},{type:'article',name:'Melanotan-2 Guide',url:'research/melanotan-2-guide.html',desc:'Melanocortin receptor research'},{type:'article',name:'How to Read a COA',url:'research/how-to-read-coa.html',desc:'Understanding purity testing'}];
+    const searchData=[{type:'product',name:'Retatrutide 5mg',url:'../retatrutide.html',desc:'Triple-receptor GLP-1/GIP/Glucagon',price:'$60'},{type:'product',name:'CJC-1295 + Ipamorelin 10mg',url:'../cjc-1295.html',desc:'Growth hormone secretagogue stack',price:'$60'},{type:'product',name:'GHK-Cu 100mg',url:'../ghk-cu.html',desc:'Copper peptide for tissue regeneration',price:'$50'},{type:'product',name:'Melanotan 2 10mg',url:'../melanotan-2.html',desc:'Melanocortin receptor agonist',price:'$25'},{type:'product',name:'BAC Water 10ml',url:'../bac-water.html',desc:'USP-grade bacteriostatic water',price:'$10'},{type:'article',name:'What is Retatrutide?',url:'../research/retatrutide-overview.html',desc:'Triple-agonist mechanism and studies'},{type:'article',name:'GHK-Cu Research Guide',url:'../research/ghk-cu-guide.html',desc:'Copper peptide tissue research'},{type:'article',name:'CJC-1295 & Ipamorelin',url:'../research/cjc-1295-ipamorelin.html',desc:'Growth hormone research'},{type:'article',name:'Melanotan-2 Guide',url:'../research/melanotan-2-guide.html',desc:'Melanocortin receptor research'},{type:'article',name:'How to Read a COA',url:'../research/how-to-read-coa.html',desc:'Understanding purity testing'}];
     function toggleSearch(){const o=document.getElementById('search-overlay'),i=document.getElementById('search-input');if(o.classList.contains('hidden')){o.classList.remove('hidden');document.body.style.overflow='hidden';setTimeout(()=>i.focus(),100)}else{o.classList.add('hidden');document.body.style.overflow='';i.value='';document.getElementById('search-results').innerHTML=''}}
     document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=document.getElementById('search-overlay');if(o&&!o.classList.contains('hidden'))toggleSearch()}});
     document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('search-input');if(i)i.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim(),r=document.getElementById('search-results');if(!q){r.innerHTML='';return}const m=searchData.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q));if(!m.length){r.innerHTML='<p class="text-[#5a6478] text-sm text-center py-4">No results found</p>';return}r.innerHTML=m.map(s=>'<a href="'+s.url+'" class="flex items-center gap-3 p-3 rounded-lg bg-[#111b30] border border-[#1a2a45] hover:border-gold/30"><div class="flex-1"><p class="text-sm text-white font-heading font-semibold">'+s.name+'</p><p class="text-[10px] text-[#5a6478]">'+s.desc+'</p></div>'+(s.price?'<span class="text-gold font-bold">'+s.price+'</span>':'')+'</a>').join('')})});
 
-    // Initialize
     updateCartUI();
   </script>
 
@@ -620,16 +492,10 @@
       }
     })();
     function verifyAge(isAdult) {
-      if (isAdult) {
-        localStorage.setItem('eidon_age_verified', 'true');
-        document.getElementById('age-gate').classList.add('hidden');
-        document.body.style.overflow = '';
-      } else {
-        window.location.href = 'https://www.google.com';
-      }
+      if (isAdult) { localStorage.setItem('eidon_age_verified', 'true'); document.getElementById('age-gate').classList.add('hidden'); document.body.style.overflow = ''; } else { window.location.href = 'https://www.google.com'; }
     }
   </script>
 
-  <script src="chat.js"></script>
+  <script src="../chat.js"></script>
 </body>
 </html>

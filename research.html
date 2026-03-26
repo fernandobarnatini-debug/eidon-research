@@ -11,15 +11,15 @@
     gtag('js', new Date());
     gtag('config', 'G-PC9K9ZLK3F');
   </script>
-  <title>Shipping & Returns — EIDON Research</title>
+  <title>Research & Documentation — EIDON Research</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta name="description" content="Free shipping on orders $50+. Same-day processing. USPS Ground Advantage. 30-day returns for unopened products. EIDON Research.">
-  <meta property="og:title" content="Shipping & Returns — EIDON Research">
-  <meta property="og:description" content="Free shipping on orders $50+. Same-day processing. USPS Ground Advantage. 30-day returns for unopened products.">
+  <meta name="description" content="Explore our collection of research guides, technical documentation, and educational resources on peptides. EIDON Research peptide library.">
+  <meta property="og:title" content="Research & Documentation — EIDON Research">
+  <meta property="og:description" content="Explore our collection of research guides, technical documentation, and educational resources on peptides.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://eidonresearch.com/shipping.html">
+  <meta property="og:url" content="https://eidonresearch.com/research.html">
   <meta property="og:site_name" content="EIDON Research">
-  <link rel="canonical" href="https://eidonresearch.com/shipping.html">
+  <link rel="canonical" href="https://eidonresearch.com/research.html">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -129,6 +129,7 @@
       transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .nav-link:hover::after { width: 100%; }
+    .nav-link-active::after { width: 100%; }
 
     /* === CART COUNT BOUNCE === */
     @keyframes cartBounce {
@@ -138,6 +139,16 @@
       100% { transform: scale(1); }
     }
     .cart-bounce { animation: cartBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+    /* === ARTICLE CARD === */
+    .article-card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .article-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.2);
+      border-color: #D4AF37;
+    }
   </style>
 </head>
 <body class="bg-[#0B1426]">
@@ -177,7 +188,7 @@
         <a href="index.html#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
         <a href="index.html#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
         <a href="shipping.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Shipping</a>
-        <a href="research.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Research</a>
+        <a href="research.html" class="nav-link nav-link-active text-white text-sm font-medium" style="transition: color 0.2s ease;">Research</a>
       </div>
       <!-- Right side: Cart + Hamburger -->
       <div class="flex items-center gap-2">
@@ -204,9 +215,9 @@
         <a href="index.html#bundles" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Bundles</a>
         <a href="index.html#faq" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">FAQ</a>
         <a href="shipping.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Shipping &amp; Returns</a>
-        <a href="research.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Research</a>
+        <a href="research.html" class="text-white text-sm font-semibold py-3 px-3 rounded-lg bg-white/5" style="transition: background 0.2s ease, color 0.2s ease;">Research</a>
         <a href="referral.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Refer &amp; Earn</a>
-        <a href="mailto:support@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
+        <a href="mailto:research@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
       </div>
     </div>
   </nav>
@@ -217,109 +228,79 @@
       <nav class="flex items-center gap-2 text-xs text-[#7a8599]">
         <a href="index.html" class="hover:text-white" style="transition: color 0.2s ease;">Home</a>
         <span>/</span>
-        <span class="text-white font-medium">Shipping &amp; Returns</span>
+        <span class="text-white font-medium">Research</span>
       </nav>
     </div>
   </div>
 
-  <!-- ========== SHIPPING & RETURNS CONTENT ========== -->
+  <!-- ========== RESEARCH HUB ========== -->
   <section class="bg-[#0B1426] py-16 sm:py-24">
-    <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
+    <div class="max-w-[900px] mx-auto px-4 sm:px-6">
       <!-- Section Label -->
-      <p class="text-xs text-gold uppercase tracking-[0.2em] font-semibold text-center mb-4">Delivery &amp; Policies</p>
+      <p class="text-xs text-gold uppercase tracking-[0.2em] font-semibold text-center mb-4">PEPTIDE RESEARCH LIBRARY</p>
       <!-- Heading -->
-      <h1 class="font-heading font-bold text-3xl sm:text-4xl heading-tight text-center mb-12">Shipping &amp; Returns</h1>
+      <h1 class="font-heading font-bold text-3xl sm:text-4xl heading-tight text-center mb-4">Research & Documentation</h1>
+      <!-- Subtext -->
+      <p class="text-[#c0c8d8] text-center text-sm sm:text-base max-w-[600px] mx-auto mb-12 leading-relaxed">Explore our collection of research guides, technical documentation, and educational resources.</p>
 
-      <!-- Three Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Article Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 
-        <!-- Card 1: Shipping -->
-        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
-          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21a.75.75 0 00.75-.75v-3.375a.75.75 0 00-.188-.493L18.375 10.5M3.375 14.25h3.75m0 0h6.375L16.5 10.5m0 0L13.125 6H3.375m13.125 4.5H21"/></svg>
-          </div>
-          <h2 class="font-heading font-bold text-lg mb-4">Shipping Policy</h2>
-          <ul class="space-y-3 text-sm text-[#c0c8d8]">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Free shipping</strong> on orders $50+</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">$8 flat rate</strong> for orders under $50</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Same-day processing</strong> for orders placed before 1PM PST</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">USPS Ground Advantage</strong> (2-5 business days)</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>All packages shipped with <strong class="text-white">discreet packaging</strong> — no product descriptions visible</span>
-            </li>
-          </ul>
-        </div>
+        <!-- Article 1 -->
+        <a href="research/retatrutide-overview.html" class="article-card bg-[#111b30] border border-[#1a2a45] rounded-xl p-6 block group">
+          <span class="inline-block text-[10px] text-gold uppercase tracking-[0.15em] font-semibold bg-gold/10 px-2.5 py-1 rounded-md mb-3">Research Guide</span>
+          <h3 class="font-heading font-bold text-white text-lg mb-2 group-hover:text-gold" style="transition: color 0.2s ease;">What is Retatrutide? A Research Overview</h3>
+          <p class="text-[#c0c8d8] text-sm leading-relaxed line-clamp-2 mb-4">A comprehensive look at this novel triple-agonist peptide targeting GLP-1, GIP, and glucagon receptors. Molecular structure, published research, and storage guidelines.</p>
+          <span class="text-gold text-sm font-semibold group-hover:text-white" style="transition: color 0.2s ease;">Read Article &rarr;</span>
+        </a>
 
-        <!-- Card 2: Returns -->
-        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
-          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
-          </div>
-          <h2 class="font-heading font-bold text-lg mb-4">Return Policy</h2>
-          <ul class="space-y-3 text-sm text-[#c0c8d8]">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">30-day return window</strong> for unopened, sealed products</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Contact <a href="mailto:support@eidonresearch.com" class="text-gold hover:text-gold-light" style="transition: color 0.2s ease;">support@eidonresearch.com</a> to initiate a return</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Buyer pays <strong class="text-white">return shipping</strong></span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Refunds processed within <strong class="text-white">5-7 business days</strong></span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span>Damaged or incorrect orders <strong class="text-white">replaced at no cost</strong></span>
-            </li>
-          </ul>
-        </div>
+        <!-- Article 2 -->
+        <a href="research/ghk-cu-guide.html" class="article-card bg-[#111b30] border border-[#1a2a45] rounded-xl p-6 block group">
+          <span class="inline-block text-[10px] text-gold uppercase tracking-[0.15em] font-semibold bg-gold/10 px-2.5 py-1 rounded-md mb-3">Research Guide</span>
+          <h3 class="font-heading font-bold text-white text-lg mb-2 group-hover:text-gold" style="transition: color 0.2s ease;">GHK-Cu: The Copper Peptide Research Guide</h3>
+          <p class="text-[#c0c8d8] text-sm leading-relaxed line-clamp-2 mb-4">Explore the naturally occurring copper-binding tripeptide found in human plasma. Research areas include wound healing, tissue remodeling, and collagen synthesis.</p>
+          <span class="text-gold text-sm font-semibold group-hover:text-white" style="transition: color 0.2s ease;">Read Article &rarr;</span>
+        </a>
 
-        <!-- Card 3: Local Pickup -->
-        <div class="bg-[#111b30] border border-[#1a2a45] rounded-xl shadow-elevated p-6">
-          <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-          </div>
-          <h2 class="font-heading font-bold text-lg mb-4">Local Pickup</h2>
-          <ul class="space-y-3 text-sm text-[#c0c8d8]">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Free local pickup</strong> available</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Sacramento, CA</strong> area</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><strong class="text-white">Same-day availability</strong> for in-stock items</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-              <span><a href="mailto:support@eidonresearch.com" class="text-gold hover:text-gold-light" style="transition: color 0.2s ease;">Contact us</a> to arrange pickup</span>
-            </li>
-          </ul>
-        </div>
+        <!-- Article 3 -->
+        <a href="research/cjc-1295-ipamorelin.html" class="article-card bg-[#111b30] border border-[#1a2a45] rounded-xl p-6 block group">
+          <span class="inline-block text-[10px] text-gold uppercase tracking-[0.15em] font-semibold bg-gold/10 px-2.5 py-1 rounded-md mb-3">Research Guide</span>
+          <h3 class="font-heading font-bold text-white text-lg mb-2 group-hover:text-gold" style="transition: color 0.2s ease;">CJC-1295 & Ipamorelin: Growth Hormone Research</h3>
+          <p class="text-[#c0c8d8] text-sm leading-relaxed line-clamp-2 mb-4">Understanding the complementary mechanisms of CJC-1295 and Ipamorelin in growth hormone secretagogue research. One of the most studied peptide combinations.</p>
+          <span class="text-gold text-sm font-semibold group-hover:text-white" style="transition: color 0.2s ease;">Read Article &rarr;</span>
+        </a>
+
+        <!-- Article 4 -->
+        <a href="research/melanotan-2-guide.html" class="article-card bg-[#111b30] border border-[#1a2a45] rounded-xl p-6 block group">
+          <span class="inline-block text-[10px] text-gold uppercase tracking-[0.15em] font-semibold bg-gold/10 px-2.5 py-1 rounded-md mb-3">Research Guide</span>
+          <h3 class="font-heading font-bold text-white text-lg mb-2 group-hover:text-gold" style="transition: color 0.2s ease;">Melanotan-2: What Researchers Need to Know</h3>
+          <p class="text-[#c0c8d8] text-sm leading-relaxed line-clamp-2 mb-4">A detailed overview of this synthetic analog of alpha-melanocyte stimulating hormone, its melanocortin receptor activity, and key research areas.</p>
+          <span class="text-gold text-sm font-semibold group-hover:text-white" style="transition: color 0.2s ease;">Read Article &rarr;</span>
+        </a>
+
+        <!-- Article 5 -->
+        <a href="research/how-to-read-coa.html" class="article-card bg-[#111b30] border border-[#1a2a45] rounded-xl p-6 block group">
+          <span class="inline-block text-[10px] text-gold uppercase tracking-[0.15em] font-semibold bg-gold/10 px-2.5 py-1 rounded-md mb-3">Educational</span>
+          <h3 class="font-heading font-bold text-white text-lg mb-2 group-hover:text-gold" style="transition: color 0.2s ease;">How to Read a Certificate of Analysis (COA)</h3>
+          <p class="text-[#c0c8d8] text-sm leading-relaxed line-clamp-2 mb-4">Learn what makes a COA trustworthy, how to interpret HPLC and mass spectrometry data, and what red flags to watch for when evaluating peptide suppliers.</p>
+          <span class="text-gold text-sm font-semibold group-hover:text-white" style="transition: color 0.2s ease;">Read Article &rarr;</span>
+        </a>
 
       </div>
+
+      <!-- COA Link Card -->
+      <a href="coa.html" class="article-card bg-[#111b30] border border-[#1a2a45] rounded-xl p-6 block group">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-1.756 7.025a2.25 2.25 0 01-2.188 1.725H8.944a2.25 2.25 0 01-2.188-1.725L5 14.5m14 0H5"/></svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-heading font-bold text-white text-base group-hover:text-gold" style="transition: color 0.2s ease;">Need a Certificate of Analysis?</h3>
+            <p class="text-[#c0c8d8] text-sm">View our COA page to request third-party purity verification for any batch.</p>
+          </div>
+          <span class="text-gold text-sm font-semibold group-hover:text-white flex-shrink-0 hidden sm:block" style="transition: color 0.2s ease;">View COAs &rarr;</span>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -360,7 +341,7 @@
         <div>
           <h4 class="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-4">Contact</h4>
           <ul class="space-y-2 text-white/60 text-sm">
-            <li><a href="mailto:support@eidonresearch.com" class="hover:text-white" style="transition: color 0.2s ease;">support@eidonresearch.com</a></li>
+            <li><a href="mailto:research@eidonresearch.com" class="hover:text-white" style="transition: color 0.2s ease;">research@eidonresearch.com</a></li>
             <li>Sacramento, CA</li>
             <li>Mon–Fri, 9AM–5PM PST</li>
           </ul>
@@ -380,7 +361,7 @@
           <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">DISC</text></svg>
           <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">₿</text></svg>
         </div>
-        <p class="text-white/30 text-xs text-center">EIDON Research LLC · Sacramento, CA · <a href="mailto:research@eidonresearch.com" class="hover:text-white/50" style="transition: color 0.2s ease;">research@eidonresearch.com</a></p>
+        <p class="text-white/30 text-xs text-center">EIDON Research LLC &middot; Sacramento, CA &middot; <a href="mailto:research@eidonresearch.com" class="hover:text-white/50" style="transition: color 0.2s ease;">research@eidonresearch.com</a></p>
         <p class="text-white/20 text-[10px] text-center mt-2">These products are intended for laboratory and research use only. Not for human consumption. Statements have not been evaluated by the FDA.</p>
       </div>
     </div>

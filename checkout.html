@@ -215,6 +215,13 @@
           <svg width="12" height="12" fill="none" stroke="#D4AF37" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
           Trusted by researchers nationwide
         </p>
+        <div class="flex items-center justify-center gap-3 mt-2 mb-2 opacity-50">
+          <svg width="32" height="20" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.15"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="7" font-family="Helvetica" font-weight="bold">VISA</text></svg>
+          <svg width="32" height="20" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.15"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">MC</text></svg>
+          <svg width="32" height="20" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.15"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">AMEX</text></svg>
+          <svg width="32" height="20" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.15"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">DISC</text></svg>
+          <svg width="32" height="20" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.15"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">&#x20bf;</text></svg>
+        </div>
 
         <!-- Coupon Code -->
         <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
@@ -370,6 +377,21 @@
 
       if (!code) return;
 
+      // Referral code support (REF-XXXXX format)
+      if (code.startsWith('REF-') && code.length >= 6) {
+        appliedCoupon = { code, discount: 0.1, label: 'Referral discount (10% Off)' };
+        msg.textContent = 'Referral discount applied! 10% off your order.';
+        msg.className = 'text-xs mt-2 font-semibold text-green-600';
+        msg.classList.remove('hidden');
+        input.disabled = true;
+        input.style.opacity = '0.5';
+        document.getElementById('coupon-btn').textContent = 'Applied';
+        document.getElementById('coupon-btn').disabled = true;
+        document.getElementById('coupon-btn').style.opacity = '0.5';
+        renderSummary();
+        return;
+      }
+
       if (COUPONS[code]) {
         const coupon = COUPONS[code];
         if (coupon.minOrder && getSubtotal() < coupon.minOrder) {
@@ -436,8 +458,16 @@
     }
 
     // ====== Cart helpers ======
+    function getBulkPrice(sku, price, qty) {
+      if (sku === 'WA10') return price; // No bulk on BAC Water
+      if (typeof sku === 'string' && sku.includes('-')) return price; // No bulk on bundles
+      if (qty >= 3) return Math.round(price * 0.85 * 100) / 100;
+      if (qty >= 2) return Math.round(price * 0.90 * 100) / 100;
+      return price;
+    }
+
     function getSubtotal() {
-      return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      return cart.reduce((sum, item) => sum + getBulkPrice(item.sku, item.price, item.qty) * item.qty, 0);
     }
 
     const deliveryMethod = localStorage.getItem('deliveryMethod') || 'shipping';
@@ -482,9 +512,9 @@
             </div>`}
             <div class="flex-1 min-w-0">
               <p class="font-semibold truncate">${item.name}</p>
-              <p class="text-xs text-[#7a8599]">Qty: ${item.qty}</p>
+              <p class="text-xs text-[#7a8599]">Qty: ${item.qty}${(item.qty >= 2 && item.sku !== 'WA10' && !item.sku.includes('-')) ? ' <span class="text-green-500">(' + (item.qty >= 3 ? '15' : '10') + '% bulk discount)</span>' : ''}</p>
             </div>
-            <span class="font-semibold whitespace-nowrap">$${(item.price * item.qty).toFixed(2)}</span>
+            <span class="font-semibold whitespace-nowrap">$${(getBulkPrice(item.sku, item.price, item.qty) * item.qty).toFixed(2)}</span>
             <button onclick="removeFromCheckout('${item.sku}')" class="text-[#7a8599] hover:text-red-500 p-1 flex-shrink-0" style="transition: color 0.2s ease;" aria-label="Remove item">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>

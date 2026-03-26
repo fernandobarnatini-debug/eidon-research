@@ -177,10 +177,14 @@
         <a href="index.html#bundles" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Bundles</a>
         <a href="index.html#faq" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">FAQ</a>
         <a href="shipping.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Shipping</a>
-        <a href="coa.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Research Docs</a>
+        <a href="research.html" class="nav-link text-white/80 text-sm font-medium hover:text-white" style="transition: color 0.2s ease;">Research</a>
       </div>
       <!-- Right side: Cart + Hamburger -->
       <div class="flex items-center gap-2">
+        <!-- Search Button -->
+        <button onclick="toggleSearch()" class="text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Search">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
         <!-- Cart Button -->
         <button onclick="toggleCart()" class="relative text-white p-2 rounded-lg hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Open cart">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -200,7 +204,8 @@
         <a href="index.html#bundles" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Bundles</a>
         <a href="index.html#faq" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">FAQ</a>
         <a href="shipping.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Shipping &amp; Returns</a>
-        <a href="coa.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Research Docs</a>
+        <a href="research.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Research</a>
+        <a href="referral.html" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Refer &amp; Earn</a>
         <a href="mailto:research@eidonresearch.com" class="text-white/80 text-sm font-medium py-3 px-3 rounded-lg hover:bg-white/5 hover:text-white" style="transition: background 0.2s ease, color 0.2s ease;">Contact</a>
       </div>
     </div>
@@ -289,6 +294,8 @@
             <li><a href="index.html#products" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Products</a></li>
             <li><a href="index.html#bundles" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Bundles</a></li>
             <li><a href="index.html#faq" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">FAQ</a></li>
+            <li><a href="research.html" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Research</a></li>
+            <li><a href="referral.html" class="text-white/60 text-sm hover:text-white" style="transition: color 0.2s ease;">Refer &amp; Earn</a></li>
           </ul>
         </div>
         <!-- Shipping -->
@@ -318,6 +325,13 @@
           <p class="text-white/40 text-xs leading-relaxed mb-2"><strong class="text-white/60">FDA Disclaimer:</strong> These products have not been evaluated by the Food and Drug Administration. They are not intended to diagnose, treat, cure, or prevent any disease.</p>
           <p class="text-white/40 text-xs leading-relaxed"><strong class="text-white/60">Liability:</strong> By purchasing from EIDON Research, the buyer assumes all responsibility for the use and handling of research compounds in compliance with all applicable laws and regulations.</p>
         </div>
+        <div class="flex items-center justify-center gap-4 mb-6 opacity-40">
+          <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="7" font-family="Helvetica" font-weight="bold">VISA</text></svg>
+          <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">MC</text></svg>
+          <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">AMEX</text></svg>
+          <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="6" font-family="Helvetica" font-weight="bold">DISC</text></svg>
+          <svg width="38" height="24" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="3" fill="white" fill-opacity="0.1"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">₿</text></svg>
+        </div>
         <p class="text-white/30 text-xs text-center">EIDON Research LLC &middot; Sacramento, CA &middot; <a href="mailto:research@eidonresearch.com" class="hover:text-white/50" style="transition: color 0.2s ease;">research@eidonresearch.com</a></p>
         <p class="text-white/20 text-[10px] text-center mt-2">These products are intended for laboratory and research use only. Not for human consumption. Statements have not been evaluated by the FDA.</p>
       </div>
@@ -325,6 +339,17 @@
   </footer>
 
   <!-- ========== CART DRAWER ========== -->
+  <!-- ========== SEARCH OVERLAY ========== -->
+  <div id="search-overlay" class="fixed inset-0 z-[150] bg-navy/95 backdrop-blur-sm hidden">
+    <div class="max-w-[600px] mx-auto px-4 pt-24">
+      <div class="flex items-center gap-3 mb-6">
+        <input id="search-input" type="text" placeholder="Search products, articles..." class="flex-1 bg-[#111b30] border border-[#1a2a45] rounded-xl px-5 py-4 text-white text-lg font-heading placeholder-[#5a6478] focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20" autocomplete="off">
+        <button onclick="toggleSearch()" class="text-[#7a8599] hover:text-white p-2" style="transition: color 0.2s ease;"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div id="search-results" class="space-y-2"></div>
+    </div>
+  </div>
+
   <div id="cart-overlay" class="cart-overlay fixed inset-0 bg-black/50 z-[110] hidden" onclick="toggleCart()"></div>
   <div id="cart-drawer" class="cart-drawer closed fixed top-0 right-0 h-full w-full max-w-md bg-[#0f1928] z-[120] flex flex-col">
     <!-- Cart Header -->
@@ -512,6 +537,12 @@
       icon.classList.remove('hidden');
       close.classList.add('hidden');
     }
+
+    // ====== SEARCH ======
+    const searchData=[{type:'product',name:'Retatrutide 5mg',url:'retatrutide.html',desc:'Triple-receptor GLP-1/GIP/Glucagon',price:'$60'},{type:'product',name:'CJC-1295 + Ipamorelin 10mg',url:'cjc-1295.html',desc:'Growth hormone secretagogue stack',price:'$60'},{type:'product',name:'GHK-Cu 100mg',url:'ghk-cu.html',desc:'Copper peptide for tissue regeneration',price:'$50'},{type:'product',name:'Melanotan 2 10mg',url:'melanotan-2.html',desc:'Melanocortin receptor agonist',price:'$25'},{type:'product',name:'BAC Water 10ml',url:'bac-water.html',desc:'USP-grade bacteriostatic water',price:'$10'},{type:'article',name:'What is Retatrutide?',url:'research/retatrutide-overview.html',desc:'Triple-agonist mechanism and studies'},{type:'article',name:'GHK-Cu Research Guide',url:'research/ghk-cu-guide.html',desc:'Copper peptide tissue research'},{type:'article',name:'CJC-1295 & Ipamorelin',url:'research/cjc-1295-ipamorelin.html',desc:'Growth hormone research'},{type:'article',name:'Melanotan-2 Guide',url:'research/melanotan-2-guide.html',desc:'Melanocortin receptor research'},{type:'article',name:'How to Read a COA',url:'research/how-to-read-coa.html',desc:'Understanding purity testing'}];
+    function toggleSearch(){const o=document.getElementById('search-overlay'),i=document.getElementById('search-input');if(o.classList.contains('hidden')){o.classList.remove('hidden');document.body.style.overflow='hidden';setTimeout(()=>i.focus(),100)}else{o.classList.add('hidden');document.body.style.overflow='';i.value='';document.getElementById('search-results').innerHTML=''}}
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=document.getElementById('search-overlay');if(o&&!o.classList.contains('hidden'))toggleSearch()}});
+    document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('search-input');if(i)i.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim(),r=document.getElementById('search-results');if(!q){r.innerHTML='';return}const m=searchData.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q));if(!m.length){r.innerHTML='<p class="text-[#5a6478] text-sm text-center py-4">No results found</p>';return}r.innerHTML=m.map(s=>'<a href="'+s.url+'" class="flex items-center gap-3 p-3 rounded-lg bg-[#111b30] border border-[#1a2a45] hover:border-gold/30"><div class="flex-1"><p class="text-sm text-white font-heading font-semibold">'+s.name+'</p><p class="text-[10px] text-[#5a6478]">'+s.desc+'</p></div>'+(s.price?'<span class="text-gold font-bold">'+s.price+'</span>':'')+'</a>').join('')})});
 
     // Initialize
     updateCartUI();
