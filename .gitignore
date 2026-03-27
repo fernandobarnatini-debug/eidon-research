@@ -4,3 +4,6 @@ node_modules/
 package-lock.json
 temporary_screenshots
 temporary_screenshots/
+.vercel
+product videos/generate-videos.sh
+eidon-scriptwriter-system-prompt.md
