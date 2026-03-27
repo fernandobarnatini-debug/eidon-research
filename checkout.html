@@ -493,9 +493,9 @@
             },
           });
           applePay = await payments.applePay(paymentRequest);
-          // Apple Pay is available — show the button
+          // Apple Pay is available — show the container and attach the official button
           document.getElementById('apple-pay-container').classList.remove('hidden');
-          document.getElementById('apple-pay-button').addEventListener('click', handleApplePay);
+          await applePay.attach('#apple-pay-button');
         } catch (apErr) {
           // Apple Pay not available on this device/browser — that's fine, just use card
           console.log('Apple Pay not available:', apErr.message);
@@ -506,64 +506,72 @@
       }
     }
 
-    async function handleApplePay() {
-      if (!validateForm()) return;
-      if (!applePay) return;
-
+    // Apple Pay token handler — Square SDK calls tokenize automatically when user completes Apple Pay
+    // We need to listen for the payment request's token and process it
+    async function processApplePayToken(token) {
       setLoading(true);
       try {
         const total = getTotal();
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const response = await fetch('/api/pay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sourceId: token,
+            amount: total,
+            email: document.getElementById('email').value.trim(),
+            name: firstName + ' ' + lastName,
+            shipping: {
+              firstName,
+              lastName,
+              address: document.getElementById('address').value.trim(),
+              city: document.getElementById('city').value.trim(),
+              state: document.getElementById('state').value.trim(),
+              zip: document.getElementById('zip').value.trim(),
+            },
+            coupon: appliedCoupon?.code || null,
+            affiliateCode: appliedCoupon?.isAffiliate ? appliedCoupon.code : null,
+            lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+          }),
+        });
 
-        // Update the payment request with current total
-        const result = await applePay.tokenize();
-        if (result.status === 'OK') {
-          // Send to backend same as card
-          const firstName = document.getElementById('first-name').value.trim();
-          const lastName = document.getElementById('last-name').value.trim();
-          const response = await fetch('/api/pay', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              sourceId: result.token,
-              amount: total,
-              email: document.getElementById('email').value.trim(),
-              name: firstName + ' ' + lastName,
-              shipping: {
-                firstName,
-                lastName,
-                address: document.getElementById('address').value.trim(),
-                city: document.getElementById('city').value.trim(),
-                state: document.getElementById('state').value.trim(),
-                zip: document.getElementById('zip').value.trim(),
-              },
-              coupon: appliedCoupon?.code || null,
-              affiliateCode: appliedCoupon?.isAffiliate ? appliedCoupon.code : null,
-              lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-            }),
-          });
-
-          const data = await response.json();
-          if (!response.ok || !data.success) {
-            showError(data.error || 'Payment failed. Please try again.');
-            setLoading(false);
-            return;
-          }
-
-          if (appliedCoupon?.isAffiliate) {
-            notifyAffiliate(appliedCoupon.code, total, data.orderNumber);
-          }
-
-          showConfirmation({ ...data, paymentNote: 'Apple Pay' });
-        } else {
-          showError('Apple Pay was cancelled or failed. Please try again.');
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          showError(data.error || 'Payment failed. Please try again.');
           setLoading(false);
+          return;
         }
+
+        if (appliedCoupon?.isAffiliate) {
+          notifyAffiliate(appliedCoupon.code, total, data.orderNumber);
+        }
+
+        showConfirmation({ ...data, paymentNote: 'Apple Pay' });
       } catch (err) {
         console.error('Apple Pay error:', err);
         showError('Apple Pay failed. Please try with a card instead.');
         setLoading(false);
       }
     }
+
+    // Override: when Apple Pay button is clicked by Square SDK, intercept the tokenize result
+    document.addEventListener('DOMContentLoaded', () => {
+      const apBtn = document.getElementById('apple-pay-button');
+      if (apBtn) {
+        apBtn.addEventListener('click', async (e) => {
+          if (!applePay) return;
+          try {
+            const result = await applePay.tokenize();
+            if (result.status === 'OK') {
+              processApplePayToken(result.token);
+            }
+          } catch (err) {
+            console.log('Apple Pay cancelled or failed:', err);
+          }
+        });
+      }
+    });
 
     // ====== Cart helpers ======
     function getBulkPrice(sku, price, qty) {
