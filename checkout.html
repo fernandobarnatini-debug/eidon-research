@@ -734,6 +734,7 @@
               zip: document.getElementById('zip').value.trim(),
             },
             coupon: appliedCoupon?.code || null,
+            affiliateCode: appliedCoupon?.isAffiliate ? appliedCoupon.code : null,
             lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
           }),
         });
@@ -744,6 +745,11 @@
           showError(data.error || 'Payment failed. Please try again.');
           setLoading(false);
           return;
+        }
+
+        // Notify affiliate if applicable
+        if (appliedCoupon?.isAffiliate) {
+          notifyAffiliate(appliedCoupon.code, total, data.orderNumber);
         }
 
         // Payment succeeded — show confirmation
@@ -774,6 +780,25 @@
       // Clear cart
       localStorage.removeItem('eidon_cart');
       cart = [];
+    }
+
+    // Notify affiliate of their commission
+    async function notifyAffiliate(code, orderTotal, orderNumber) {
+      const commission = (orderTotal * 0.10).toFixed(2);
+      try {
+        await fetch('/api/affiliate-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            affiliateCode: code,
+            orderTotal: orderTotal.toFixed(2),
+            commission,
+            orderNumber,
+          }),
+        });
+      } catch (e) { /* non-blocking */ }
+      // Clear stored ref code after use
+      localStorage.removeItem('eidon_ref_code');
     }
 
     function removeFromCheckout(sku) {

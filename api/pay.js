@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { sourceId, amount, email, name, shipping, coupon, lineItems } = req.body;
+  const { sourceId, amount, email, name, shipping, coupon, affiliateCode, lineItems } = req.body;
   if (!sourceId || !amount) return res.status(400).json({ error: 'Missing sourceId or amount' });
 
   const SQUARE_API = 'https://connect.squareup.com';
@@ -12,7 +12,8 @@ export default async function handler(req, res) {
 
   const shippingNote = shipping ? `Ship to: ${name}, ${shipping.address}, ${shipping.city}, ${shipping.state} ${shipping.zip}` : '';
   const itemsNote = lineItems ? lineItems.map(i => `${i.name} x${i.qty}`).join(', ') : '';
-  const note = [`EIDON Research Order`, shippingNote, `Email: ${email || 'N/A'}`, `Items: ${itemsNote}`, coupon ? `Coupon: ${coupon}` : ''].filter(Boolean).join(' | ');
+  const affiliateNote = affiliateCode ? `AFFILIATE: ${affiliateCode} (10% commission = $${(amount * 0.10).toFixed(2)})` : '';
+  const note = [`EIDON Research Order`, shippingNote, `Email: ${email || 'N/A'}`, `Items: ${itemsNote}`, coupon ? `Coupon: ${coupon}` : '', affiliateNote].filter(Boolean).join(' | ');
 
   try {
     const response = await fetch(`${SQUARE_API}/v2/payments`, {
