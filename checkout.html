@@ -162,6 +162,15 @@
 
           <!-- Card Payment Form (Square Web Payments SDK) -->
           <div id="payment-card">
+            <!-- Apple Pay Button -->
+            <div id="apple-pay-container" class="hidden mb-4">
+              <div id="apple-pay-button" style="height: 48px; border-radius: 8px;"></div>
+              <div class="flex items-center gap-3 my-3">
+                <div class="flex-1 border-t border-[#1a2a45]"></div>
+                <span class="text-[10px] text-[#5a6478] uppercase tracking-wider">or pay with card</span>
+                <div class="flex-1 border-t border-[#1a2a45]"></div>
+              </div>
+            </div>
             <div id="card-container" class="mb-3"></div>
             <p id="card-errors" class="text-xs text-red-500 mb-2 hidden"></p>
             <p class="text-xs text-[#7a8599] flex items-center gap-1.5">
@@ -452,6 +461,8 @@
     })();
 
     // ====== Square Web Payments SDK Init ======
+    let applePay = null;
+
     async function initSquare() {
       if (!window.Square) {
         console.error('Square SDK not loaded');
@@ -462,12 +473,90 @@
       try {
         const payments = window.Square.payments(SQUARE_APP_ID, SQUARE_LOCATION_ID);
 
+        // Init card form
         card = await payments.card();
-
         await card.attach('#card-container');
+
+        // Init Apple Pay (if available on this device)
+        try {
+          const paymentRequest = payments.paymentRequest({
+            countryCode: 'US',
+            currencyCode: 'USD',
+            total: {
+              amount: getTotal().toFixed(2),
+              label: 'EIDON Research',
+            },
+          });
+          applePay = await payments.applePay(paymentRequest);
+          // Apple Pay is available — show the button
+          document.getElementById('apple-pay-container').classList.remove('hidden');
+          document.getElementById('apple-pay-button').addEventListener('click', handleApplePay);
+        } catch (apErr) {
+          // Apple Pay not available on this device/browser — that's fine, just use card
+          console.log('Apple Pay not available:', apErr.message);
+        }
       } catch (err) {
         console.error('Square init error:', err);
         showError('Could not initialize payment form. Please refresh and try again.');
+      }
+    }
+
+    async function handleApplePay() {
+      if (!validateForm()) return;
+      if (!applePay) return;
+
+      setLoading(true);
+      try {
+        const total = getTotal();
+
+        // Update the payment request with current total
+        const result = await applePay.tokenize();
+        if (result.status === 'OK') {
+          // Send to backend same as card
+          const firstName = document.getElementById('first-name').value.trim();
+          const lastName = document.getElementById('last-name').value.trim();
+          const response = await fetch('/api/pay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sourceId: result.token,
+              amount: total,
+              email: document.getElementById('email').value.trim(),
+              name: firstName + ' ' + lastName,
+              shipping: {
+                firstName,
+                lastName,
+                address: document.getElementById('address').value.trim(),
+                city: document.getElementById('city').value.trim(),
+                state: document.getElementById('state').value.trim(),
+                zip: document.getElementById('zip').value.trim(),
+              },
+              coupon: appliedCoupon?.code || null,
+              affiliateCode: appliedCoupon?.isAffiliate ? appliedCoupon.code : null,
+              lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+            }),
+          });
+
+          const data = await response.json();
+          if (!response.ok || !data.success) {
+            showError(data.error || 'Payment failed. Please try again.');
+            setLoading(false);
+            return;
+          }
+
+          if (appliedCoupon?.isAffiliate) {
+            notifyAffiliate(appliedCoupon.code, total, data.orderNumber);
+          }
+
+          showConfirmation({ ...data, paymentNote: 'Apple Pay' });
+        } else {
+          showError('Apple Pay was cancelled or failed. Please try again.');
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('Apple Pay error:', err);
+        showError('Apple Pay failed. Please try with a card instead.');
+        setLoading(false);
       }
     }
 
