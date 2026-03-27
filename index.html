@@ -1641,6 +1641,15 @@
       }
     });
 
+    // Capture ?ref= affiliate code from URL and persist to localStorage
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const refCode = params.get('ref');
+      if (refCode) {
+        localStorage.setItem('eidon_ref_code', refCode.toUpperCase());
+      }
+    })();
+
     // Initialize
     updateCartUI();
   </script>

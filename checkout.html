@@ -377,21 +377,7 @@
 
       if (!code) return;
 
-      // Referral code support (REF-XXXXX format)
-      if (code.startsWith('REF-') && code.length >= 6) {
-        appliedCoupon = { code, discount: 0.1, label: 'Referral discount (10% Off)' };
-        msg.textContent = 'Referral discount applied! 10% off your order.';
-        msg.className = 'text-xs mt-2 font-semibold text-green-600';
-        msg.classList.remove('hidden');
-        input.disabled = true;
-        input.style.opacity = '0.5';
-        document.getElementById('coupon-btn').textContent = 'Applied';
-        document.getElementById('coupon-btn').disabled = true;
-        document.getElementById('coupon-btn').style.opacity = '0.5';
-        renderSummary();
-        return;
-      }
-
+      // Check built-in coupons first
       if (COUPONS[code]) {
         const coupon = COUPONS[code];
         if (coupon.minOrder && getSubtotal() < coupon.minOrder) {
@@ -412,6 +398,20 @@
         document.getElementById('coupon-btn').textContent = 'Applied';
         document.getElementById('coupon-btn').disabled = true;
         document.getElementById('coupon-btn').style.opacity = '0.5';
+        renderSummary();
+      } else if (code.length >= 2 && /^[A-Z0-9]+$/.test(code)) {
+        // Treat any other alphanumeric code as an affiliate code — 10% off
+        appliedCoupon = { code, discount: 0.1, label: 'Affiliate code: ' + code + ' (10% Off)', isAffiliate: true };
+        msg.textContent = 'Affiliate discount applied! 10% off your order.';
+        msg.className = 'text-xs mt-2 font-semibold text-green-600';
+        msg.classList.remove('hidden');
+        input.disabled = true;
+        input.style.opacity = '0.5';
+        document.getElementById('coupon-btn').textContent = 'Applied';
+        document.getElementById('coupon-btn').disabled = true;
+        document.getElementById('coupon-btn').style.opacity = '0.5';
+        // Store affiliate code used for tracking
+        localStorage.setItem('eidon_last_affiliate_used', code);
         renderSummary();
       } else {
         appliedCoupon = null;
@@ -436,6 +436,19 @@
     if (cart.length === 0) {
       window.location.href = 'index.html';
     }
+
+    // Auto-apply affiliate code from URL ?ref=CODE or stored ref
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const refCode = params.get('ref') || localStorage.getItem('eidon_ref_code');
+      if (refCode) {
+        const input = document.getElementById('coupon-input');
+        if (input && !input.disabled) {
+          input.value = refCode.toUpperCase();
+          setTimeout(() => applyCoupon(), 500);
+        }
+      }
+    })();
 
     // ====== Square Web Payments SDK Init ======
     async function initSquare() {
