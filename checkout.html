@@ -164,7 +164,7 @@
           <div id="payment-card">
             <!-- Apple Pay Button -->
             <div id="apple-pay-container" class="hidden mb-4">
-              <div id="apple-pay-button" style="height: 48px; border-radius: 8px;"></div>
+              <button id="apple-pay-button" style="height: 48px; width: 100%; border-radius: 8px; -webkit-appearance: -apple-pay-button; -apple-pay-button-type: buy; -apple-pay-button-style: black; cursor: pointer; border: none;"></button>
               <div class="flex items-center gap-3 my-3">
                 <div class="flex-1 border-t border-[#1a2a45]"></div>
                 <span class="text-[10px] text-[#5a6478] uppercase tracking-wider">or pay with card</span>
@@ -482,7 +482,7 @@
         card = await payments.card();
         await card.attach('#card-container');
 
-        // Init Apple Pay (if available on this device)
+        // Init Apple Pay (if available on this device — Safari only)
         try {
           const paymentRequest = payments.paymentRequest({
             countryCode: 'US',
@@ -493,9 +493,23 @@
             },
           });
           applePay = await payments.applePay(paymentRequest);
-          // Apple Pay is available — show the container and attach the official button
+          // Apple Pay is available on this device — show the button
           document.getElementById('apple-pay-container').classList.remove('hidden');
-          await applePay.attach('#apple-pay-button');
+          // Attach click handler — must call tokenize() immediately in click handler per Square docs
+          document.getElementById('apple-pay-button').addEventListener('click', async function(event) {
+            event.preventDefault();
+            if (!applePay) return;
+            try {
+              const result = await applePay.tokenize();
+              if (result.status === 'OK') {
+                await processApplePayToken(result.token);
+              } else {
+                console.log('Apple Pay tokenize failed:', result);
+              }
+            } catch (tokenErr) {
+              console.log('Apple Pay cancelled or error:', tokenErr);
+            }
+          });
         } catch (apErr) {
           // Apple Pay not available on this device/browser — that's fine, just use card
           console.log('Apple Pay not available:', apErr.message);
@@ -555,23 +569,7 @@
       }
     }
 
-    // Override: when Apple Pay button is clicked by Square SDK, intercept the tokenize result
-    document.addEventListener('DOMContentLoaded', () => {
-      const apBtn = document.getElementById('apple-pay-button');
-      if (apBtn) {
-        apBtn.addEventListener('click', async (e) => {
-          if (!applePay) return;
-          try {
-            const result = await applePay.tokenize();
-            if (result.status === 'OK') {
-              processApplePayToken(result.token);
-            }
-          } catch (err) {
-            console.log('Apple Pay cancelled or failed:', err);
-          }
-        });
-      }
-    });
+    // Apple Pay click handler is set up in initSquare() above
 
     // ====== Cart helpers ======
     function getBulkPrice(sku, price, qty) {
