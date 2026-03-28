@@ -166,17 +166,6 @@
     h1, h2, h3, h4, h5, h6 { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #ffffff; }
     .heading-tight { letter-spacing: -0.03em; }
 
-    /* === GRAIN TEXTURE === */
-    .grain-overlay { position: relative; }
-    .grain-overlay::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0.06;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1;
-    }
 
     /* === LAYERED SHADOWS === */
     .shadow-elevated {
@@ -266,16 +255,6 @@
       animation: shimmer 3s ease-in-out infinite;
     }
 
-    /* === MARQUEE === */
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .marquee-track {
-      animation: marquee 25s linear infinite;
-      will-change: transform;
-    }
-    .marquee-track:hover { animation-play-state: paused; }
 
     /* === HERO PARALLAX LAYERS === */
     .parallax-bg {
@@ -427,38 +406,13 @@
     }
     .cart-bounce { animation: cartBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-    /* === FLOATING PARTICLES (hero) === */
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
-    }
-    .particle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background: rgba(212,175,55,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-    }
   </style>
 </head>
 <body class="bg-[#0B1426]">
 
   <!-- ========== ANNOUNCEMENT BAR ========== -->
-  <div class="bg-navy-light text-white/80 text-[11px] py-2 tracking-wide border-b border-white/5 overflow-hidden">
-    <div class="marquee-track whitespace-nowrap inline-flex gap-16">
-      <span class="px-4">🔥 50% OFF EVERYTHING — ENDS IN: <span id="countdown" class="font-heading font-bold text-gold"></span></span>
-      <span class="px-4">&bull;</span>
-      <span class="px-4">FREE SHIPPING ON ORDERS $50+</span>
-      <span class="px-4">&bull;</span>
-      <span class="px-4">PAY WITH CRYPTO &amp; SAVE 5%</span>
-      <span class="px-4">&bull;</span>
-      <span class="px-4">🔥 50% OFF EVERYTHING — ENDS IN: <span id="countdown2" class="font-heading font-bold text-gold"></span></span>
-      <span class="px-4">&bull;</span>
-      <span class="px-4">FREE SHIPPING ON ORDERS $50+</span>
-      <span class="px-4">&bull;</span>
-      <span class="px-4">PAY WITH CRYPTO &amp; SAVE 5%</span>
-    </div>
+  <div class="bg-navy-light text-white/80 text-[11px] py-2 tracking-wide border-b border-white/5 text-center">
+    50% OFF EVERYTHING &middot; FREE SHIPPING $50+ &middot; CRYPTO SAVES 5%
   </div>
 
 
@@ -510,7 +464,7 @@
   </nav>
 
   <!-- ========== HERO SECTION ========== -->
-  <section id="hero" class="relative bg-navy grain-overlay overflow-hidden">
+  <section id="hero" class="relative bg-navy overflow-hidden">
     <!-- Layered radial gradients for atmospheric depth -->
     <div id="hero-gradient" class="parallax-bg absolute inset-0" style="background: radial-gradient(ellipse at 30% 30%, rgba(0,212,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(212,175,55,0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 110%, rgba(17,29,56,0.9) 0%, transparent 50%);"></div>
     <!-- Subtle vial silhouette background (parallax layer) -->
@@ -522,20 +476,13 @@
         <rect x="90" y="390" width="120" height="40" rx="12" fill="white"/>
       </svg>
     </div>
-    <!-- Floating particles -->
-    <div id="hero-particles" class="absolute inset-0 pointer-events-none z-[2]"></div>
     <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-36 lg:py-44 text-center">
       <p class="hero-text-1 text-gold text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-3 sm:mb-5">Direct Supply of Research-Grade Peptides</p>
       <h1 class="hero-text-2 font-heading font-extrabold text-white text-3xl sm:text-6xl lg:text-7xl heading-tight leading-[1.05] mb-4 sm:mb-6">
         Research-Grade. Verified Pure.<br>Direct to You.
       </h1>
-      <p class="hero-text-3 text-white/60 text-sm sm:text-lg max-w-lg mx-auto mb-3 sm:mb-5 leading-relaxed">
-        Direct supply of research-grade peptides with worldwide shipping. Verified &gt;99% purity. Third-party tested.
-      </p>
-      <p class="hero-text-4 text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-5 sm:mb-8">For Laboratory &amp; Research Use Only</p>
-      <div class="hero-text-5 flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="#products" class="btn-gold px-8 sm:px-10 py-3.5 sm:py-4 text-sm uppercase tracking-wider inline-block text-center">Shop Peptides</a>
-        <a href="#bundles" class="btn-outline px-8 sm:px-10 py-3.5 sm:py-4 text-sm uppercase tracking-wider inline-block text-center">View Bundles</a>
+      <div class="hero-text-3 flex justify-center mt-2 sm:mt-4">
+        <a href="#products" class="btn-gold px-8 sm:px-10 py-3.5 sm:py-4 text-sm uppercase tracking-wider inline-block text-center">Shop Now</a>
       </div>
     </div>
   </section>
@@ -571,8 +518,7 @@
   <section id="products" class="bg-[#0B1426] py-16 sm:py-20">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
       <div class="text-center mb-12" data-reveal>
-        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Premium Research Compounds</p>
-        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Individual Peptides</h2>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Products</h2>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger>
 
@@ -582,15 +528,13 @@
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <img src="images/Reta.png" alt="Retatrutide 5mg" class="h-full w-full object-contain p-4">
             </div>
-            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="absolute top-3 left-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
             <span class="absolute top-3 right-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Popular</span>
           </div>
           <div class="p-5">
-            <a href="retatrutide.html" class="font-heading font-bold text-base mb-1 block hover:text-gold" style="transition: color 0.2s ease;">Retatrutide 5mg</a>
-            <p class="text-sm text-[#c0c8d8] mb-3 leading-relaxed">The most potent weight loss research compound available. Triple-receptor GLP-1/GIP/Glucagon activation. Outperforms semaglutide in early clinical data.</p>
-            <div class="grid grid-cols-3 gap-2 mb-3"><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-[#1a2a45]"><p class="text-[10px] text-[#7a8599]">1 Unit</p><p class="text-sm font-bold text-white">$60</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/20"><p class="text-[10px] text-gold">2+ Units</p><p class="text-sm font-bold text-gold">$54</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/30"><p class="text-[10px] text-gold">3+ Units</p><p class="text-sm font-bold text-gold">$51</p></div></div>
+            <a href="retatrutide.html" class="font-heading font-bold text-base mb-3 block hover:text-gold" style="transition: color 0.2s ease;">Retatrutide 5mg</a>
             <div class="flex items-center justify-between">
-              <div><span class="text-sm text-[#7a8599] line-through mr-2">$120</span><span class="font-heading font-bold text-xl text-red-500">$60</span></div>
+              <div><span class="text-sm text-[#7a8599] line-through mr-2">$120</span><span class="font-heading font-bold text-xl text-gold">$60</span></div>
               <button onclick="handleAddToCart('RT5', 'Retatrutide 5mg', 60)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
             </div>
             <div class="flex items-center justify-center gap-3 text-[10px] text-[#7a8599] mt-2 flex-wrap">
@@ -609,14 +553,12 @@
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <img src="images/CJC+Ipo.png" alt="CJC-1295 + Ipamorelin 10mg" class="h-full w-full object-contain p-4">
             </div>
-            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="absolute top-3 left-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <div class="p-5">
-            <a href="cjc-1295.html" class="font-heading font-bold text-base mb-1 block hover:text-gold" style="transition: color 0.2s ease;">CJC-1295 + Ipamorelin 10mg</a>
-            <p class="text-sm text-[#c0c8d8] mb-3 leading-relaxed">The gold standard growth hormone stack. Promotes deep sleep, accelerated recovery, and lean muscle development. Synergistic dual-peptide formula.</p>
-            <div class="grid grid-cols-3 gap-2 mb-3"><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-[#1a2a45]"><p class="text-[10px] text-[#7a8599]">1 Unit</p><p class="text-sm font-bold text-white">$60</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/20"><p class="text-[10px] text-gold">2+ Units</p><p class="text-sm font-bold text-gold">$54</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/30"><p class="text-[10px] text-gold">3+ Units</p><p class="text-sm font-bold text-gold">$51</p></div></div>
+            <a href="cjc-1295.html" class="font-heading font-bold text-base mb-3 block hover:text-gold" style="transition: color 0.2s ease;">CJC-1295 + Ipamorelin 10mg</a>
             <div class="flex items-center justify-between">
-              <div><span class="text-sm text-[#7a8599] line-through mr-2">$120</span><span class="font-heading font-bold text-xl text-red-500">$60</span></div>
+              <div><span class="text-sm text-[#7a8599] line-through mr-2">$120</span><span class="font-heading font-bold text-xl text-gold">$60</span></div>
               <button onclick="handleAddToCart('CP10', 'CJC-1295 + Ipamorelin 10mg', 60)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
             </div>
             <div class="flex items-center justify-center gap-3 text-[10px] text-[#7a8599] mt-2 flex-wrap">
@@ -635,14 +577,12 @@
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <img src="images/Ghkcu.png" alt="GHK-Cu 100mg" class="h-full w-full object-contain p-4">
             </div>
-            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="absolute top-3 left-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <div class="p-5">
-            <a href="ghk-cu.html" class="font-heading font-bold text-base mb-1 block hover:text-gold" style="transition: color 0.2s ease;">GHK-Cu 100mg</a>
-            <p class="text-sm text-[#c0c8d8] mb-3 leading-relaxed">The most studied regenerative peptide in research. Stimulates collagen synthesis, tissue repair, and skin rejuvenation at the cellular level.</p>
-            <div class="grid grid-cols-3 gap-2 mb-3"><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-[#1a2a45]"><p class="text-[10px] text-[#7a8599]">1 Unit</p><p class="text-sm font-bold text-white">$50</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/20"><p class="text-[10px] text-gold">2+ Units</p><p class="text-sm font-bold text-gold">$45</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/30"><p class="text-[10px] text-gold">3+ Units</p><p class="text-sm font-bold text-gold">$42.50</p></div></div>
+            <a href="ghk-cu.html" class="font-heading font-bold text-base mb-3 block hover:text-gold" style="transition: color 0.2s ease;">GHK-Cu 100mg</a>
             <div class="flex items-center justify-between">
-              <div><span class="text-sm text-[#7a8599] line-through mr-2">$100</span><span class="font-heading font-bold text-xl text-red-500">$50</span></div>
+              <div><span class="text-sm text-[#7a8599] line-through mr-2">$100</span><span class="font-heading font-bold text-xl text-gold">$50</span></div>
               <button onclick="handleAddToCart('CU100', 'GHK-Cu 100mg', 50)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
             </div>
             <div class="flex items-center justify-center gap-3 text-[10px] text-[#7a8599] mt-2 flex-wrap">
@@ -661,14 +601,12 @@
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <img src="images/Melanotin2.png" alt="Melanotan 2 10mg" class="h-full w-full object-contain p-4">
             </div>
-            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="absolute top-3 left-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <div class="p-5">
-            <a href="melanotan-2.html" class="font-heading font-bold text-base mb-1 block hover:text-gold" style="transition: color 0.2s ease;">Melanotan 2 10mg</a>
-            <p class="text-sm text-[#c0c8d8] mb-3 leading-relaxed">The original melanocortin receptor research compound. Studied for pigmentation enhancement without UV exposure. High-demand with limited availability.</p>
-            <div class="grid grid-cols-3 gap-2 mb-3"><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-[#1a2a45]"><p class="text-[10px] text-[#7a8599]">1 Unit</p><p class="text-sm font-bold text-white">$25</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/20"><p class="text-[10px] text-gold">2+ Units</p><p class="text-sm font-bold text-gold">$22.50</p></div><div class="bg-[#0B1426] rounded-lg py-1.5 px-2 text-center border border-gold/30"><p class="text-[10px] text-gold">3+ Units</p><p class="text-sm font-bold text-gold">$21.25</p></div></div>
+            <a href="melanotan-2.html" class="font-heading font-bold text-base mb-3 block hover:text-gold" style="transition: color 0.2s ease;">Melanotan 2 10mg</a>
             <div class="flex items-center justify-between">
-              <div><span class="text-sm text-[#7a8599] line-through mr-2">$50</span><span class="font-heading font-bold text-xl text-red-500">$25</span></div>
+              <div><span class="text-sm text-[#7a8599] line-through mr-2">$50</span><span class="font-heading font-bold text-xl text-gold">$25</span></div>
               <button onclick="handleAddToCart('MT2', 'Melanotan 2 10mg', 25)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
             </div>
             <div class="flex items-center justify-center gap-3 text-[10px] text-[#7a8599] mt-2 flex-wrap">
@@ -687,19 +625,12 @@
             <div class="absolute inset-0 flex items-center justify-center card-img">
               <img src="images/Bacwater.png" alt="BAC Water 10ml" class="h-full w-full object-contain p-4">
             </div>
-            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="absolute top-3 left-3 bg-gold text-navy text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <div class="p-5">
-            <a href="bac-water.html" class="font-heading font-bold text-base mb-1 block hover:text-gold" style="transition: color 0.2s ease;">BAC Water 10ml</a>
-            <p class="text-sm text-[#c0c8d8] mb-3 leading-relaxed">USP-grade bacteriostatic water. Required for reconstitution of lyophilized peptides. Pharmaceutical quality with 0.9% benzyl alcohol preservative.</p>
-            <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-[#5a6478] mb-3 font-mono">
-  <span>0.9% Benzyl Alcohol</span>
-  <span>USP Grade</span>
-  <span>Store: 2-8°C</span>
-  <span>Sterile</span>
-</div>
+            <a href="bac-water.html" class="font-heading font-bold text-base mb-3 block hover:text-gold" style="transition: color 0.2s ease;">BAC Water 10ml</a>
             <div class="flex items-center justify-between">
-              <div><span class="text-sm text-[#7a8599] line-through mr-2">$20</span><span class="font-heading font-bold text-xl text-red-500">$10</span></div>
+              <div><span class="text-sm text-[#7a8599] line-through mr-2">$20</span><span class="font-heading font-bold text-xl text-gold">$10</span></div>
               <button onclick="addToCart('WA10', 'BAC Water 10ml', 10)" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2.5 rounded-lg">Add to Cart</button>
             </div>
             <div class="flex items-center justify-center gap-3 text-[10px] text-[#7a8599] mt-2 flex-wrap">
@@ -720,8 +651,7 @@
   <section id="bundles" class="bg-[#0e1a2e] py-16 sm:py-20">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6">
       <div class="text-center mb-12" data-reveal>
-        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Save More with Stacks</p>
-        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Research Bundles</h2>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">Bundles</h2>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger>
 
@@ -732,7 +662,7 @@
           </div>
           <div class="p-6">
           <div class="flex items-center justify-between mb-3">
-            <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="bg-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <h3 class="font-heading font-bold text-lg mb-2">Summer Cut Stack</h3>
           <ul class="text-sm text-[#c0c8d8] mb-4 space-y-1">
@@ -743,7 +673,7 @@
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#7a8599] line-through mr-2">$200</span>
-              <span class="font-heading font-bold text-xl text-red-500">$100</span>
+              <span class="font-heading font-bold text-xl text-gold">$100</span>
             </div>
             <button onclick="addBundle('summer-cut', 'Summer Cut Stack', 100, ['Retatrutide 5mg','GHK-Cu 100mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
@@ -757,7 +687,7 @@
           </div>
           <div class="p-6">
           <div class="flex items-center justify-between mb-3">
-            <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="bg-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <h3 class="font-heading font-bold text-lg mb-2">Gym Gains Stack</h3>
           <ul class="text-sm text-[#c0c8d8] mb-4 space-y-1">
@@ -767,7 +697,7 @@
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#7a8599] line-through mr-2">$120</span>
-              <span class="font-heading font-bold text-xl text-red-500">$60</span>
+              <span class="font-heading font-bold text-xl text-gold">$60</span>
             </div>
             <button onclick="addBundle('gym-gains', 'Gym Gains Stack', 60, ['CJC-1295 + Ipamorelin 10mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
@@ -781,7 +711,7 @@
           </div>
           <div class="p-6">
           <div class="flex items-center justify-between mb-3">
-            <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="bg-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <h3 class="font-heading font-bold text-lg mb-2">Summer Shred MAX</h3>
           <ul class="text-sm text-[#c0c8d8] mb-4 space-y-1">
@@ -792,7 +722,7 @@
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#7a8599] line-through mr-2">$160</span>
-              <span class="font-heading font-bold text-xl text-red-500">$80</span>
+              <span class="font-heading font-bold text-xl text-gold">$80</span>
             </div>
             <button onclick="addBundle('shred-max', 'Summer Shred MAX', 80, ['Retatrutide 5mg','Melanotan 2 10mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
@@ -806,7 +736,7 @@
           </div>
           <div class="p-6">
           <div class="flex items-center justify-between mb-3">
-            <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
+            <span class="bg-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">50% OFF</span>
           </div>
           <h3 class="font-heading font-bold text-lg mb-2">The Triple</h3>
           <ul class="text-sm text-[#c0c8d8] mb-4 space-y-1">
@@ -818,7 +748,7 @@
           <div class="flex items-center justify-between">
             <div>
               <span class="text-sm text-[#7a8599] line-through mr-2">$300</span>
-              <span class="font-heading font-bold text-xl text-red-500">$150</span>
+              <span class="font-heading font-bold text-xl text-gold">$150</span>
             </div>
             <button onclick="addBundle('the-triple', 'The Triple', 150, ['Retatrutide 5mg','CJC-1295 + Ipamorelin 10mg','GHK-Cu 100mg','BAC Water 10ml'])" class="add-btn bg-gold text-navy text-sm font-bold px-4 py-2 rounded-lg">Add Bundle</button>
           </div>
@@ -833,7 +763,7 @@
           <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.1) 0%, transparent 60%); pointer-events: none;"></div>
           <div class="relative z-10 p-6">
             <div class="flex items-center justify-between mb-3">
-              <span class="bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mr-2">50% OFF</span>
+              <span class="bg-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mr-2">50% OFF</span>
               <span class="shimmer-badge-gold text-navy text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Best Value</span>
             </div>
             <h3 class="font-heading font-bold text-xl mb-2 text-white">The Everything Stack</h3>
@@ -858,47 +788,7 @@
     </div>
   </section>
 
-  <!-- ========== TRUST BANNER ========== -->
-  <section class="bg-[#0B1426] py-12 sm:py-16">
-    <div class="max-w-[900px] mx-auto px-4 sm:px-6" data-reveal>
-      <div class="bg-[#0f1928] border border-[#1a2a45] rounded-xl p-8 sm:p-10 text-center" style="box-shadow: 0 4px 24px rgba(0,0,0,0.3), 0 1px 6px rgba(212,175,55,0.08);">
-        <div class="flex items-center justify-center gap-3 mb-4">
-          <svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase">Our Promise</p>
-        </div>
-        <p class="font-heading font-bold text-lg sm:text-xl text-white leading-relaxed" style="letter-spacing: -0.01em;">Trusted by researchers nationwide. Every batch third-party tested. Every order shipped same-day.</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- ========== ABOUT EIDON RESEARCH ========== -->
-  <section class="bg-[#0e1a2e] py-16 sm:py-20">
-    <div class="max-w-[800px] mx-auto px-4 sm:px-6">
-      <div class="text-center mb-8" data-reveal>
-        <p class="text-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Who We Are</p>
-        <h2 class="font-heading font-bold text-2xl sm:text-3xl heading-tight">About EIDON Research</h2>
-      </div>
-      <p class="text-sm sm:text-base text-[#c0c8d8] leading-relaxed text-center mb-10" data-reveal>Based in Sacramento, California, EIDON Research is dedicated to providing the highest quality research-grade peptides. Every compound undergoes rigorous third-party HPLC testing to guarantee &gt;99% purity. We believe researchers deserve access to premium compounds without premium markup — that's why we offer direct pricing with no middlemen.</p>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" data-stagger>
-        <div class="bg-[#111b30] rounded-xl p-4 text-center shadow-elevated" data-reveal style="--stagger-index: 0">
-          <p class="font-heading font-bold text-xl text-gold mb-1">Every Batch</p>
-          <p class="text-[11px] text-[#7a8599]">Third-Party Tested</p>
-        </div>
-        <div class="bg-[#111b30] rounded-xl p-4 text-center shadow-elevated" data-reveal style="--stagger-index: 1">
-          <p class="font-heading font-bold text-xl text-gold mb-1">99.2%</p>
-          <p class="text-[11px] text-[#7a8599]">Purity Average</p>
-        </div>
-        <div class="bg-[#111b30] rounded-xl p-4 text-center shadow-elevated" data-reveal style="--stagger-index: 2">
-          <p class="font-heading font-bold text-xl text-gold mb-1">Same-Day</p>
-          <p class="text-[11px] text-[#7a8599]">Shipping</p>
-        </div>
-        <div class="bg-[#111b30] rounded-xl p-4 text-center shadow-elevated" data-reveal style="--stagger-index: 3">
-          <p class="font-heading font-bold text-xl text-gold mb-1">Sacramento</p>
-          <p class="text-[11px] text-[#7a8599]">California</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ========== FAQ SECTION ========== -->
   <section id="faq" class="bg-[#0e1a2e] py-16 sm:py-20">
@@ -988,7 +878,7 @@
   </section>
 
   <!-- ========== FOOTER ========== -->
-  <footer class="bg-navy text-white grain-overlay">
+  <footer class="bg-navy text-white">
     <div class="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10" data-reveal>
         <!-- Brand -->
@@ -1148,22 +1038,6 @@
       }
     }, { passive: true });
 
-    // ====== HERO FLOATING PARTICLES ======
-    (function createParticles() {
-      const container = document.getElementById('hero-particles');
-      if (!container) return;
-      for (let i = 0; i < 12; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.top = Math.random() * 100 + '%';
-        p.style.width = (2 + Math.random() * 3) + 'px';
-        p.style.height = p.style.width;
-        p.style.animation = `float ${4 + Math.random() * 6}s ease-in-out ${Math.random() * 5}s infinite`;
-        p.style.opacity = (0.15 + Math.random() * 0.3).toString();
-        container.appendChild(p);
-      }
-    })();
 
     // ====== BUTTON RIPPLE EFFECT ======
     document.querySelectorAll('.add-btn').forEach(btn => {
@@ -1335,7 +1209,7 @@
               <span class="text-sm font-semibold w-6 text-center">${item.qty}</span>
               <button onclick="updateQty('${item.sku}', 1)" class="w-7 h-7 rounded-md border border-[#1a2a45] flex items-center justify-center text-sm hover:bg-[#152035] focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: background 0.2s ease;" aria-label="Increase quantity">+</button>
             </div>
-            <button onclick="removeFromCart('${item.sku}')" class="text-[#5a6478] hover:text-red-500 p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: color 0.2s ease;" aria-label="Remove item">
+            <button onclick="removeFromCart('${item.sku}')" class="text-[#5a6478] hover:text-gold p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold" style="transition: color 0.2s ease;" aria-label="Remove item">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
           </div>
@@ -1460,22 +1334,6 @@
     }
 
     // ====== COUNTDOWN TIMER ======
-    function updateCountdown() {
-      const end = new Date('2026-03-31T23:59:59-07:00').getTime();
-      const now = Date.now();
-      const diff = end - now;
-      if (diff <= 0) { document.getElementById('countdown').textContent = 'SALE ENDED'; const cd2e = document.getElementById('countdown2'); if (cd2e) cd2e.textContent = 'SALE ENDED'; return; }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      const cdText = `${d}d ${h}h ${m}m ${s}s`;
-      document.getElementById('countdown').textContent = cdText;
-      const cd2 = document.getElementById('countdown2');
-      if (cd2) cd2.textContent = cdText;
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
 
     // ====== BAC WATER UPSELL ======
     function handleAddToCart(sku, name, price) {
@@ -1532,7 +1390,7 @@
     function submitExitEmail() {
       const email = document.getElementById('exit-email').value.trim();
       if (!email || !email.includes('@')) {
-        document.getElementById('exit-email').style.borderColor = '#ef4444';
+        document.getElementById('exit-email').style.borderColor = '#D4AF37';
         setTimeout(() => { document.getElementById('exit-email').style.borderColor = '#1a2a45'; }, 2000);
         return;
       }
