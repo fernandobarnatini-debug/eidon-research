@@ -7,6 +7,7 @@
     "dev": "node server.js"
   },
   "dependencies": {
+    "@vercel/kv": "^3.0.0",
     "dotenv": "^16.6.1",
     "express": "^4.22.1",
     "puppeteer": "^24.40.0"
