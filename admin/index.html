@@ -254,7 +254,7 @@
       if (!token) return;
 
       try {
-        const res = await fetch(`${API_BASE}/api/orders?token=${encodeURIComponent(token)}`);
+        const res = await fetch(`${API_BASE}/api/analytics?token=${encodeURIComponent(token)}&range=today`);
         if (res.ok) {
           TOKEN = token;
           sessionStorage.setItem('eidon_admin_token', token);

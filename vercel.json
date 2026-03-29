@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/api/orders", "destination": "/api/orders" },
     { "source": "/api/pay", "destination": "/api/pay" },
     { "source": "/api/chat", "destination": "/api/chat" },
     { "source": "/api/track", "destination": "/api/track" },
