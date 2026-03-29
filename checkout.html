@@ -136,18 +136,28 @@
 
         <!-- Payment Method -->
         <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
-          <h2 class="font-heading font-bold text-lg mb-2">Payment Method</h2>
-          <p class="text-xs text-[#7a8599] mb-5">All payments are currently processed through Zelle while our card processor is being updated.</p>
-
-          <!-- Zelle Payment -->
-          <div id="payment-zelle">
-            <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-full max-w-sm mx-auto rounded-xl mb-4">
-            <div class="bg-gold/10 border border-gold/20 rounded-lg p-3 text-xs text-[#c0c8d8] space-y-1.5">
-              <p class="flex items-start gap-2"><span class="text-gold mt-0.5">1.</span> Scan the QR code and send the exact total shown below</p>
-              <p class="flex items-start gap-2"><span class="text-gold mt-0.5">2.</span> <strong class="text-white">Screenshot your payment confirmation</strong> as proof of payment</p>
-              <p class="flex items-start gap-2"><span class="text-gold mt-0.5">3.</span> Click "I've Sent Payment" to submit your order</p>
-            </div>
+          <div class="flex items-center gap-2 mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#6D1ED4"/><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h2 class="font-heading font-bold text-lg">Pay with Zelle</h2>
           </div>
+
+          <!-- Big amount + copy -->
+          <div class="bg-[#0e1a2e] rounded-xl p-5 mb-4 text-center">
+            <p class="text-xs text-[#7a8599] uppercase tracking-wider mb-1">Send exactly</p>
+            <p class="font-heading font-extrabold text-4xl text-white mb-2">$<span id="zelle-amount">0.00</span></p>
+            <button onclick="copyAmount()" id="copy-btn" class="text-xs text-gold border border-gold/30 rounded-lg px-4 py-1.5 hover:bg-gold/10 font-semibold" style="transition: background 0.2s ease;">
+              Tap to copy amount
+            </button>
+          </div>
+
+          <!-- QR Code -->
+          <div id="payment-zelle" class="mb-4">
+            <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-full max-w-xs mx-auto rounded-xl">
+          </div>
+
+          <!-- Simple instructions -->
+          <p class="text-xs text-[#7a8599] text-center mb-1">Scan QR code in your banking app &middot; Send exact amount &middot; Screenshot confirmation</p>
+          <p class="text-[10px] text-[#5a6478] text-center">Card payments returning soon</p>
         </div>
 
         <!-- Trust Badges -->
@@ -795,7 +805,16 @@
     function updatePaymentAmounts() {
       const total = getTotal();
       const zelleAmt = document.getElementById('zelle-amount');
-      if (zelleAmt) zelleAmt.textContent = '$' + Math.max(0, total).toFixed(2);
+      if (zelleAmt) zelleAmt.textContent = Math.max(0, total).toFixed(2);
+    }
+    function copyAmount() {
+      const total = Math.max(0, getTotal()).toFixed(2);
+      navigator.clipboard.writeText(total).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!';
+        btn.style.background = 'rgba(212,175,55,0.15)';
+        setTimeout(() => { btn.textContent = 'Tap to copy amount'; btn.style.background = ''; }, 2000);
+      });
     }
     // Patch renderSummary to also update payment amounts
     const _origRenderSummary = renderSummary;
