@@ -5,16 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-app.use(express.json());
-app.use(express.static('.'));
-
-const SQUARE_API = 'https://connect.squareup.com';
-const ACCESS_TOKEN = process.env.SQUARE_ACCESS_TOKEN;
-const LOCATION_ID = process.env.SQUARE_LOCATION_ID;
-const ORDERS_FILE = path.join(__dirname, 'orders.json');
-const ANALYTICS_FILE = path.join(__dirname, 'analytics.json');
-
 // ====== CORS for admin dashboard on different port ======
+// Must be FIRST middleware — before json, static, everything
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (origin && (origin.startsWith('http://localhost:') || origin.startsWith('https://localhost:'))) {
@@ -25,6 +17,15 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
+
+app.use(express.json());
+app.use(express.static('.'));
+
+const SQUARE_API = 'https://connect.squareup.com';
+const ACCESS_TOKEN = process.env.SQUARE_ACCESS_TOKEN;
+const LOCATION_ID = process.env.SQUARE_LOCATION_ID;
+const ORDERS_FILE = path.join(__dirname, 'orders.json');
+const ANALYTICS_FILE = path.join(__dirname, 'analytics.json');
 
 // Load existing orders
 function loadOrders() {
