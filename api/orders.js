@@ -1,6 +1,7 @@
 // Vercel serverless function: GET /api/orders
-// Returns order data for the admin dashboard
-// Orders are stored via the /api/pay endpoint
+// Returns all orders from Vercel KV for the admin dashboard
+
+import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
   // CORS
@@ -19,8 +20,15 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  // On Vercel, orders aren't stored in a file — they go through Square.
-  // For now return empty array. In the future, store orders in KV too.
-  // The dashboard still works fully from analytics data.
-  res.json([]);
+  try {
+    const raw = await kv.lrange('orders', 0, -1);
+    const orders = raw.map(item => {
+      try { return typeof item === 'string' ? JSON.parse(item) : item; }
+      catch { return null; }
+    }).filter(Boolean);
+    res.json(orders);
+  } catch (e) {
+    console.error('KV error:', e);
+    res.json([]);
+  }
 }
