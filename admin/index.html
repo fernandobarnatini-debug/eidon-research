@@ -239,9 +239,7 @@
 
   <script>
     // ====== CONFIG ======
-    const API_BASE = window.location.hostname === 'localhost'
-      ? 'http://localhost:3000'
-      : 'https://eidonresearch.com';
+    const API_BASE = 'https://eidonresearch.com';
     let TOKEN = sessionStorage.getItem('eidon_admin_token') || '';
     let currentRange = '30d';
     let ordersData = [];

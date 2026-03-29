@@ -2,7 +2,9 @@
   "rewrites": [
     { "source": "/api/pay", "destination": "/api/pay" },
     { "source": "/api/chat", "destination": "/api/chat" },
-    { "source": "/api/track", "destination": "/api/track" }
+    { "source": "/api/track", "destination": "/api/track" },
+    { "source": "/api/analytics", "destination": "/api/analytics" },
+    { "source": "/api/analytics/realtime", "destination": "/api/analytics-realtime" }
   ],
   "headers": [
     {
