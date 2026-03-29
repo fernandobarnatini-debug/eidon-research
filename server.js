@@ -181,6 +181,39 @@ app.get('/api/orders', (req, res) => {
   res.json(loadOrders());
 });
 
+// ====== MANUAL PAYMENT ORDER (Zelle/PayPal) ======
+app.post('/api/order', (req, res) => {
+  const { amount, email, name, paymentMethod, shipping, coupon, affiliateCode, lineItems } = req.body;
+
+  if (!email || !name || !shipping || !lineItems) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const orderNumber = 'EIDON-' + crypto.randomUUID().slice(0, 8).toUpperCase();
+
+  saveOrder({
+    orderNumber,
+    date: new Date().toISOString(),
+    amount: amount || 0,
+    status: 'PENDING_VERIFICATION',
+    paymentMethod: paymentMethod || 'unknown',
+    email: email || '',
+    name: name || '',
+    shipping: shipping || {},
+    coupon: coupon || null,
+    items: lineItems || [],
+  });
+
+  console.log(`📋 Order ${orderNumber} — $${(amount || 0).toFixed(2)} — ${paymentMethod} — ${name}`);
+
+  res.json({
+    success: true,
+    orderNumber,
+    amount: amount || 0,
+    status: 'PENDING_VERIFICATION',
+  });
+});
+
 // ====== ANALYTICS: Receive tracking events ======
 const VALID_EVENTS = new Set([
   'page_view', 'product_view', 'product_click', 'add_to_cart', 'remove_from_cart',

@@ -13,14 +13,12 @@
   </script>
   <title>Checkout — EIDON Research</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta name="description" content="Checkout — EIDON Research. Secure payment via Square or cryptocurrency. Free shipping on orders $50+.">
+  <meta name="description" content="Checkout — EIDON Research. Secure payment via Zelle or PayPal. Free shipping on orders $50+.">
   <meta name="robots" content="noindex">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <!-- Square Web Payments SDK (Production) -->
-  <script src="https://web.squarecdn.com/v1/square.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -62,8 +60,6 @@
     .payment-tab:hover { transform: scale(1.01); }
     .payment-tab.active { border-color: #D4AF37; background: rgba(212,175,55,0.08); }
     .payment-tab:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
-    /* Square card container */
-    #card-container { min-height: 90px; }
     /* Error message */
     .error-banner { background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
     /* Confirmation animation */
@@ -144,63 +140,53 @@
 
           <!-- Payment Tabs -->
           <div class="grid grid-cols-2 gap-3 mb-6">
-            <button onclick="selectPayment('card')" id="tab-card" class="payment-tab active border-2 rounded-xl p-4 text-center cursor-pointer">
+            <button onclick="selectPayment('zelle')" id="tab-zelle" class="payment-tab active border-2 border-gold rounded-xl p-4 text-center cursor-pointer" style="transition: border-color 0.2s ease;">
               <div class="flex flex-col items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
-                <span class="font-heading font-semibold text-sm">Credit / Debit</span>
-                <span class="text-[10px] text-[#7a8599]">Powered by Square</span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#6D1ED4"/><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="font-heading font-semibold text-sm">Zelle</span>
+                <span class="text-[10px] text-[#7a8599]">Instant bank transfer</span>
               </div>
             </button>
-            <button onclick="selectPayment('crypto')" id="tab-crypto" class="payment-tab border-2 border-[#1a2a45] rounded-xl p-4 text-center cursor-pointer">
+            <button onclick="selectPayment('paypal')" id="tab-paypal" class="payment-tab border-2 border-[#1a2a45] rounded-xl p-4 text-center cursor-pointer" style="transition: border-color 0.2s ease;">
               <div class="flex flex-col items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/></svg>
-                <span class="font-heading font-semibold text-sm">Crypto</span>
-                <span class="text-[10px] text-green-600 font-bold">5% OFF</span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#003087"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">PP</text></svg>
+                <span class="font-heading font-semibold text-sm">PayPal</span>
+                <span class="text-[10px] text-[#7a8599]">Friends &amp; Family</span>
               </div>
             </button>
           </div>
 
-          <!-- Card Payment Form (Square Web Payments SDK) -->
-          <div id="payment-card">
-            <!-- Apple Pay Button -->
-            <div id="apple-pay-container" class="hidden mb-4">
-              <button id="apple-pay-button" style="height: 48px; width: 100%; border-radius: 8px; -webkit-appearance: -apple-pay-button; -apple-pay-button-type: buy; -apple-pay-button-style: black; cursor: pointer; border: none;"></button>
-              <div class="flex items-center gap-3 my-3">
-                <div class="flex-1 border-t border-[#1a2a45]"></div>
-                <span class="text-[10px] text-[#5a6478] uppercase tracking-wider">or pay with card</span>
-                <div class="flex-1 border-t border-[#1a2a45]"></div>
-              </div>
-            </div>
-            <div id="card-container" class="mb-3"></div>
-            <p id="card-errors" class="text-xs text-red-500 mb-2 hidden"></p>
-            <p class="text-xs text-[#7a8599] flex items-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Secured by Square. Your card information is encrypted end-to-end.
-            </p>
-          </div>
-
-          <!-- Crypto Payment -->
-          <div id="payment-crypto" class="hidden">
-            <div class="bg-green-900/20 border border-green-700/30 rounded-xl p-4 mb-4">
-              <p class="text-green-400 text-sm font-semibold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
-                5% crypto discount applied!
-              </p>
-              <p class="text-green-400/80 text-xs mt-1">You save <span id="crypto-savings">$0.00</span> by paying with cryptocurrency.</p>
-            </div>
+          <!-- Zelle Payment -->
+          <div id="payment-zelle">
             <div class="bg-[#0e1a2e] rounded-xl p-6 text-center">
-              <p class="text-sm text-[#c0c8d8] mb-4">Click below to complete payment via Coinbase Commerce. You can pay with Bitcoin, Ethereum, or other supported cryptocurrencies.</p>
-              <div class="flex items-center justify-center gap-4 mb-4">
-                <div class="flex items-center gap-1.5 text-xs text-[#7a8599]">
-                  <span class="w-6 h-6 bg-[#F7931A] rounded-full flex items-center justify-center text-white text-[10px] font-bold">&#x20bf;</span>
-                  Bitcoin
-                </div>
-                <div class="flex items-center gap-1.5 text-xs text-[#7a8599]">
-                  <span class="w-6 h-6 bg-[#627EEA] rounded-full flex items-center justify-center text-white text-[10px] font-bold">&#x039E;</span>
-                  Ethereum
-                </div>
+              <p class="text-gold font-heading font-bold text-lg mb-1">Send exactly <span id="zelle-amount" class="text-white">$0.00</span></p>
+              <p class="text-xs text-[#7a8599] mb-4">Scan the QR code below in your banking app</p>
+              <div class="bg-white rounded-xl p-3 inline-block mb-4">
+                <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-48 h-48 object-contain">
               </div>
-              <p class="text-xs text-[#7a8599]">Crypto checkout coming soon. Use card payment for now.</p>
+              <p class="text-sm text-[#c0c8d8] mb-2">Or send manually to:</p>
+              <p class="text-white font-heading font-bold text-base mb-3">xxx-xxx-9660</p>
+              <div class="bg-gold/10 border border-gold/20 rounded-lg p-3 text-left">
+                <p class="text-xs text-gold font-semibold mb-1">Important:</p>
+                <p class="text-xs text-[#c0c8d8]">Include your <strong class="text-white">email address</strong> in the Zelle memo so we can match your payment to your order.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- PayPal Payment -->
+          <div id="payment-paypal" class="hidden">
+            <div class="bg-[#0e1a2e] rounded-xl p-6 text-center">
+              <p class="text-gold font-heading font-bold text-lg mb-1">Send exactly <span id="paypal-amount" class="text-white">$0.00</span></p>
+              <p class="text-xs text-[#7a8599] mb-4">Scan the QR code below in your PayPal app</p>
+              <div class="bg-white rounded-xl p-3 inline-block mb-4">
+                <img src="images/paypal-qr.jpg" alt="PayPal QR Code" class="w-48 h-48 object-contain">
+              </div>
+              <p class="text-sm text-[#c0c8d8] mb-2">Or send manually to:</p>
+              <p class="text-white font-heading font-bold text-base mb-3">Isaac Sahyoun</p>
+              <div class="bg-gold/10 border border-gold/20 rounded-lg p-3 text-left">
+                <p class="text-xs text-gold font-semibold mb-1">Important:</p>
+                <p class="text-xs text-[#c0c8d8]">Send as <strong class="text-white">Friends &amp; Family</strong> to avoid fees. Include your <strong class="text-white">email address</strong> in the PayPal note.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -225,16 +211,10 @@
           Trusted by researchers nationwide
         </p>
         <div class="flex items-center justify-center gap-3 mb-6 opacity-60">
-          <!-- Visa -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#1A1F71"/><path d="M17.2 18.5l2.1-10.2h2.5l-2.1 10.2H17.2zm10.5-10.2l-2.4 7-0.3-1.4-0.9-4.6s-0.1-1-1.3-1h-3.8l-0.1 0.3s1.4 0.3 3 1.3l2.5 9.6h2.6l4-11.2h-3.3zm6.7 10.2h2.3l-2-10.2h-2c-0.9 0-1.1 0.7-1.1 0.7l-3.8 9.5h2.6l0.5-1.4h3.2l0.3 1.4zM32 15.3l1.3-3.6 0.8 3.6H32zM15.4 8.3l-2.5 7-0.3-1.3C11.9 12 10 10.6 8 9.9l2.3 8.6h2.7l4-10.2h-1.6z" fill="white"/></svg>
-          <!-- Mastercard -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#252525"/><circle cx="17" cy="14" r="7" fill="#EB001B"/><circle cx="25" cy="14" r="7" fill="#F79E1B"/><path d="M21 8.8a7 7 0 0 1 2.6 5.2A7 7 0 0 1 21 19.2a7 7 0 0 1-2.6-5.2A7 7 0 0 1 21 8.8z" fill="#FF5F00"/></svg>
-          <!-- Amex -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#006FCF"/><text x="21" y="16" text-anchor="middle" fill="white" font-size="7" font-family="Helvetica" font-weight="bold">AMEX</text></svg>
-          <!-- Apple Pay -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#000000"/><text x="21" y="16.5" text-anchor="middle" fill="white" font-size="7.5" font-family="-apple-system, Helvetica" font-weight="600"> Pay</text></svg>
-          <!-- Bitcoin -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#F7931A"/><text x="21" y="17" text-anchor="middle" fill="white" font-size="13" font-family="Helvetica" font-weight="bold">₿</text></svg>
+          <!-- Zelle -->
+          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#6D1ED4"/><path d="M13 10h16L13 18h16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <!-- PayPal -->
+          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#003087"/><text x="21" y="17" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">PayPal</text></svg>
         </div>
 
         <!-- Coupon Code -->
@@ -249,10 +229,10 @@
 
         <!-- Place Order Button -->
         <button onclick="placeOrder()" id="place-order-btn" class="btn-gold w-full py-4 text-sm uppercase tracking-wider">
-          <span id="btn-text">Pay $<span id="btn-total">0.00</span></span>
+          <span id="btn-text">I've Sent Payment — Place Order ($<span id="btn-total">0.00</span>)</span>
           <span id="btn-spinner" class="hidden">
             <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-            Processing Payment...
+            Submitting Order...
           </span>
         </button>
 
@@ -312,8 +292,8 @@
       <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6 check-anim">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="#16a34a" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <h1 class="font-heading font-bold text-2xl sm:text-3xl heading-tight mb-3">Order Confirmed!</h1>
-      <p class="text-[#c0c8d8] text-sm mb-6">Thank you for your order. A confirmation email will be sent to your address.</p>
+      <h1 class="font-heading font-bold text-2xl sm:text-3xl heading-tight mb-3">Order Submitted!</h1>
+      <p class="text-[#c0c8d8] text-sm mb-6">We'll verify your payment and ship within 24 hours. A confirmation email will be sent to your address.</p>
       <div class="bg-[#0e1a2e] rounded-xl p-5 mb-6 text-left">
         <div class="grid grid-cols-2 gap-3 text-sm">
           <div>
@@ -407,9 +387,6 @@
 
   <!-- ========== JAVASCRIPT ========== -->
   <script>
-    const SQUARE_APP_ID = 'sq0idp-SPOWLCELmrRGeJLIE0XWxA';
-    const SQUARE_LOCATION_ID = 'LW3Y8XE4HPT9G';
-
     const productImages = {
       'RT5': 'images/Reta.png',
       'CP10': 'images/CJC+Ipo.png',
@@ -423,8 +400,7 @@
       'everything': 'images/The Everything Stack.png',
     };
     let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
-    let paymentMethod = 'card';
-    let card = null; // Square Card instance
+    let paymentMethod = 'zelle';
     let appliedCoupon = null; // { code, discount (0-1) }
 
     // ====== COUPON CODES ======
@@ -518,112 +494,6 @@
       }
     })();
 
-    // ====== Square Web Payments SDK Init ======
-    let applePay = null;
-
-    async function initSquare() {
-      if (!window.Square) {
-        console.error('Square SDK not loaded');
-        showError('Payment system failed to load. Please refresh the page.');
-        return;
-      }
-
-      try {
-        const payments = window.Square.payments(SQUARE_APP_ID, SQUARE_LOCATION_ID);
-
-        // Init card form
-        card = await payments.card();
-        await card.attach('#card-container');
-
-        // Init Apple Pay (if available on this device — Safari only)
-        try {
-          const paymentRequest = payments.paymentRequest({
-            countryCode: 'US',
-            currencyCode: 'USD',
-            total: {
-              amount: getTotal().toFixed(2),
-              label: 'EIDON Research',
-            },
-          });
-          applePay = await payments.applePay(paymentRequest);
-          // Apple Pay is available on this device — show the button
-          document.getElementById('apple-pay-container').classList.remove('hidden');
-          // Attach click handler — must call tokenize() immediately in click handler per Square docs
-          document.getElementById('apple-pay-button').addEventListener('click', async function(event) {
-            event.preventDefault();
-            if (!applePay) return;
-            try {
-              const result = await applePay.tokenize();
-              if (result.status === 'OK') {
-                await processApplePayToken(result.token);
-              } else {
-                console.log('Apple Pay tokenize failed:', result);
-              }
-            } catch (tokenErr) {
-              console.log('Apple Pay cancelled or error:', tokenErr);
-            }
-          });
-        } catch (apErr) {
-          // Apple Pay not available on this device/browser — that's fine, just use card
-          console.log('Apple Pay not available:', apErr.message);
-        }
-      } catch (err) {
-        console.error('Square init error:', err);
-        showError('Could not initialize payment form. Please refresh and try again.');
-      }
-    }
-
-    // Apple Pay token handler — Square SDK calls tokenize automatically when user completes Apple Pay
-    // We need to listen for the payment request's token and process it
-    async function processApplePayToken(token) {
-      setLoading(true);
-      try {
-        const total = getTotal();
-        const firstName = document.getElementById('first-name').value.trim();
-        const lastName = document.getElementById('last-name').value.trim();
-        const response = await fetch('/api/pay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sourceId: token,
-            amount: total,
-            email: document.getElementById('email').value.trim(),
-            name: firstName + ' ' + lastName,
-            shipping: {
-              firstName,
-              lastName,
-              address: document.getElementById('address').value.trim(),
-              city: document.getElementById('city').value.trim(),
-              state: document.getElementById('state').value.trim(),
-              zip: document.getElementById('zip').value.trim(),
-            },
-            coupon: appliedCoupon?.code || null,
-            affiliateCode: appliedCoupon?.isAffiliate ? appliedCoupon.code : null,
-            lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-          }),
-        });
-
-        const data = await response.json();
-        if (!response.ok || !data.success) {
-          showError(data.error || 'Payment failed. Please try again.');
-          setLoading(false);
-          return;
-        }
-
-        if (appliedCoupon?.isAffiliate) {
-          notifyAffiliate(appliedCoupon.code, total, data.orderNumber);
-        }
-
-        showConfirmation({ ...data, paymentNote: 'Apple Pay' });
-      } catch (err) {
-        console.error('Apple Pay error:', err);
-        showError('Apple Pay failed. Please try with a card instead.');
-        setLoading(false);
-      }
-    }
-
-    // Apple Pay click handler is set up in initSquare() above
-
     // ====== Cart helpers ======
     function getBulkPrice(sku, price, qty) {
       if (sku === 'WA10') return price; // No bulk on BAC Water
@@ -649,7 +519,7 @@
     }
 
     function getCryptoDiscount() {
-      return paymentMethod === 'crypto' ? getSubtotal() * 0.05 : 0;
+      return 0;
     }
 
     function addBacWaterFromCheckout() {
@@ -756,25 +626,25 @@
 
     function selectPayment(method) {
       paymentMethod = method;
-      const cardTab = document.getElementById('tab-card');
-      const cryptoTab = document.getElementById('tab-crypto');
-      const cardForm = document.getElementById('payment-card');
-      const cryptoForm = document.getElementById('payment-crypto');
+      const zelleTab = document.getElementById('tab-zelle');
+      const paypalTab = document.getElementById('tab-paypal');
+      const zelleForm = document.getElementById('payment-zelle');
+      const paypalForm = document.getElementById('payment-paypal');
 
-      if (method === 'card') {
-        cardTab.classList.add('active');
-        cardTab.style.borderColor = '#D4AF37';
-        cryptoTab.classList.remove('active');
-        cryptoTab.style.borderColor = '#1a2a45';
-        cardForm.classList.remove('hidden');
-        cryptoForm.classList.add('hidden');
+      if (method === 'zelle') {
+        zelleTab.classList.add('active');
+        zelleTab.style.borderColor = '#D4AF37';
+        paypalTab.classList.remove('active');
+        paypalTab.style.borderColor = '#1a2a45';
+        zelleForm.classList.remove('hidden');
+        paypalForm.classList.add('hidden');
       } else {
-        cryptoTab.classList.add('active');
-        cryptoTab.style.borderColor = '#D4AF37';
-        cardTab.classList.remove('active');
-        cardTab.style.borderColor = '#1a2a45';
-        cryptoForm.classList.remove('hidden');
-        cardForm.classList.add('hidden');
+        paypalTab.classList.add('active');
+        paypalTab.style.borderColor = '#D4AF37';
+        zelleTab.classList.remove('active');
+        zelleTab.style.borderColor = '#1a2a45';
+        paypalForm.classList.remove('hidden');
+        zelleForm.classList.add('hidden');
       }
 
       renderSummary();
@@ -829,56 +699,20 @@
         return;
       }
 
-      if (paymentMethod === 'crypto') {
-        showError('Crypto payments coming soon. Please use credit/debit card.');
-        return;
-      }
-
       const total = getTotal();
       setLoading(true);
 
-      // If total is $0 (100% coupon), skip payment and confirm directly
-      if (total <= 0) {
-        const orderNumber = 'EIDON-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-        showConfirmation({
-          orderNumber,
-          amount: 0,
-          status: 'COMPLETED',
-          paymentNote: 'Coupon: ' + (appliedCoupon?.code || 'FREE'),
-        });
-        return;
-      }
-
-      if (!card) {
-        showError('Payment form not ready. Please refresh the page.');
-        setLoading(false);
-        return;
-      }
-
       try {
-        // Tokenize the card with Square SDK
-        const result = await card.tokenize();
-
-        if (result.status !== 'OK') {
-          const errorMsg = result.errors?.[0]?.message || 'Card validation failed. Please check your card details.';
-          showError(errorMsg);
-          setLoading(false);
-          return;
-        }
-
-        const sourceId = result.token;
-
-        // Send to our backend
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
-        const response = await fetch('/api/pay', {
+        const response = await fetch('/api/order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sourceId,
             amount: total,
             email: document.getElementById('email').value.trim(),
             name: firstName + ' ' + lastName,
+            paymentMethod,
             shipping: {
               firstName,
               lastName,
@@ -935,7 +769,7 @@
       document.getElementById('conf-order-num').textContent = data.orderNumber;
       document.getElementById('conf-payment').textContent = data.paymentNote || 'Credit/Debit Card';
       document.getElementById('conf-total').textContent = '$' + data.amount.toFixed(2);
-      document.getElementById('conf-status').textContent = data.status === 'COMPLETED' ? 'Paid' : data.status;
+      document.getElementById('conf-status').textContent = data.status === 'COMPLETED' ? 'Paid' : 'Pending Verification';
 
       let itemHtml = '';
       cart.forEach(item => {
@@ -1001,7 +835,18 @@
 
     // ====== Initialize ======
     renderSummary();
-    initSquare();
+    // Update payment QR amounts
+    function updatePaymentAmounts() {
+      const total = getTotal();
+      const zelleAmt = document.getElementById('zelle-amount');
+      const paypalAmt = document.getElementById('paypal-amount');
+      if (zelleAmt) zelleAmt.textContent = '$' + Math.max(0, total).toFixed(2);
+      if (paypalAmt) paypalAmt.textContent = '$' + Math.max(0, total).toFixed(2);
+    }
+    // Patch renderSummary to also update payment amounts
+    const _origRenderSummary = renderSummary;
+    renderSummary = function() { _origRenderSummary(); updatePaymentAmounts(); };
+    updatePaymentAmounts();
   </script>
 
   <!-- ========== AGE VERIFICATION MODAL ========== -->
