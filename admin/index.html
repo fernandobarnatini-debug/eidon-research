@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EIDON Analytics</title>
+  <meta name="robots" content="noindex, nofollow">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0B1426', 'navy-light': '#111d38', 'navy-card': '#111b30',
+            'navy-border': '#1a2a45', gold: '#D4AF37', 'gold-light': '#e8c84a',
+          },
+          fontFamily: {
+            heading: ['"DM Sans"', 'sans-serif'],
+            body: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    h1,h2,h3,h4 { font-family: "DM Sans", sans-serif; }
+    .stat-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .tab-btn { transition: background 0.2s ease, color 0.2s ease; }
+    .tab-btn.active { background: #D4AF37; color: #0B1426; }
+    .funnel-bar { transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0B1426; }
+    ::-webkit-scrollbar-thumb { background: #1a2a45; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+    table th { position: sticky; top: 0; z-index: 1; }
+  </style>
+</head>
+<body class="bg-navy text-[#c0c8d8] min-h-screen">
+
+  <!-- ===== LOGIN GATE ===== -->
+  <div id="login-gate" class="min-h-screen flex items-center justify-center">
+    <div class="bg-navy-card border border-navy-border rounded-xl p-8 w-full max-w-sm shadow-lg">
+      <h1 class="font-heading font-bold text-2xl text-white text-center mb-2">EIDON Analytics</h1>
+      <p class="text-sm text-center mb-6 text-[#7a8599]">Enter your admin token to continue</p>
+      <input id="token-input" type="password" placeholder="Admin token" class="w-full bg-navy border border-navy-border rounded-lg px-4 py-3 text-sm text-white placeholder-[#5a6478] focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 mb-4" onkeydown="if(event.key==='Enter')attemptLogin()">
+      <button onclick="attemptLogin()" class="w-full bg-gold text-navy font-bold py-3 rounded-lg text-sm uppercase tracking-wider hover:bg-gold-light" style="transition: background 0.2s ease;">Sign In</button>
+      <p id="login-error" class="text-red-400 text-xs text-center mt-3 hidden">Invalid token</p>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div id="dashboard" class="hidden">
+    <!-- Top bar -->
+    <header class="bg-navy-card border-b border-navy-border sticky top-0 z-50">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <h1 class="font-heading font-bold text-lg text-white">EIDON <span class="text-gold">Analytics</span></h1>
+        <div class="flex items-center gap-3">
+          <!-- Live indicator -->
+          <div id="live-dot" class="flex items-center gap-2 bg-navy rounded-full px-3 py-1.5 border border-navy-border">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span id="live-count" class="text-xs font-semibold text-white">0</span>
+            <span class="text-[10px] text-[#7a8599]">online</span>
+          </div>
+          <!-- Date range -->
+          <div class="flex gap-1 bg-navy rounded-lg border border-navy-border p-0.5">
+            <button onclick="setRange('today')" data-range="today" class="tab-btn text-[11px] px-2.5 py-1 rounded-md text-[#7a8599] font-semibold">Today</button>
+            <button onclick="setRange('7d')" data-range="7d" class="tab-btn text-[11px] px-2.5 py-1 rounded-md text-[#7a8599] font-semibold">7d</button>
+            <button onclick="setRange('30d')" data-range="30d" class="tab-btn text-[11px] px-2.5 py-1 rounded-md text-[#7a8599] font-semibold active">30d</button>
+            <button onclick="setRange('90d')" data-range="90d" class="tab-btn text-[11px] px-2.5 py-1 rounded-md text-[#7a8599] font-semibold">90d</button>
+            <button onclick="setRange('all')" data-range="all" class="tab-btn text-[11px] px-2.5 py-1 rounded-md text-[#7a8599] font-semibold">All</button>
+          </div>
+          <button onclick="refreshData()" class="text-[#7a8599] hover:text-white p-1.5 rounded-lg hover:bg-navy border border-navy-border" style="transition: color 0.2s ease;" title="Refresh">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+      <!-- ===== OVERVIEW CARDS ===== -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3" id="overview-cards">
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">Revenue</p>
+          <p id="stat-revenue" class="font-heading font-bold text-xl text-white">$0</p>
+        </div>
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">Orders</p>
+          <p id="stat-orders" class="font-heading font-bold text-xl text-white">0</p>
+        </div>
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">AOV</p>
+          <p id="stat-aov" class="font-heading font-bold text-xl text-white">$0</p>
+        </div>
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">Visitors</p>
+          <p id="stat-visitors" class="font-heading font-bold text-xl text-white">0</p>
+        </div>
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">Sessions</p>
+          <p id="stat-sessions" class="font-heading font-bold text-xl text-white">0</p>
+        </div>
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">Conversion</p>
+          <p id="stat-conversion" class="font-heading font-bold text-xl text-gold">0%</p>
+        </div>
+        <div class="stat-card bg-navy-card border border-navy-border rounded-xl p-4">
+          <p class="text-[10px] uppercase tracking-wider text-[#7a8599] mb-1">Cart Abandon</p>
+          <p id="stat-abandon" class="font-heading font-bold text-xl text-white">0%</p>
+        </div>
+      </div>
+
+      <!-- ===== CHARTS ROW ===== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Revenue chart -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Revenue & Orders</h3>
+          <canvas id="revenue-chart" height="200"></canvas>
+        </div>
+        <!-- Traffic chart -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Traffic</h3>
+          <canvas id="traffic-chart" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- ===== CONVERSION FUNNEL ===== -->
+      <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+        <h3 class="font-heading font-bold text-sm text-white mb-4">Conversion Funnel</h3>
+        <div id="funnel" class="space-y-2"></div>
+      </div>
+
+      <!-- ===== MIDDLE ROW: Products + Bundles + Traffic Sources ===== -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Top Products -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Top Products</h3>
+          <div class="overflow-auto max-h-64">
+            <table class="w-full text-xs">
+              <thead><tr class="text-[#7a8599] border-b border-navy-border"><th class="text-left pb-2 font-semibold">Product</th><th class="text-right pb-2 font-semibold">Sold</th><th class="text-right pb-2 font-semibold">Revenue</th></tr></thead>
+              <tbody id="products-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Top Bundles -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Top Bundles</h3>
+          <div class="overflow-auto max-h-64">
+            <table class="w-full text-xs">
+              <thead><tr class="text-[#7a8599] border-b border-navy-border"><th class="text-left pb-2 font-semibold">Bundle</th><th class="text-right pb-2 font-semibold">Sold</th><th class="text-right pb-2 font-semibold">Revenue</th></tr></thead>
+              <tbody id="bundles-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Traffic Sources -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Traffic Sources</h3>
+          <div id="traffic-sources" class="space-y-2"></div>
+          <h4 class="font-heading font-semibold text-xs text-[#7a8599] mt-4 mb-2 uppercase tracking-wider">Devices</h4>
+          <div id="device-breakdown" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- ===== BEHAVIOR INSIGHTS + CHECKOUT ANALYTICS ===== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Behavior -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Behavior Insights</h3>
+          <div class="grid grid-cols-2 gap-3" id="behavior-grid"></div>
+        </div>
+        <!-- Checkout -->
+        <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+          <h3 class="font-heading font-bold text-sm text-white mb-4">Checkout Analytics</h3>
+          <div class="grid grid-cols-2 gap-3" id="checkout-grid"></div>
+        </div>
+      </div>
+
+      <!-- ===== COUPON / AFFILIATE PERFORMANCE ===== -->
+      <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+        <h3 class="font-heading font-bold text-sm text-white mb-4">Coupon & Affiliate Performance</h3>
+        <div class="overflow-auto">
+          <table class="w-full text-xs">
+            <thead><tr class="text-[#7a8599] border-b border-navy-border"><th class="text-left pb-2 font-semibold">Code</th><th class="text-right pb-2 font-semibold">Uses</th><th class="text-right pb-2 font-semibold">Revenue</th><th class="text-right pb-2 font-semibold">Avg Order</th><th class="text-right pb-2 font-semibold">Commission</th></tr></thead>
+            <tbody id="coupons-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== LIVE VIEW ===== -->
+      <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <h3 class="font-heading font-bold text-sm text-white">Live View</h3>
+          <span class="text-[10px] text-[#7a8599]">Updates every 30s</span>
+        </div>
+        <div id="live-sessions" class="space-y-1">
+          <p class="text-sm text-[#7a8599]">No active sessions</p>
+        </div>
+      </div>
+
+      <!-- ===== RECENT ORDERS ===== -->
+      <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-heading font-bold text-sm text-white">Recent Orders</h3>
+          <input id="order-search" type="text" placeholder="Search orders..." class="bg-navy border border-navy-border rounded-lg px-3 py-1.5 text-xs text-white placeholder-[#5a6478] focus:outline-none focus:border-gold w-48" oninput="renderOrders()">
+        </div>
+        <div class="overflow-auto max-h-96">
+          <table class="w-full text-xs">
+            <thead><tr class="text-[#7a8599] border-b border-navy-border">
+              <th class="text-left pb-2 font-semibold">Order</th>
+              <th class="text-left pb-2 font-semibold">Date</th>
+              <th class="text-left pb-2 font-semibold">Customer</th>
+              <th class="text-left pb-2 font-semibold">Items</th>
+              <th class="text-right pb-2 font-semibold">Total</th>
+              <th class="text-left pb-2 font-semibold">Coupon</th>
+              <th class="text-left pb-2 font-semibold">Status</th>
+            </tr></thead>
+            <tbody id="orders-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== CUSTOMER INSIGHTS ===== -->
+      <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+        <h3 class="font-heading font-bold text-sm text-white mb-4">Customer Insights</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="customer-grid"></div>
+      </div>
+
+    </main>
+
+    <footer class="border-t border-navy-border py-4 mt-8">
+      <p class="text-center text-[10px] text-[#5a6478]">EIDON Research Admin Dashboard &middot; Data refreshes automatically</p>
+    </footer>
+  </div>
+
+  <script>
+    // ====== CONFIG ======
+    const API_BASE = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : 'https://eidonresearch.com';
+    let TOKEN = sessionStorage.getItem('eidon_admin_token') || '';
+    let currentRange = '30d';
+    let ordersData = [];
+    let analyticsData = [];
+    let revenueChart = null;
+    let trafficChart = null;
+
+    // ====== LOGIN ======
+    async function attemptLogin() {
+      const input = document.getElementById('token-input');
+      const token = input.value.trim();
+      if (!token) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/orders?token=${encodeURIComponent(token)}`);
+        if (res.ok) {
+          TOKEN = token;
+          sessionStorage.setItem('eidon_admin_token', token);
+          document.getElementById('login-gate').classList.add('hidden');
+          document.getElementById('dashboard').classList.remove('hidden');
+          await refreshData();
+          startAutoRefresh();
+        } else {
+          document.getElementById('login-error').classList.remove('hidden');
+        }
+      } catch (e) {
+        document.getElementById('login-error').textContent = 'Connection error — is the server running?';
+        document.getElementById('login-error').classList.remove('hidden');
+      }
+    }
+
+    // Auto-login if token saved
+    if (TOKEN) {
+      document.getElementById('login-gate').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      refreshData().then(() => startAutoRefresh());
+    }
+
+    // ====== DATA FETCHING ======
+    async function refreshData() {
+      try {
+        const [ordersRes, analyticsRes] = await Promise.all([
+          fetch(`${API_BASE}/api/orders?token=${encodeURIComponent(TOKEN)}`),
+          fetch(`${API_BASE}/api/analytics?token=${encodeURIComponent(TOKEN)}&range=${currentRange}`).catch(() => null),
+        ]);
+
+        if (ordersRes.ok) ordersData = await ordersRes.json();
+        if (analyticsRes?.ok) analyticsData = await analyticsRes.json();
+        else analyticsData = [];
+
+        renderAll();
+        refreshRealtime();
+      } catch (e) {
+        console.error('Fetch error:', e);
+      }
+    }
+
+    async function refreshRealtime() {
+      try {
+        const res = await fetch(`${API_BASE}/api/analytics/realtime?token=${encodeURIComponent(TOKEN)}`);
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('live-count').textContent = data.activeVisitors || 0;
+          renderLiveView(data.sessions || []);
+        }
+      } catch (e) {}
+    }
+
+    function startAutoRefresh() {
+      setInterval(refreshRealtime, 30000);
+      setInterval(refreshData, 120000); // Full refresh every 2 min
+    }
+
+    // ====== RANGE FILTER ======
+    function setRange(range) {
+      currentRange = range;
+      document.querySelectorAll('[data-range]').forEach(b => {
+        b.classList.toggle('active', b.dataset.range === range);
+        b.classList.toggle('text-[#7a8599]', b.dataset.range !== range);
+      });
+      refreshData();
+    }
+
+    // ====== HELPERS ======
+    function filterOrdersByRange(orders) {
+      if (currentRange === 'all') return orders;
+      const now = Date.now();
+      const ms = { today: 864e5, '7d': 7*864e5, '30d': 30*864e5, '90d': 90*864e5 }[currentRange] || 30*864e5;
+      const cutoff = now - ms;
+      return orders.filter(o => new Date(o.date).getTime() > cutoff);
+    }
+
+    function fmt$(n) { return '$' + n.toFixed(2); }
+    function fmtPct(n) { return (n * 100).toFixed(1) + '%'; }
+
+    function groupByDay(items, dateKey) {
+      const map = {};
+      items.forEach(item => {
+        const d = new Date(typeof item[dateKey] === 'number' ? item[dateKey] : item[dateKey]).toISOString().split('T')[0];
+        map[d] = (map[d] || 0) + 1;
+      });
+      return map;
+    }
+
+    function groupByDayRevenue(orders) {
+      const map = {};
+      orders.forEach(o => {
+        const d = new Date(o.date).toISOString().split('T')[0];
+        map[d] = (map[d] || 0) + (o.amount || 0);
+      });
+      return map;
+    }
+
+    // ====== RENDER ALL ======
+    function renderAll() {
+      const orders = filterOrdersByRange(ordersData);
+      const events = analyticsData; // already filtered by server
+
+      renderOverview(orders, events);
+      renderRevenueChart(orders);
+      renderTrafficChart(events);
+      renderFunnel(events, orders);
+      renderProducts(orders, false);
+      renderProducts(orders, true);
+      renderTrafficSources(events);
+      renderBehavior(events);
+      renderCheckoutAnalytics(events);
+      renderCoupons(orders);
+      renderOrders();
+      renderCustomerInsights(orders, events);
+    }
+
+    // ====== OVERVIEW CARDS ======
+    function renderOverview(orders, events) {
+      const revenue = orders.reduce((s, o) => s + (o.amount || 0), 0);
+      const count = orders.length;
+      const aov = count > 0 ? revenue / count : 0;
+      const visitors = new Set(events.filter(e => e.event === 'page_view').map(e => e.vid)).size;
+      const sessions = new Set(events.filter(e => e.event === 'page_view').map(e => e.sid)).size;
+      const conversion = sessions > 0 ? count / sessions : 0;
+      const checkoutStarts = events.filter(e => e.event === 'checkout_start').length;
+      const checkoutCompletes = events.filter(e => e.event === 'checkout_complete').length;
+      const abandonRate = checkoutStarts > 0 ? 1 - (checkoutCompletes / checkoutStarts) : 0;
+
+      document.getElementById('stat-revenue').textContent = fmt$(revenue);
+      document.getElementById('stat-orders').textContent = count;
+      document.getElementById('stat-aov').textContent = fmt$(aov);
+      document.getElementById('stat-visitors').textContent = visitors;
+      document.getElementById('stat-sessions').textContent = sessions;
+      document.getElementById('stat-conversion').textContent = fmtPct(conversion);
+      document.getElementById('stat-abandon').textContent = fmtPct(abandonRate);
+    }
+
+    // ====== REVENUE CHART ======
+    function renderRevenueChart(orders) {
+      const revenueByDay = groupByDayRevenue(orders);
+      const ordersByDay = groupByDay(orders, 'date');
+      const allDays = [...new Set([...Object.keys(revenueByDay), ...Object.keys(ordersByDay)])].sort();
+
+      const ctx = document.getElementById('revenue-chart');
+      if (revenueChart) revenueChart.destroy();
+
+      revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: allDays.map(d => { const dt = new Date(d + 'T12:00:00'); return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }),
+          datasets: [
+            {
+              label: 'Revenue',
+              data: allDays.map(d => revenueByDay[d] || 0),
+              borderColor: '#D4AF37',
+              backgroundColor: 'rgba(212,175,55,0.1)',
+              fill: true,
+              tension: 0.3,
+              pointRadius: 2,
+              yAxisID: 'y',
+            },
+            {
+              label: 'Orders',
+              data: allDays.map(d => ordersByDay[d] || 0),
+              borderColor: 'rgba(255,255,255,0.5)',
+              borderDash: [4, 4],
+              tension: 0.3,
+              pointRadius: 2,
+              yAxisID: 'y1',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: true, labels: { color: '#7a8599', font: { size: 10 } } } },
+          scales: {
+            x: { ticks: { color: '#5a6478', font: { size: 9 } }, grid: { color: 'rgba(26,42,69,0.5)' } },
+            y: { position: 'left', ticks: { color: '#D4AF37', font: { size: 9 }, callback: v => '$' + v }, grid: { color: 'rgba(26,42,69,0.5)' } },
+            y1: { position: 'right', ticks: { color: '#7a8599', font: { size: 9 } }, grid: { display: false } },
+          }
+        }
+      });
+    }
+
+    // ====== TRAFFIC CHART ======
+    function renderTrafficChart(events) {
+      const pageViews = events.filter(e => e.event === 'page_view');
+      const pvByDay = {};
+      const vByDay = {};
+      const sByDay = {};
+
+      pageViews.forEach(e => {
+        const d = new Date(e.ts).toISOString().split('T')[0];
+        pvByDay[d] = (pvByDay[d] || 0) + 1;
+        if (!vByDay[d]) vByDay[d] = new Set();
+        vByDay[d].add(e.vid);
+        if (!sByDay[d]) sByDay[d] = new Set();
+        sByDay[d].add(e.sid);
+      });
+
+      const allDays = Object.keys(pvByDay).sort();
+      const ctx = document.getElementById('traffic-chart');
+      if (trafficChart) trafficChart.destroy();
+
+      trafficChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: allDays.map(d => { const dt = new Date(d + 'T12:00:00'); return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }),
+          datasets: [
+            { label: 'Page Views', data: allDays.map(d => pvByDay[d] || 0), borderColor: '#00D4FF', tension: 0.3, pointRadius: 2 },
+            { label: 'Visitors', data: allDays.map(d => vByDay[d]?.size || 0), borderColor: '#D4AF37', tension: 0.3, pointRadius: 2 },
+            { label: 'Sessions', data: allDays.map(d => sByDay[d]?.size || 0), borderColor: 'rgba(255,255,255,0.4)', borderDash: [4,4], tension: 0.3, pointRadius: 2 },
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: true, labels: { color: '#7a8599', font: { size: 10 } } } },
+          scales: {
+            x: { ticks: { color: '#5a6478', font: { size: 9 } }, grid: { color: 'rgba(26,42,69,0.5)' } },
+            y: { ticks: { color: '#7a8599', font: { size: 9 } }, grid: { color: 'rgba(26,42,69,0.5)' } },
+          }
+        }
+      });
+    }
+
+    // ====== CONVERSION FUNNEL ======
+    function renderFunnel(events, orders) {
+      const pageViews = new Set(events.filter(e => e.event === 'page_view').map(e => e.sid)).size;
+      const productViews = new Set(events.filter(e => e.event === 'product_view' || e.event === 'product_click').map(e => e.sid)).size;
+      const addToCarts = new Set(events.filter(e => e.event === 'add_to_cart').map(e => e.sid)).size;
+      const checkouts = new Set(events.filter(e => e.event === 'checkout_start').map(e => e.sid)).size;
+      const purchases = new Set(events.filter(e => e.event === 'checkout_complete').map(e => e.sid)).size || filterOrdersByRange(ordersData).length;
+
+      const steps = [
+        { label: 'Site Visits', value: pageViews },
+        { label: 'Product Views', value: productViews },
+        { label: 'Add to Cart', value: addToCarts },
+        { label: 'Checkout', value: checkouts },
+        { label: 'Purchase', value: purchases },
+      ];
+      const max = Math.max(...steps.map(s => s.value), 1);
+
+      document.getElementById('funnel').innerHTML = steps.map((step, i) => {
+        const pct = (step.value / max * 100).toFixed(0);
+        const dropoff = i > 0 && steps[i-1].value > 0
+          ? ' <span class="text-[10px] text-[#7a8599]">(' + ((1 - step.value / steps[i-1].value) * 100).toFixed(0) + '% drop)</span>'
+          : '';
+        return `<div class="flex items-center gap-3">
+          <span class="text-[11px] text-[#7a8599] w-24 text-right flex-shrink-0">${step.label}</span>
+          <div class="flex-1 bg-navy rounded-full h-6 overflow-hidden">
+            <div class="funnel-bar h-full rounded-full flex items-center px-2" style="width: ${pct}%; background: linear-gradient(90deg, #D4AF37 0%, #e8c84a 100%);">
+              <span class="text-[10px] font-bold text-navy">${step.value}</span>
+            </div>
+          </div>${dropoff}
+        </div>`;
+      }).join('');
+    }
+
+    // ====== TOP PRODUCTS / BUNDLES ======
+    function renderProducts(orders, isBundles) {
+      const itemMap = {};
+      orders.forEach(o => {
+        (o.items || []).forEach(item => {
+          const isBundle = item.name?.includes('Stack') || item.name?.includes('Triple') || item.name?.includes('Everything');
+          if (isBundles !== isBundle) return;
+          const key = item.name || 'Unknown';
+          if (!itemMap[key]) itemMap[key] = { sold: 0, revenue: 0 };
+          itemMap[key].sold += item.qty || 1;
+          itemMap[key].revenue += (item.price || 0) * (item.qty || 1);
+        });
+      });
+
+      const sorted = Object.entries(itemMap).sort((a, b) => b[1].revenue - a[1].revenue);
+      const tableId = isBundles ? 'bundles-table' : 'products-table';
+      document.getElementById(tableId).innerHTML = sorted.length === 0
+        ? '<tr><td colspan="3" class="py-4 text-center text-[#5a6478]">No data yet</td></tr>'
+        : sorted.map(([name, d]) =>
+          `<tr class="border-b border-navy-border/50 hover:bg-navy/30"><td class="py-2 text-white font-medium">${name}</td><td class="py-2 text-right">${d.sold}</td><td class="py-2 text-right text-gold font-semibold">${fmt$(d.revenue)}</td></tr>`
+        ).join('');
+    }
+
+    // ====== TRAFFIC SOURCES ======
+    function renderTrafficSources(events) {
+      const pageViews = events.filter(e => e.event === 'page_view');
+      const refMap = {};
+      const deviceMap = {};
+
+      pageViews.forEach(e => {
+        // Referrer
+        let source = 'Direct';
+        if (e.utm?.source) source = e.utm.source;
+        else if (e.ref) {
+          try { source = new URL(e.ref).hostname.replace('www.', ''); } catch {}
+        }
+        refMap[source] = (refMap[source] || 0) + 1;
+
+        // Device
+        const dev = e.ua || 'unknown';
+        deviceMap[dev] = (deviceMap[dev] || 0) + 1;
+      });
+
+      const total = pageViews.length || 1;
+      const sortedRefs = Object.entries(refMap).sort((a, b) => b[1] - a[1]).slice(0, 8);
+
+      document.getElementById('traffic-sources').innerHTML = sortedRefs.length === 0
+        ? '<p class="text-sm text-[#5a6478]">No data yet</p>'
+        : sortedRefs.map(([source, count]) => {
+          const pct = (count / total * 100).toFixed(0);
+          return `<div class="flex items-center gap-2"><span class="text-[11px] text-white w-28 truncate">${source}</span><div class="flex-1 bg-navy rounded-full h-2"><div class="h-full rounded-full bg-gold/60" style="width: ${pct}%"></div></div><span class="text-[10px] text-[#7a8599] w-10 text-right">${pct}%</span></div>`;
+        }).join('');
+
+      const sortedDevices = Object.entries(deviceMap).sort((a, b) => b[1] - a[1]);
+      document.getElementById('device-breakdown').innerHTML = sortedDevices.map(([dev, count]) => {
+        const pct = (count / total * 100).toFixed(0);
+        const icon = dev === 'mobile' ? '\uD83D\uDCF1' : dev === 'tablet' ? '\uD83D\uDCBB' : '\uD83D\uDDA5\uFE0F';
+        return `<div class="flex items-center gap-2"><span class="text-[11px]">${icon} ${dev}</span><div class="flex-1 bg-navy rounded-full h-2"><div class="h-full rounded-full bg-white/20" style="width: ${pct}%"></div></div><span class="text-[10px] text-[#7a8599] w-10 text-right">${pct}%</span></div>`;
+      }).join('');
+    }
+
+    // ====== BEHAVIOR INSIGHTS ======
+    function renderBehavior(events) {
+      const timeEvents = events.filter(e => e.event === 'time_on_page');
+      const avgTime = timeEvents.length > 0 ? timeEvents.reduce((s, e) => s + (e.data?.seconds || 0), 0) / timeEvents.length : 0;
+
+      const scrollEvents = events.filter(e => e.event === 'scroll_depth');
+      const scroll100 = scrollEvents.filter(e => e.data?.depth === 100).length;
+      const scroll50 = scrollEvents.filter(e => e.data?.depth >= 50).length;
+      const totalScrollSessions = new Set(scrollEvents.map(e => e.sid)).size;
+      const scroll50Rate = totalScrollSessions > 0 ? scroll50 / totalScrollSessions : 0;
+
+      const exitIntents = events.filter(e => e.event === 'exit_intent').length;
+      const searches = events.filter(e => e.event === 'search').length;
+
+      const topSearches = {};
+      events.filter(e => e.event === 'search').forEach(e => {
+        const q = e.data?.query || '';
+        if (q) topSearches[q] = (topSearches[q] || 0) + 1;
+      });
+      const topSearchList = Object.entries(topSearches).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      document.getElementById('behavior-grid').innerHTML = `
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Avg Time on Page</p>
+          <p class="font-heading font-bold text-lg text-white">${Math.round(avgTime)}s</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Scroll 50%+ Rate</p>
+          <p class="font-heading font-bold text-lg text-white">${fmtPct(scroll50Rate)}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Exit Intents</p>
+          <p class="font-heading font-bold text-lg text-white">${exitIntents}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Searches</p>
+          <p class="font-heading font-bold text-lg text-white">${searches}</p>
+          ${topSearchList.length ? '<div class="mt-1">' + topSearchList.map(([q, c]) => `<p class="text-[10px] text-[#7a8599] truncate">"${q}" (${c})</p>`).join('') + '</div>' : ''}
+        </div>
+      `;
+    }
+
+    // ====== CHECKOUT ANALYTICS ======
+    function renderCheckoutAnalytics(events) {
+      const starts = events.filter(e => e.event === 'checkout_start');
+      const completes = events.filter(e => e.event === 'checkout_complete');
+      const abandons = events.filter(e => e.event === 'checkout_abandon');
+      const shippingSteps = events.filter(e => e.event === 'checkout_step' && e.data?.step === 'shipping_filled');
+
+      const avgCheckoutTime = completes.length > 0
+        ? completes.reduce((s, e) => s + (e.data?.checkoutSeconds || 0), 0) / completes.length : 0;
+      const avgAbandonTime = abandons.length > 0
+        ? abandons.reduce((s, e) => s + (e.data?.seconds || 0), 0) / abandons.length : 0;
+      const shippingRate = starts.length > 0 ? shippingSteps.length / starts.length : 0;
+      const completionRate = starts.length > 0 ? completes.length / starts.length : 0;
+
+      document.getElementById('checkout-grid').innerHTML = `
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Avg Checkout Time</p>
+          <p class="font-heading font-bold text-lg text-white">${Math.round(avgCheckoutTime)}s</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Completion Rate</p>
+          <p class="font-heading font-bold text-lg text-gold">${fmtPct(completionRate)}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Shipping Form Rate</p>
+          <p class="font-heading font-bold text-lg text-white">${fmtPct(shippingRate)}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Avg Abandon Time</p>
+          <p class="font-heading font-bold text-lg text-white">${Math.round(avgAbandonTime)}s</p>
+        </div>
+      `;
+    }
+
+    // ====== COUPONS / AFFILIATES ======
+    function renderCoupons(orders) {
+      const coupons = {};
+      orders.forEach(o => {
+        if (!o.coupon) return;
+        const code = o.coupon.toUpperCase();
+        if (!coupons[code]) coupons[code] = { uses: 0, revenue: 0 };
+        coupons[code].uses++;
+        coupons[code].revenue += o.amount || 0;
+      });
+
+      const sorted = Object.entries(coupons).sort((a, b) => b[1].revenue - a[1].revenue);
+      const builtInCodes = new Set(['DEVTEST', 'EIDON100', 'EIDON50', 'EIDON10', 'ISAAC']);
+
+      document.getElementById('coupons-table').innerHTML = sorted.length === 0
+        ? '<tr><td colspan="5" class="py-4 text-center text-[#5a6478]">No coupon data yet</td></tr>'
+        : sorted.map(([code, d]) => {
+          const isAffiliate = !builtInCodes.has(code);
+          const commission = isAffiliate ? d.revenue * 0.10 : 0;
+          return `<tr class="border-b border-navy-border/50 hover:bg-navy/30">
+            <td class="py-2"><span class="text-white font-medium">${code}</span>${isAffiliate ? ' <span class="text-[9px] bg-gold/20 text-gold px-1 rounded">AFF</span>' : ''}</td>
+            <td class="py-2 text-right">${d.uses}</td>
+            <td class="py-2 text-right text-gold font-semibold">${fmt$(d.revenue)}</td>
+            <td class="py-2 text-right">${fmt$(d.uses > 0 ? d.revenue / d.uses : 0)}</td>
+            <td class="py-2 text-right ${commission > 0 ? 'text-green-400' : ''}">${commission > 0 ? fmt$(commission) : '-'}</td>
+          </tr>`;
+        }).join('');
+    }
+
+    // ====== LIVE VIEW ======
+    function renderLiveView(sessions) {
+      const el = document.getElementById('live-sessions');
+      if (!sessions.length) {
+        el.innerHTML = '<p class="text-sm text-[#5a6478]">No active sessions right now</p>';
+        return;
+      }
+      el.innerHTML = sessions.map(s => {
+        const ago = Math.round((Date.now() - s.lastSeen) / 1000);
+        return `<div class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-navy/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+          <span class="text-xs text-white font-medium">${s.page}</span>
+          <span class="text-[10px] text-[#5a6478] ml-auto">${ago}s ago</span>
+        </div>`;
+      }).join('');
+    }
+
+    // ====== RECENT ORDERS ======
+    function renderOrders() {
+      const orders = filterOrdersByRange(ordersData);
+      const query = (document.getElementById('order-search')?.value || '').toLowerCase();
+      const filtered = query
+        ? orders.filter(o => (o.orderNumber || '').toLowerCase().includes(query) || (o.name || '').toLowerCase().includes(query) || (o.email || '').toLowerCase().includes(query))
+        : orders;
+
+      document.getElementById('orders-table').innerHTML = filtered.length === 0
+        ? '<tr><td colspan="7" class="py-6 text-center text-[#5a6478]">No orders found</td></tr>'
+        : filtered.slice(0, 50).map(o => {
+          const date = new Date(o.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+          const items = (o.items || []).map(i => `${i.name} x${i.qty}`).join(', ') || '-';
+          const statusColor = o.status === 'COMPLETED' ? 'text-green-400' : 'text-yellow-400';
+          return `<tr class="border-b border-navy-border/50 hover:bg-navy/30">
+            <td class="py-2 text-gold font-semibold">${o.orderNumber || '-'}</td>
+            <td class="py-2 text-[#7a8599]">${date}</td>
+            <td class="py-2 text-white">${o.name || '-'}</td>
+            <td class="py-2 text-[#c0c8d8] max-w-48 truncate">${items}</td>
+            <td class="py-2 text-right font-semibold text-white">${fmt$(o.amount || 0)}</td>
+            <td class="py-2">${o.coupon ? '<span class="bg-gold/10 text-gold text-[9px] px-1.5 py-0.5 rounded font-semibold">' + o.coupon + '</span>' : '-'}</td>
+            <td class="py-2 ${statusColor} font-semibold">${o.status === 'COMPLETED' ? 'Paid' : o.status || '-'}</td>
+          </tr>`;
+        }).join('');
+    }
+
+    // ====== CUSTOMER INSIGHTS ======
+    function renderCustomerInsights(orders, events) {
+      const pageViews = events.filter(e => e.event === 'page_view');
+      const allVids = new Set(pageViews.map(e => e.vid));
+
+      // Count purchasing vids (from checkout_complete events)
+      const purchaseVids = new Set(events.filter(e => e.event === 'checkout_complete').map(e => e.vid));
+
+      // Sessions per visitor
+      const vidSessions = {};
+      pageViews.forEach(e => {
+        if (!vidSessions[e.vid]) vidSessions[e.vid] = new Set();
+        vidSessions[e.vid].add(e.sid);
+      });
+      const avgSessions = allVids.size > 0
+        ? Object.values(vidSessions).reduce((s, set) => s + set.size, 0) / allVids.size : 0;
+
+      // Returning visitors (>1 session)
+      const returning = Object.values(vidSessions).filter(s => s.size > 1).length;
+      const returnRate = allVids.size > 0 ? returning / allVids.size : 0;
+
+      // Top shipping states
+      const stateMap = {};
+      orders.forEach(o => {
+        const state = o.shipping?.state;
+        if (state) stateMap[state] = (stateMap[state] || 0) + 1;
+      });
+      const topStates = Object.entries(stateMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      document.getElementById('customer-grid').innerHTML = `
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Unique Visitors</p>
+          <p class="font-heading font-bold text-lg text-white">${allVids.size}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Returning Visitors</p>
+          <p class="font-heading font-bold text-lg text-white">${fmtPct(returnRate)}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Avg Sessions/Visitor</p>
+          <p class="font-heading font-bold text-lg text-white">${avgSessions.toFixed(1)}</p>
+        </div>
+        <div class="bg-navy rounded-lg p-3 border border-navy-border">
+          <p class="text-[10px] text-[#7a8599] uppercase tracking-wider mb-1">Top Regions</p>
+          ${topStates.length ? topStates.map(([st, c]) => `<p class="text-[10px] text-white">${st} <span class="text-[#7a8599]">(${c})</span></p>`).join('') : '<p class="text-[10px] text-[#5a6478]">No data</p>'}
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

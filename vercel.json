@@ -1,7 +1,8 @@
 {
   "rewrites": [
     { "source": "/api/pay", "destination": "/api/pay" },
-    { "source": "/api/chat", "destination": "/api/chat" }
+    { "source": "/api/chat", "destination": "/api/chat" },
+    { "source": "/api/track", "destination": "/api/track" }
   ],
   "headers": [
     {

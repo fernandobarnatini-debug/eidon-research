@@ -12,12 +12,59 @@ const SQUARE_API = 'https://connect.squareup.com';
 const ACCESS_TOKEN = process.env.SQUARE_ACCESS_TOKEN;
 const LOCATION_ID = process.env.SQUARE_LOCATION_ID;
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
+const ANALYTICS_FILE = path.join(__dirname, 'analytics.json');
+
+// ====== CORS for admin dashboard on different port ======
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && (origin.startsWith('http://localhost:') || origin.startsWith('https://localhost:'))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
 
 // Load existing orders
 function loadOrders() {
   try { return JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8')); }
   catch { return []; }
 }
+
+// ====== ANALYTICS ENGINE ======
+let analyticsBuffer = [];
+let recentSessions = new Map(); // sid → { lastSeen, page, vid }
+
+function loadAnalytics() {
+  try { return JSON.parse(fs.readFileSync(ANALYTICS_FILE, 'utf8')); }
+  catch { return []; }
+}
+
+function flushAnalytics() {
+  if (analyticsBuffer.length === 0) return;
+  const existing = loadAnalytics();
+  existing.push(...analyticsBuffer);
+  // Prune events older than 90 days
+  const cutoff = Date.now() - (90 * 24 * 60 * 60 * 1000);
+  const pruned = existing.filter(e => e.ts > cutoff);
+  fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(pruned, null, 2));
+  analyticsBuffer = [];
+}
+
+// Flush buffer every 5 seconds
+setInterval(flushAnalytics, 5000);
+// Flush on shutdown
+process.on('SIGINT', () => { flushAnalytics(); process.exit(); });
+process.on('SIGTERM', () => { flushAnalytics(); process.exit(); });
+
+// Clean stale sessions every 60s
+setInterval(() => {
+  const cutoff = Date.now() - 5 * 60 * 1000;
+  for (const [sid, data] of recentSessions) {
+    if (data.lastSeen < cutoff) recentSessions.delete(sid);
+  }
+}, 60000);
 
 // Save order locally
 function saveOrder(order) {
@@ -131,6 +178,106 @@ app.get('/api/orders', (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   res.json(loadOrders());
+});
+
+// ====== ANALYTICS: Receive tracking events ======
+const VALID_EVENTS = new Set([
+  'page_view', 'product_view', 'product_click', 'add_to_cart', 'remove_from_cart',
+  'cart_open', 'checkout_start', 'checkout_step', 'checkout_complete', 'checkout_abandon',
+  'scroll_depth', 'time_on_page', 'exit_intent', 'search', 'email_signup', 'coupon_applied'
+]);
+
+// Simple rate limiting: IP → { count, resetTime }
+const rateLimits = new Map();
+
+app.post('/api/track', (req, res) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+
+  // Rate limit: 100 events/min per IP
+  let rl = rateLimits.get(ip);
+  if (!rl || now > rl.resetTime) {
+    rl = { count: 0, resetTime: now + 60000 };
+    rateLimits.set(ip, rl);
+  }
+  rl.count++;
+  if (rl.count > 100) {
+    return res.status(429).json({ error: 'Rate limited' });
+  }
+
+  const events = Array.isArray(req.body) ? req.body : [req.body];
+
+  for (const evt of events) {
+    if (!evt.vid || !evt.sid || !evt.event || !evt.ts) continue;
+    if (!VALID_EVENTS.has(evt.event)) continue;
+
+    analyticsBuffer.push({
+      vid: String(evt.vid).slice(0, 64),
+      sid: String(evt.sid).slice(0, 64),
+      event: evt.event,
+      page: String(evt.page || '/').slice(0, 256),
+      ts: Number(evt.ts),
+      ua: String(evt.ua || '').slice(0, 256),
+      ref: String(evt.ref || '').slice(0, 512),
+      utm: evt.utm || {},
+      data: evt.data || {},
+    });
+
+    // Update realtime session tracking
+    recentSessions.set(evt.sid, {
+      lastSeen: now,
+      page: evt.page || '/',
+      vid: evt.vid,
+    });
+  }
+
+  res.json({ ok: true });
+});
+
+// ====== ANALYTICS: Serve data to admin dashboard ======
+app.get('/api/analytics', (req, res) => {
+  const token = req.query.token || req.headers.authorization?.replace('Bearer ', '');
+  if (!token || token !== ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const range = req.query.range || '30d';
+  const now = Date.now();
+  let cutoff = 0;
+  if (range === 'today') cutoff = now - 24 * 60 * 60 * 1000;
+  else if (range === '7d') cutoff = now - 7 * 24 * 60 * 60 * 1000;
+  else if (range === '30d') cutoff = now - 30 * 24 * 60 * 60 * 1000;
+  else if (range === '90d') cutoff = now - 90 * 24 * 60 * 60 * 1000;
+  // 'all' → cutoff stays 0
+
+  const allEvents = [...loadAnalytics(), ...analyticsBuffer];
+  const filtered = cutoff > 0 ? allEvents.filter(e => e.ts > cutoff) : allEvents;
+
+  res.json(filtered);
+});
+
+// ====== ANALYTICS: Realtime active visitors ======
+app.get('/api/analytics/realtime', (req, res) => {
+  const token = req.query.token || req.headers.authorization?.replace('Bearer ', '');
+  if (!token || token !== ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const cutoff = Date.now() - 5 * 60 * 1000;
+  const active = [];
+  const uniqueVisitors = new Set();
+  for (const [sid, data] of recentSessions) {
+    if (data.lastSeen > cutoff) {
+      active.push({ sid, page: data.page, lastSeen: data.lastSeen });
+      uniqueVisitors.add(data.vid);
+    }
+  }
+
+  res.json({
+    activeSessions: active.length,
+    activeVisitors: uniqueVisitors.size,
+    sessions: active,
+  });
 });
 
 // ====== AI CHAT (DeepSeek V3 via OpenRouter) ======

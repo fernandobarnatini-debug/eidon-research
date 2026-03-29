@@ -995,6 +995,92 @@
     </div>
   </div>
 
+  <!-- ========== EIDON ANALYTICS TRACKING ========== -->
+  <script>
+  (function() {
+    const TRACK_URL = '/api/track';
+
+    // Cookie helpers
+    function getCookie(n) { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? m[1] : null; }
+    function setCookie(n, v, days) { const d = new Date(); d.setTime(d.getTime() + days * 864e5); document.cookie = n + '=' + v + ';path=/;expires=' + d.toUTCString() + ';SameSite=Lax'; }
+
+    // Visitor ID (1 year) & Session ID (30 min sliding)
+    let vid = getCookie('eidon_vid');
+    if (!vid) { vid = 'v_' + crypto.randomUUID(); setCookie('eidon_vid', vid, 365); }
+    let sid = getCookie('eidon_sid');
+    if (!sid) { sid = 's_' + crypto.randomUUID(); }
+    setCookie('eidon_sid', sid, 0.02); // ~30 min
+
+    // Refresh session on activity
+    ['click', 'scroll', 'keydown'].forEach(e => document.addEventListener(e, () => setCookie('eidon_sid', sid, 0.02), { passive: true, once: false }));
+
+    // UTM params
+    const params = new URLSearchParams(location.search);
+    const utm = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(k => { if (params.get(k)) utm[k.replace('utm_', '')] = params.get(k); });
+
+    // Device type
+    const ua = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : (window.innerWidth <= 1024 ? 'tablet' : 'desktop');
+
+    // Core track function — exposed globally as window.eidonTrack
+    const queue = [];
+    window.eidonTrack = function(event, data) {
+      queue.push({ vid, sid, event, page: location.pathname, ts: Date.now(), ua, ref: document.referrer, utm, data: data || {} });
+      // Debounce send: flush every 2s or on 10 events
+      if (queue.length >= 10) flushQueue();
+    };
+
+    function flushQueue() {
+      if (queue.length === 0) return;
+      const batch = queue.splice(0, queue.length);
+      try { navigator.sendBeacon(TRACK_URL, JSON.stringify(batch)); } catch(e) {
+        fetch(TRACK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(batch), keepalive: true }).catch(() => {});
+      }
+    }
+    setInterval(flushQueue, 2000);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushQueue(); });
+    window.addEventListener('pagehide', flushQueue);
+
+    // ---- Auto-tracked events ----
+
+    // Page view
+    eidonTrack('page_view', { screen: window.innerWidth + 'x' + window.innerHeight });
+
+    // Time on page
+    const _pageStart = Date.now();
+    window.addEventListener('pagehide', () => { eidonTrack('time_on_page', { seconds: Math.round((Date.now() - _pageStart) / 1000) }); });
+
+    // Scroll depth milestones
+    const _scrollMilestones = new Set();
+    window.addEventListener('scroll', () => {
+      const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      [25, 50, 75, 100].forEach(m => { if (pct >= m && !_scrollMilestones.has(m)) { _scrollMilestones.add(m); eidonTrack('scroll_depth', { depth: m }); } });
+    }, { passive: true });
+
+    // Product section visibility
+    const _prodObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { eidonTrack('product_view', { section: e.target.id }); _prodObs.unobserve(e.target); } });
+    }, { threshold: 0.2 });
+    document.addEventListener('DOMContentLoaded', () => {
+      const ps = document.getElementById('products'); if (ps) _prodObs.observe(ps);
+      const bs = document.getElementById('bundles'); if (bs) _prodObs.observe(bs);
+    });
+
+    // Product link clicks
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href*=".html"]');
+      if (a && a.closest('.product-card, .bundle-card')) {
+        eidonTrack('product_click', { href: a.getAttribute('href'), text: a.textContent.trim().slice(0, 64) });
+      }
+    });
+
+    // Exit intent (mouse leaves viewport)
+    document.addEventListener('mouseout', (e) => {
+      if (e.clientY < 5 && !window._exitTracked) { window._exitTracked = true; eidonTrack('exit_intent', { seconds: Math.round((Date.now() - _pageStart) / 1000) }); }
+    });
+  })();
+  </script>
+
   <!-- ========== JAVASCRIPT ========== -->
   <script>
     // ====== SCROLL REVEAL (IntersectionObserver) ======
@@ -1082,6 +1168,7 @@
       saveCart();
       openCart();
       bounceCartBadge();
+      if (window.eidonTrack) eidonTrack('add_to_cart', { sku, name, price, qty: 1, type: 'product' });
     }
 
     function addBundle(sku, name, price, items) {
@@ -1094,6 +1181,7 @@
       saveCart();
       openCart();
       bounceCartBadge();
+      if (window.eidonTrack) eidonTrack('add_to_cart', { sku, name, price, qty: 1, type: 'bundle' });
     }
 
     function bounceCartBadge() {
@@ -1104,6 +1192,8 @@
     }
 
     function removeFromCart(sku) {
+      const removedItem = cart.find(i => i.sku === sku);
+      if (window.eidonTrack && removedItem) eidonTrack('remove_from_cart', { sku, name: removedItem.name, price: removedItem.price });
       const el = document.getElementById('cart-item-' + sku);
       if (el) {
         el.style.opacity = '0';
@@ -1288,6 +1378,7 @@
       overlay.classList.remove('hidden');
       drawer.classList.remove('closed');
       document.body.style.overflow = 'hidden';
+      if (window.eidonTrack) eidonTrack('cart_open', { items: cart.length, subtotal: getSubtotal() });
     }
 
     // ====== FAQ ACCORDION (smooth grid-rows) ======
@@ -1448,10 +1539,14 @@
     document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById('search-input');
       if (input) {
+        let _searchTimer;
         input.addEventListener('input', (e) => {
           const q = e.target.value.toLowerCase().trim();
           const results = document.getElementById('search-results');
           if (!q) { results.innerHTML = ''; return; }
+          // Track search query (debounced 1s)
+          clearTimeout(_searchTimer);
+          _searchTimer = setTimeout(() => { if (window.eidonTrack) eidonTrack('search', { query: q }); }, 1000);
           const matches = searchData.filter(item =>
             item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q)
           );

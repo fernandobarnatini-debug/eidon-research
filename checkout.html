@@ -352,6 +352,59 @@
     </div>
   </footer>
 
+  <!-- ========== EIDON ANALYTICS TRACKING ========== -->
+  <script>
+  (function() {
+    const TRACK_URL = '/api/track';
+    function getCookie(n) { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? m[1] : null; }
+    function setCookie(n, v, days) { const d = new Date(); d.setTime(d.getTime() + days * 864e5); document.cookie = n + '=' + v + ';path=/;expires=' + d.toUTCString() + ';SameSite=Lax'; }
+    let vid = getCookie('eidon_vid'); if (!vid) { vid = 'v_' + crypto.randomUUID(); setCookie('eidon_vid', vid, 365); }
+    let sid = getCookie('eidon_sid'); if (!sid) { sid = 's_' + crypto.randomUUID(); } setCookie('eidon_sid', sid, 0.02);
+    ['click', 'scroll', 'keydown'].forEach(e => document.addEventListener(e, () => setCookie('eidon_sid', sid, 0.02), { passive: true }));
+    const params = new URLSearchParams(location.search);
+    const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign'].forEach(k => { if (params.get(k)) utm[k.replace('utm_', '')] = params.get(k); });
+    const ua = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : (window.innerWidth <= 1024 ? 'tablet' : 'desktop');
+    const queue = [];
+    window.eidonTrack = function(event, data) {
+      queue.push({ vid, sid, event, page: location.pathname, ts: Date.now(), ua, ref: document.referrer, utm, data: data || {} });
+      if (queue.length >= 10) flushQueue();
+    };
+    function flushQueue() { if (!queue.length) return; const b = queue.splice(0); try { navigator.sendBeacon(TRACK_URL, JSON.stringify(b)); } catch(e) { fetch(TRACK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b), keepalive: true }).catch(() => {}); } }
+    setInterval(flushQueue, 2000);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushQueue(); });
+    window.addEventListener('pagehide', flushQueue);
+
+    // Checkout-specific tracking
+    const _checkoutStart = Date.now();
+    const _cartData = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
+    const _subtotal = _cartData.reduce((s, i) => s + i.price * i.qty, 0);
+    eidonTrack('page_view', { screen: window.innerWidth + 'x' + window.innerHeight });
+    eidonTrack('checkout_start', { items: _cartData.length, subtotal: _subtotal });
+
+    // Track shipping form completion
+    let _shippingTracked = false;
+    document.addEventListener('focusout', (e) => {
+      if (_shippingTracked) return;
+      const fields = ['first-name', 'last-name', 'email', 'address', 'city', 'state', 'zip'];
+      const filled = fields.every(f => { const el = document.getElementById(f); return el && el.value.trim(); });
+      if (filled) { _shippingTracked = true; eidonTrack('checkout_step', { step: 'shipping_filled', seconds: Math.round((Date.now() - _checkoutStart) / 1000) }); }
+    });
+
+    // Track checkout abandonment on leave
+    window._checkoutCompleted = false;
+    window.addEventListener('pagehide', () => {
+      if (!window._checkoutCompleted && _cartData.length > 0) {
+        eidonTrack('checkout_abandon', { seconds: Math.round((Date.now() - _checkoutStart) / 1000), subtotal: _subtotal, items: _cartData.length });
+      }
+      eidonTrack('time_on_page', { seconds: Math.round((Date.now() - _checkoutStart) / 1000) });
+      flushQueue();
+    });
+
+    // Expose checkout start time for completion tracking
+    window._checkoutStartTime = _checkoutStart;
+  })();
+  </script>
+
   <!-- ========== JAVASCRIPT ========== -->
   <script>
     const SQUARE_APP_ID = 'sq0idp-SPOWLCELmrRGeJLIE0XWxA';
@@ -864,6 +917,21 @@
     }
 
     function showConfirmation(data) {
+      // Track purchase BEFORE clearing cart
+      if (window.eidonTrack) {
+        window._checkoutCompleted = true;
+        const checkoutSeconds = window._checkoutStartTime ? Math.round((Date.now() - window._checkoutStartTime) / 1000) : 0;
+        const items = cart.map(i => ({ sku: i.sku, name: i.name, price: i.price, qty: i.qty }));
+        eidonTrack('checkout_complete', {
+          orderNumber: data.orderNumber,
+          amount: data.amount,
+          items,
+          coupon: document.getElementById('coupon')?.value || null,
+          payment: data.paymentNote || 'card',
+          checkoutSeconds,
+        });
+      }
+
       document.getElementById('conf-order-num').textContent = data.orderNumber;
       document.getElementById('conf-payment').textContent = data.paymentNote || 'Credit/Debit Card';
       document.getElementById('conf-total').textContent = '$' + data.amount.toFixed(2);
