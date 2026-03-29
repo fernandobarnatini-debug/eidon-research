@@ -20,7 +20,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const events = Array.isArray(req.body) ? req.body : [req.body];
+  // sendBeacon sends as text/plain — parse it if needed
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { return res.json({ ok: false, error: 'Invalid JSON' }); }
+  }
+
+  const events = Array.isArray(body) ? body : [body];
   let accepted = 0;
 
   const pipeline = kv.pipeline();

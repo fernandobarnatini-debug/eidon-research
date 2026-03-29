@@ -1033,7 +1033,7 @@
     function flushQueue() {
       if (queue.length === 0) return;
       const batch = queue.splice(0, queue.length);
-      try { navigator.sendBeacon(TRACK_URL, JSON.stringify(batch)); } catch(e) {
+      try { navigator.sendBeacon(TRACK_URL, new Blob([JSON.stringify(batch)], { type: 'application/json' })); } catch(e) {
         fetch(TRACK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(batch), keepalive: true }).catch(() => {});
       }
     }
