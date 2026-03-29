@@ -138,28 +138,10 @@
         <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
           <h2 class="font-heading font-bold text-lg mb-5">Payment Method</h2>
 
-          <!-- Payment Tabs -->
-          <div class="grid grid-cols-2 gap-3 mb-6">
-            <button onclick="selectPayment('zelle')" id="tab-zelle" class="payment-tab active border-2 border-gold rounded-xl p-4 text-center cursor-pointer" style="transition: border-color 0.2s ease;">
-              <div class="flex flex-col items-center gap-2">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#6D1ED4"/><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="font-heading font-semibold text-sm">Zelle</span>
-                <span class="text-[10px] text-[#7a8599]">Instant bank transfer</span>
-              </div>
-            </button>
-            <button onclick="selectPayment('paypal')" id="tab-paypal" class="payment-tab border-2 border-[#1a2a45] rounded-xl p-4 text-center cursor-pointer" style="transition: border-color 0.2s ease;">
-              <div class="flex flex-col items-center gap-2">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#003087"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">PP</text></svg>
-                <span class="font-heading font-semibold text-sm">PayPal</span>
-                <span class="text-[10px] text-[#7a8599]">Friends &amp; Family</span>
-              </div>
-            </button>
-          </div>
-
           <!-- Zelle Payment -->
           <div id="payment-zelle">
             <div class="bg-[#0e1a2e] rounded-xl p-6 text-center">
-              <p class="text-gold font-heading font-bold text-lg mb-1">Send exactly <span id="zelle-amount" class="text-white">$0.00</span></p>
+              <p class="text-gold font-heading font-bold text-lg mb-1">Send exactly <span id="zelle-amount" class="text-white">$0.00</span> via Zelle</p>
               <p class="text-xs text-[#7a8599] mb-4">Scan the QR code below in your banking app</p>
               <div class="bg-white rounded-xl p-3 inline-block mb-4">
                 <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-48 h-48 object-contain">
@@ -169,23 +151,6 @@
               <div class="bg-gold/10 border border-gold/20 rounded-lg p-3 text-left">
                 <p class="text-xs text-gold font-semibold mb-1">Important:</p>
                 <p class="text-xs text-[#c0c8d8]">Include your <strong class="text-white">email address</strong> in the Zelle memo so we can match your payment to your order.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- PayPal Payment -->
-          <div id="payment-paypal" class="hidden">
-            <div class="bg-[#0e1a2e] rounded-xl p-6 text-center">
-              <p class="text-gold font-heading font-bold text-lg mb-1">Send exactly <span id="paypal-amount" class="text-white">$0.00</span></p>
-              <p class="text-xs text-[#7a8599] mb-4">Scan the QR code below in your PayPal app</p>
-              <div class="bg-white rounded-xl p-3 inline-block mb-4">
-                <img src="images/paypal-qr.jpg" alt="PayPal QR Code" class="w-48 h-48 object-contain">
-              </div>
-              <p class="text-sm text-[#c0c8d8] mb-2">Or send manually to:</p>
-              <p class="text-white font-heading font-bold text-base mb-3">Isaac Sahyoun</p>
-              <div class="bg-gold/10 border border-gold/20 rounded-lg p-3 text-left">
-                <p class="text-xs text-gold font-semibold mb-1">Important:</p>
-                <p class="text-xs text-[#c0c8d8]">Send as <strong class="text-white">Friends &amp; Family</strong> to avoid fees. Include your <strong class="text-white">email address</strong> in the PayPal note.</p>
               </div>
             </div>
           </div>
@@ -211,10 +176,7 @@
           Trusted by researchers nationwide
         </p>
         <div class="flex items-center justify-center gap-3 mb-6 opacity-60">
-          <!-- Zelle -->
           <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#6D1ED4"/><path d="M13 10h16L13 18h16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <!-- PayPal -->
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#003087"/><text x="21" y="17" text-anchor="middle" fill="white" font-size="9" font-family="Helvetica" font-weight="bold">PayPal</text></svg>
         </div>
 
         <!-- Coupon Code -->
@@ -839,9 +801,7 @@
     function updatePaymentAmounts() {
       const total = getTotal();
       const zelleAmt = document.getElementById('zelle-amount');
-      const paypalAmt = document.getElementById('paypal-amount');
       if (zelleAmt) zelleAmt.textContent = '$' + Math.max(0, total).toFixed(2);
-      if (paypalAmt) paypalAmt.textContent = '$' + Math.max(0, total).toFixed(2);
     }
     // Patch renderSummary to also update payment amounts
     const _origRenderSummary = renderSummary;
