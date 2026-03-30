@@ -134,55 +134,6 @@
           </form>
         </div>
 
-        <!-- Payment Method -->
-        <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#6D1ED4"/><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h2 class="font-heading font-bold text-lg">Pay with Zelle</h2>
-          </div>
-
-          <!-- Big amount + copy -->
-          <div class="bg-[#0e1a2e] rounded-xl p-5 mb-4 text-center">
-            <p class="text-xs text-[#7a8599] uppercase tracking-wider mb-1">Send exactly</p>
-            <p class="font-heading font-extrabold text-4xl text-white mb-2">$<span id="zelle-amount">0.00</span></p>
-            <button onclick="copyAmount()" id="copy-btn" class="text-xs text-gold border border-gold/30 rounded-lg px-4 py-1.5 hover:bg-gold/10 font-semibold" style="transition: background 0.2s ease;">
-              Tap to copy amount
-            </button>
-          </div>
-
-          <!-- QR Code -->
-          <div id="payment-zelle" class="mb-4">
-            <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-full max-w-xs mx-auto rounded-xl">
-          </div>
-
-          <!-- Simple instructions -->
-          <p class="text-xs text-[#7a8599] text-center mb-1">Scan QR code in your banking app &middot; Send exact amount &middot; Screenshot confirmation</p>
-          <p class="text-[10px] text-[#5a6478] text-center">Card payments returning soon</p>
-        </div>
-
-        <!-- Trust Badges -->
-        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 py-4 mt-2 text-[11px] text-[#7a8599]">
-          <span class="flex items-center gap-1.5">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Secured Payment
-          </span>
-          <span class="text-[#1a2a45]">·</span>
-          <span>30-Day Money Back</span>
-          <span class="text-[#1a2a45]">·</span>
-          <span>>99% Purity Verified</span>
-          <span class="text-[#1a2a45]">·</span>
-          <span>Same-Day Shipping</span>
-          <span class="text-[#1a2a45]">·</span>
-          <span>Discreet Packaging</span>
-        </div>
-        <p class="text-center text-[11px] text-[#5a6478] flex items-center justify-center gap-1 mb-4">
-          <svg width="12" height="12" fill="none" stroke="#D4AF37" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
-          Trusted by researchers nationwide
-        </p>
-        <div class="flex items-center justify-center gap-3 mb-6 opacity-60">
-          <svg width="42" height="28" viewBox="0 0 42 28" fill="none"><rect width="42" height="28" rx="4" fill="#6D1ED4"/><path d="M13 10h16L13 18h16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-
         <!-- Coupon Code -->
         <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6">
           <h2 class="font-heading font-bold text-lg mb-4">Coupon Code</h2>
@@ -193,17 +144,20 @@
           <p id="coupon-msg" class="hidden text-xs mt-2 font-semibold"></p>
         </div>
 
-        <!-- Place Order Button -->
-        <button onclick="placeOrder()" id="place-order-btn" class="btn-gold w-full py-4 text-sm uppercase tracking-wider">
-          <span id="btn-text">I've Sent Payment — Place Order ($<span id="btn-total">0.00</span>)</span>
-          <span id="btn-spinner" class="hidden">
-            <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-            Submitting Order...
-          </span>
+        <!-- Pay Button (opens bottom sheet) -->
+        <button onclick="openPaySheet()" id="place-order-btn" class="btn-gold w-full py-4 text-base uppercase tracking-wider font-bold">
+          Pay $<span id="btn-total">0.00</span>
         </button>
+        <div class="flex items-center justify-center gap-3 mt-2 text-[10px] text-[#5a6478]">
+          <span>🛡️ 30-Day Guarantee</span>
+          <span>·</span>
+          <span>🔒 Secure Payment</span>
+          <span>·</span>
+          <span>🚚 Same-Day Shipping</span>
+        </div>
 
         <!-- Legal -->
-        <p class="text-xs text-[#7a8599] text-center leading-relaxed">By placing this order, you confirm that you are 21+ years old and that all products are for research use only, not for human consumption.</p>
+        <p class="text-xs text-[#7a8599] text-center leading-relaxed mt-3">By placing this order, you confirm that you are 21+ years old and that all products are for research use only, not for human consumption.</p>
       </div>
 
       <!-- RIGHT: Order Summary (2 cols) -->
@@ -283,6 +237,53 @@
       <div id="conf-item-list" class="text-left text-sm space-y-2 mb-6 pb-6 border-b border-[#1a2a45]"></div>
       <a href="index.html" class="btn-gold inline-block px-8 py-3.5 text-sm uppercase tracking-wider">Continue Shopping</a>
       <p class="text-xs text-[#7a8599] mt-6">Products are for research use only. Not for human consumption.</p>
+    </div>
+  </div>
+
+  <!-- ========== PAYMENT BOTTOM SHEET ========== -->
+  <div id="pay-sheet-overlay" class="fixed inset-0 bg-black/60 z-[200] hidden" onclick="closePaySheet()" style="transition: opacity 0.3s ease; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);"></div>
+  <div id="pay-sheet" class="fixed bottom-0 left-0 right-0 z-[201] bg-[#111b30] rounded-t-2xl border-t border-[#1a2a45] max-h-[75vh] overflow-auto" style="transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -8px 40px rgba(0,0,0,0.4);">
+    <!-- Drag handle -->
+    <div class="flex justify-center pt-3 pb-1">
+      <div class="w-10 h-1 rounded-full bg-[#2a3a55]"></div>
+    </div>
+
+    <div class="px-6 pb-8">
+      <!-- Amount -->
+      <div class="text-center mb-5">
+        <p class="text-[10px] text-[#7a8599] uppercase tracking-widest mb-1">Total</p>
+        <p class="font-heading font-extrabold text-5xl text-white">$<span id="sheet-amount">0.00</span></p>
+      </div>
+
+      <!-- QR Code -->
+      <div class="flex justify-center mb-5">
+        <div class="bg-white rounded-2xl p-2.5">
+          <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-44 h-44 object-contain">
+        </div>
+      </div>
+
+      <!-- Open Zelle button -->
+      <button onclick="openZelle()" id="open-zelle-btn" class="w-full bg-[#6D1ED4] text-white font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-3 flex items-center justify-center gap-2" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Open Zelle — Send $<span id="sheet-amount-btn">0.00</span>
+      </button>
+
+      <!-- Toast (hidden by default) -->
+      <div id="copy-toast" class="hidden text-center mb-3">
+        <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30">✓ Amount copied to clipboard</span>
+      </div>
+
+      <!-- Done button -->
+      <button onclick="confirmPayment()" id="done-btn" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-4" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+        Done — I've Paid
+      </button>
+      <div id="done-spinner" class="hidden text-center mb-4">
+        <svg class="animate-spin inline w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+        <p class="text-xs text-[#7a8599] mt-2">Submitting order...</p>
+      </div>
+
+      <!-- Trust -->
+      <p class="text-[10px] text-[#5a6478] text-center">🛡️ 30-Day Money-Back Guarantee · EIDON Research · Sacramento, CA</p>
     </div>
   </div>
 
@@ -590,31 +591,6 @@
       }
     }
 
-    function selectPayment(method) {
-      paymentMethod = method;
-      const zelleTab = document.getElementById('tab-zelle');
-      const paypalTab = null;
-      const zelleForm = document.getElementById('payment-zelle');
-      const paypalForm = null;
-
-      if (method === 'zelle') {
-        zelleTab.classList.add('active');
-        zelleTab.style.borderColor = '#D4AF37';
-        paypalTab.classList.remove('active');
-        paypalTab.style.borderColor = '#1a2a45';
-        zelleForm.classList.remove('hidden');
-        paypalForm.classList.add('hidden');
-      } else {
-        paypalTab.classList.add('active');
-        paypalTab.style.borderColor = '#D4AF37';
-        zelleTab.classList.remove('active');
-        zelleTab.style.borderColor = '#1a2a45';
-        paypalForm.classList.remove('hidden');
-        zelleForm.classList.add('hidden');
-      }
-
-      renderSummary();
-    }
 
     function validateForm() {
       const fields = ['first-name', 'last-name', 'email', 'address', 'city', 'state', 'zip'];
@@ -659,14 +635,7 @@
     // ====== Place Order ======
     async function placeOrder() {
       hideError();
-
-      if (!validateForm()) {
-        showError('Please fill in all required shipping fields.');
-        return;
-      }
-
       const total = getTotal();
-      setLoading(true);
 
       try {
         const firstName = document.getElementById('first-name').value.trim();
@@ -678,7 +647,7 @@
             amount: total,
             email: document.getElementById('email').value.trim(),
             name: firstName + ' ' + lastName,
-            paymentMethod,
+            paymentMethod: 'zelle',
             shipping: {
               firstName,
               lastName,
@@ -696,8 +665,8 @@
         const data = await response.json();
 
         if (!response.ok || !data.success) {
-          showError(data.error || 'Payment failed. Please try again.');
-          setLoading(false);
+          closePaySheet();
+          showError(data.error || 'Order failed. Please try again.');
           return;
         }
 
@@ -706,13 +675,14 @@
           notifyAffiliate(appliedCoupon.code, total, data.orderNumber);
         }
 
-        // Payment succeeded — show confirmation
+        // Close sheet and show confirmation
+        closePaySheet();
         showConfirmation(data);
 
       } catch (err) {
-        console.error('Payment error:', err);
+        console.error('Order error:', err);
+        closePaySheet();
         showError('An unexpected error occurred. Please try again.');
-        setLoading(false);
       }
     }
 
@@ -801,25 +771,54 @@
 
     // ====== Initialize ======
     renderSummary();
-    // Update payment QR amounts
-    function updatePaymentAmounts() {
-      const total = getTotal();
-      const zelleAmt = document.getElementById('zelle-amount');
-      if (zelleAmt) zelleAmt.textContent = Math.max(0, total).toFixed(2);
-    }
-    function copyAmount() {
+
+    // ====== PAYMENT BOTTOM SHEET ======
+    function updateAllAmounts() {
       const total = Math.max(0, getTotal()).toFixed(2);
-      navigator.clipboard.writeText(total).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.textContent = 'Copied!';
-        btn.style.background = 'rgba(212,175,55,0.15)';
-        setTimeout(() => { btn.textContent = 'Tap to copy amount'; btn.style.background = ''; }, 2000);
-      });
+      const ids = ['btn-total', 'sheet-amount', 'sheet-amount-btn'];
+      ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = total; });
     }
-    // Patch renderSummary to also update payment amounts
     const _origRenderSummary = renderSummary;
-    renderSummary = function() { _origRenderSummary(); updatePaymentAmounts(); };
-    updatePaymentAmounts();
+    renderSummary = function() { _origRenderSummary(); updateAllAmounts(); };
+    updateAllAmounts();
+
+    function openPaySheet() {
+      if (!validateForm()) {
+        showError('Please fill in all required shipping fields.');
+        return;
+      }
+      hideError();
+      updateAllAmounts();
+      document.getElementById('pay-sheet-overlay').classList.remove('hidden');
+      requestAnimationFrame(() => {
+        document.getElementById('pay-sheet').style.transform = 'translateY(0)';
+      });
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePaySheet() {
+      document.getElementById('pay-sheet').style.transform = 'translateY(100%)';
+      setTimeout(() => { document.getElementById('pay-sheet-overlay').classList.add('hidden'); }, 350);
+      document.body.style.overflow = '';
+    }
+
+    function openZelle() {
+      const total = Math.max(0, getTotal()).toFixed(2);
+      // Copy amount to clipboard
+      navigator.clipboard.writeText(total).then(() => {
+        const toast = document.getElementById('copy-toast');
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+      }).catch(() => {});
+      // Try to open Zelle (falls back gracefully)
+      setTimeout(() => { window.open('https://enroll.zellepay.com/qr-codes?data=ewogICJuYW1lIjogIklTQUFDIiwKICAidG9rZW4iOiAiOTE2MjE0OTY2MCIsCiAgImFjdGlvbiI6ICJwYXltZW50Igp9', '_blank'); }, 300);
+    }
+
+    function confirmPayment() {
+      document.getElementById('done-btn').classList.add('hidden');
+      document.getElementById('done-spinner').classList.remove('hidden');
+      placeOrder();
+    }
   </script>
 
   <!-- ========== AGE VERIFICATION MODAL ========== -->
