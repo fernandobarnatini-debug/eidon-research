@@ -256,12 +256,16 @@
       </div>
 
       <!-- Payment Method Tabs -->
-      <div class="grid grid-cols-2 gap-2 mb-5">
-        <button onclick="switchPayTab('card')" id="pay-tab-card" class="border-2 border-gold rounded-xl py-3 px-4 text-center" style="transition: border-color 0.2s ease;">
+      <div class="grid grid-cols-3 gap-2 mb-5">
+        <button onclick="switchPayTab('card')" id="pay-tab-card" class="border-2 border-gold rounded-xl py-3 px-3 text-center" style="transition: border-color 0.2s ease;">
           <span class="font-heading font-semibold text-sm text-white block">Card</span>
-          <span class="text-[9px] text-[#7a8599]">Visa · Mastercard</span>
+          <span class="text-[9px] text-[#7a8599]">Visa · MC</span>
         </button>
-        <button onclick="switchPayTab('zelle')" id="pay-tab-zelle" class="border-2 border-[#1a2a45] rounded-xl py-3 px-4 text-center" style="transition: border-color 0.2s ease;">
+        <button onclick="switchPayTab('applepay')" id="pay-tab-applepay" class="border-2 border-[#1a2a45] rounded-xl py-3 px-3 text-center" style="transition: border-color 0.2s ease;">
+          <span class="font-heading font-semibold text-sm text-white block"> Pay</span>
+          <span class="text-[9px] text-[#7a8599]">iMessage</span>
+        </button>
+        <button onclick="switchPayTab('zelle')" id="pay-tab-zelle" class="border-2 border-[#1a2a45] rounded-xl py-3 px-3 text-center" style="transition: border-color 0.2s ease;">
           <span class="font-heading font-semibold text-sm text-white block">Zelle</span>
           <span class="text-[9px] text-[#7a8599]">Bank transfer</span>
         </button>
@@ -271,6 +275,32 @@
       <div id="pay-content-card">
         <div id="helioCheckoutContainer" class="rounded-xl overflow-hidden mb-4" style="min-height: 350px;"></div>
         <p class="text-[10px] text-[#5a6478] text-center">Powered by MoonPay Commerce · Secure card processing</p>
+      </div>
+
+      <!-- APPLE PAY TAB CONTENT -->
+      <div id="pay-content-applepay" class="hidden">
+        <div class="bg-[#0e1a2e] rounded-xl p-6 text-center">
+          <p class="text-xs text-[#7a8599] mb-4">Send exactly <span class="text-white font-bold">$<span id="applepay-amount">0.00</span></span> via Apple Pay in iMessage</p>
+          <!-- Phone number with copy -->
+          <div class="bg-navy rounded-xl border border-[#1a2a45] p-4 mb-4">
+            <p class="font-heading font-extrabold text-2xl text-white mb-2">(916) 214-9660</p>
+            <button onclick="copyPhone()" id="copy-phone-btn" class="text-xs text-gold border border-gold/30 rounded-lg px-4 py-1.5 hover:bg-gold/10 font-semibold" style="transition: background 0.2s ease;">
+              Tap to copy number
+            </button>
+          </div>
+          <ol class="text-xs text-[#c0c8d8] text-left space-y-2 mb-4">
+            <li class="flex items-start gap-2"><span class="text-gold font-bold">1.</span> Copy the number above</li>
+            <li class="flex items-start gap-2"><span class="text-gold font-bold">2.</span> Open <strong class="text-white">iMessage</strong> and start a conversation</li>
+            <li class="flex items-start gap-2"><span class="text-gold font-bold">3.</span> Tap the <strong class="text-white">Apple Pay</strong> button and send <strong class="text-white">$<span id="applepay-amount2">0.00</span></strong></li>
+          </ol>
+          <a href="sms:9162149660" class="block w-full bg-black text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider mb-3 text-center" style="transition: opacity 0.2s ease;">
+             Open iMessage
+          </a>
+        </div>
+        <!-- Done button -->
+        <button onclick="confirmPayment()" id="done-btn-ap" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mt-4 mb-4" style="transition: transform 0.2s ease;">
+          Done — I've Paid
+        </button>
       </div>
 
       <!-- ZELLE TAB CONTENT -->
@@ -799,7 +829,7 @@
     // ====== PAYMENT BOTTOM SHEET ======
     function updateAllAmounts() {
       const total = Math.max(0, getTotal()).toFixed(2);
-      const ids = ['btn-total', 'sheet-amount', 'sheet-amount-btn'];
+      const ids = ['btn-total', 'sheet-amount', 'sheet-amount-btn', 'applepay-amount', 'applepay-amount2'];
       ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = total; });
     }
     const _origRenderSummary = renderSummary;
@@ -811,23 +841,23 @@
 
     function switchPayTab(tab) {
       currentPayTab = tab;
-      const cardTab = document.getElementById('pay-tab-card');
-      const zelleTab = document.getElementById('pay-tab-zelle');
-      const cardContent = document.getElementById('pay-content-card');
-      const zelleContent = document.getElementById('pay-content-zelle');
+      const tabs = ['card', 'applepay', 'zelle'];
+      tabs.forEach(t => {
+        const tabEl = document.getElementById('pay-tab-' + t);
+        const content = document.getElementById('pay-content-' + t);
+        if (tabEl) tabEl.style.borderColor = t === tab ? '#D4AF37' : '#1a2a45';
+        if (content) content.classList.toggle('hidden', t !== tab);
+      });
+      if (tab === 'card') initHelio();
+    }
 
-      if (tab === 'card') {
-        cardTab.style.borderColor = '#D4AF37';
-        zelleTab.style.borderColor = '#1a2a45';
-        cardContent.classList.remove('hidden');
-        zelleContent.classList.add('hidden');
-        initHelio();
-      } else {
-        zelleTab.style.borderColor = '#D4AF37';
-        cardTab.style.borderColor = '#1a2a45';
-        zelleContent.classList.remove('hidden');
-        cardContent.classList.add('hidden');
-      }
+    function copyPhone() {
+      navigator.clipboard.writeText('9162149660').then(() => {
+        const btn = document.getElementById('copy-phone-btn');
+        btn.textContent = 'Copied!';
+        btn.style.background = 'rgba(212,175,55,0.15)';
+        setTimeout(() => { btn.textContent = 'Tap to copy number'; btn.style.background = ''; }, 2000);
+      });
     }
 
     function initHelio() {
