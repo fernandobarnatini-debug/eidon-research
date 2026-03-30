@@ -242,7 +242,7 @@
 
   <!-- ========== PAYMENT BOTTOM SHEET ========== -->
   <div id="pay-sheet-overlay" class="fixed inset-0 bg-black/60 z-[200] hidden" onclick="closePaySheet()" style="transition: opacity 0.3s ease; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);"></div>
-  <div id="pay-sheet" class="fixed bottom-0 left-0 right-0 z-[201] bg-[#111b30] rounded-t-2xl border-t border-[#1a2a45] max-h-[75vh] overflow-auto" style="transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -8px 40px rgba(0,0,0,0.4);">
+  <div id="pay-sheet" class="fixed bottom-0 left-0 right-0 z-[201] bg-[#111b30] rounded-t-2xl border-t border-[#1a2a45] max-h-[85vh] overflow-auto" style="transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -8px 40px rgba(0,0,0,0.4);">
     <!-- Drag handle -->
     <div class="flex justify-center pt-3 pb-1">
       <div class="w-10 h-1 rounded-full bg-[#2a3a55]"></div>
@@ -250,42 +250,66 @@
 
     <div class="px-6 pb-8">
       <!-- Amount -->
-      <div class="text-center mb-5">
+      <div class="text-center mb-4">
         <p class="text-[10px] text-[#7a8599] uppercase tracking-widest mb-1">Total</p>
-        <p class="font-heading font-extrabold text-5xl text-white">$<span id="sheet-amount">0.00</span></p>
+        <p class="font-heading font-extrabold text-4xl text-white">$<span id="sheet-amount">0.00</span></p>
       </div>
 
-      <!-- QR Code -->
-      <div class="flex justify-center mb-5">
-        <div class="bg-white rounded-2xl p-2.5">
-          <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-44 h-44 object-contain">
+      <!-- Payment Method Tabs -->
+      <div class="grid grid-cols-2 gap-2 mb-5">
+        <button onclick="switchPayTab('card')" id="pay-tab-card" class="border-2 border-gold rounded-xl py-3 px-4 text-center" style="transition: border-color 0.2s ease;">
+          <span class="font-heading font-semibold text-sm text-white block">Card</span>
+          <span class="text-[9px] text-[#7a8599]">Visa · Mastercard</span>
+        </button>
+        <button onclick="switchPayTab('zelle')" id="pay-tab-zelle" class="border-2 border-[#1a2a45] rounded-xl py-3 px-4 text-center" style="transition: border-color 0.2s ease;">
+          <span class="font-heading font-semibold text-sm text-white block">Zelle</span>
+          <span class="text-[9px] text-[#7a8599]">Bank transfer</span>
+        </button>
+      </div>
+
+      <!-- CARD TAB CONTENT (MoonPay Commerce / Helio) -->
+      <div id="pay-content-card">
+        <div id="helioCheckoutContainer" class="rounded-xl overflow-hidden mb-4" style="min-height: 350px;"></div>
+        <p class="text-[10px] text-[#5a6478] text-center">Powered by MoonPay Commerce · Secure card processing</p>
+      </div>
+
+      <!-- ZELLE TAB CONTENT -->
+      <div id="pay-content-zelle" class="hidden">
+        <!-- QR Code -->
+        <div class="flex justify-center mb-5">
+          <div class="bg-white rounded-2xl p-2.5">
+            <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-44 h-44 object-contain">
+          </div>
+        </div>
+
+        <!-- Open Zelle button -->
+        <button onclick="openZelle()" id="open-zelle-btn" class="w-full bg-[#6D1ED4] text-white font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-3 flex items-center justify-center gap-2" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Open Zelle — Send $<span id="sheet-amount-btn">0.00</span>
+        </button>
+
+        <!-- Toast -->
+        <div id="copy-toast" class="hidden text-center mb-3">
+          <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30">✓ Amount copied to clipboard</span>
+        </div>
+
+        <!-- Done button -->
+        <button onclick="confirmPayment()" id="done-btn" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-4" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          Done — I've Paid
+        </button>
+        <div id="done-spinner" class="hidden text-center mb-4">
+          <svg class="animate-spin inline w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <p class="text-xs text-[#7a8599] mt-2">Submitting order...</p>
         </div>
       </div>
 
-      <!-- Open Zelle button -->
-      <button onclick="openZelle()" id="open-zelle-btn" class="w-full bg-[#6D1ED4] text-white font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-3 flex items-center justify-center gap-2" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Open Zelle — Send $<span id="sheet-amount-btn">0.00</span>
-      </button>
-
-      <!-- Toast (hidden by default) -->
-      <div id="copy-toast" class="hidden text-center mb-3">
-        <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30">✓ Amount copied to clipboard</span>
-      </div>
-
-      <!-- Done button -->
-      <button onclick="confirmPayment()" id="done-btn" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-4" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
-        Done — I've Paid
-      </button>
-      <div id="done-spinner" class="hidden text-center mb-4">
-        <svg class="animate-spin inline w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-        <p class="text-xs text-[#7a8599] mt-2">Submitting order...</p>
-      </div>
-
       <!-- Trust -->
-      <p class="text-[10px] text-[#5a6478] text-center">🛡️ 30-Day Money-Back Guarantee · EIDON Research · Sacramento, CA</p>
+      <p class="text-[10px] text-[#5a6478] text-center mt-3">🛡️ 30-Day Money-Back Guarantee · EIDON Research · Sacramento, CA</p>
     </div>
   </div>
+
+  <!-- MoonPay Commerce (Helio) SDK -->
+  <script type="module" crossorigin src="https://embed.hel.io/assets/index-v1.js"></script>
 
   <!-- ========== FOOTER ========== -->
   <footer class="bg-navy text-white mt-auto">
@@ -782,6 +806,90 @@
     renderSummary = function() { _origRenderSummary(); updateAllAmounts(); };
     updateAllAmounts();
 
+    let helioInitialized = false;
+    let currentPayTab = 'card';
+
+    function switchPayTab(tab) {
+      currentPayTab = tab;
+      const cardTab = document.getElementById('pay-tab-card');
+      const zelleTab = document.getElementById('pay-tab-zelle');
+      const cardContent = document.getElementById('pay-content-card');
+      const zelleContent = document.getElementById('pay-content-zelle');
+
+      if (tab === 'card') {
+        cardTab.style.borderColor = '#D4AF37';
+        zelleTab.style.borderColor = '#1a2a45';
+        cardContent.classList.remove('hidden');
+        zelleContent.classList.add('hidden');
+        initHelio();
+      } else {
+        zelleTab.style.borderColor = '#D4AF37';
+        cardTab.style.borderColor = '#1a2a45';
+        zelleContent.classList.remove('hidden');
+        cardContent.classList.add('hidden');
+      }
+    }
+
+    function initHelio() {
+      if (helioInitialized || !window.helioCheckout) return;
+      const container = document.getElementById('helioCheckoutContainer');
+      if (!container) return;
+      const total = Math.max(0, getTotal()).toFixed(2);
+      window.helioCheckout(container, {
+        paylinkId: '69ca11fc9153c496cc8a8852',
+        theme: { themeMode: 'dark' },
+        primaryColor: '#D4AF37',
+        neutralColor: '#0B1426',
+        amount: total,
+        onSuccess: function(event) {
+          // Payment succeeded via card — save order as verified
+          closePaySheet();
+          placeOrderWithStatus('VERIFIED', 'MoonPay Card');
+        },
+        onError: function(event) {
+          console.error('MoonPay error:', event);
+        },
+        onPending: function(event) {
+          console.log('MoonPay pending:', event);
+        },
+      });
+      helioInitialized = true;
+    }
+
+    // Place order with a specific status (for card vs zelle)
+    async function placeOrderWithStatus(status, paymentNote) {
+      const total = getTotal();
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      try {
+        const response = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: total,
+            email: document.getElementById('email').value.trim(),
+            name: firstName + ' ' + lastName,
+            paymentMethod: paymentNote || 'card',
+            shipping: {
+              firstName, lastName,
+              address: document.getElementById('address').value.trim(),
+              city: document.getElementById('city').value.trim(),
+              state: document.getElementById('state').value.trim(),
+              zip: document.getElementById('zip').value.trim(),
+            },
+            coupon: appliedCoupon?.code || null,
+            lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+          }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          data.status = status;
+          data.paymentNote = paymentNote;
+          showConfirmation(data);
+        }
+      } catch (e) { console.error('Order save error:', e); }
+    }
+
     function openPaySheet() {
       if (!validateForm()) {
         showError('Please fill in all required shipping fields.');
@@ -794,6 +902,8 @@
         document.getElementById('pay-sheet').style.transform = 'translateY(0)';
       });
       document.body.style.overflow = 'hidden';
+      // Init Helio widget when sheet opens
+      setTimeout(() => initHelio(), 300);
     }
 
     function closePaySheet() {
