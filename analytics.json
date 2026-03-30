@@ -1,0 +1,28 @@
+[
+  {
+    "vid": "v_7b0f5f74-8e69-4914-83cb-dbaf0776921b",
+    "sid": "s_30c51c16-7570-4232-8d1c-beef0f5c8928",
+    "event": "page_view",
+    "page": "/",
+    "ts": 1774835188447,
+    "ua": "desktop",
+    "ref": "",
+    "utm": {},
+    "data": {
+      "screen": "1296x886"
+    }
+  },
+  {
+    "vid": "v_7b0f5f74-8e69-4914-83cb-dbaf0776921b",
+    "sid": "s_30c51c16-7570-4232-8d1c-beef0f5c8928",
+    "event": "time_on_page",
+    "page": "/",
+    "ts": 1774835192418,
+    "ua": "desktop",
+    "ref": "",
+    "utm": {},
+    "data": {
+      "seconds": 4
+    }
+  }
+]

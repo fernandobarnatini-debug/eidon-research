@@ -13,7 +13,7 @@
   </script>
   <title>Checkout — EIDON Research</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta name="description" content="Checkout — EIDON Research. Secure payment via Zelle or PayPal. Free shipping on orders $50+.">
+  <meta name="description" content="Checkout — EIDON Research. Secure payment via Zelle. Free shipping on orders $50+.">
   <meta name="robots" content="noindex">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -593,9 +593,9 @@
     function selectPayment(method) {
       paymentMethod = method;
       const zelleTab = document.getElementById('tab-zelle');
-      const paypalTab = document.getElementById('tab-paypal');
+      const paypalTab = null;
       const zelleForm = document.getElementById('payment-zelle');
-      const paypalForm = document.getElementById('payment-paypal');
+      const paypalForm = null;
 
       if (method === 'zelle') {
         zelleTab.classList.add('active');
