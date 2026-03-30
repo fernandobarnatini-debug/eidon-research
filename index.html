@@ -412,7 +412,7 @@
 
   <!-- ========== ANNOUNCEMENT BAR ========== -->
   <div class="bg-navy-light text-white/80 text-[11px] py-2 tracking-wide border-b border-white/5 text-center">
-    50% OFF EVERYTHING &middot; FREE SHIPPING $50+ &middot; TEXT <a href="sms:9162149660" class="text-gold font-bold hover:underline">(916) 214-9660</a> TO ORDER
+    50% OFF EVERYTHING &middot; FREE SHIPPING $50+ &middot; SAME-DAY SHIPPING
   </div>
 
 
@@ -984,7 +984,7 @@
       </div>
       <p class="text-xs text-[#7a8599] mb-4">Shipping calculated at checkout</p>
         <p class="text-center text-[10px] text-[#7a8599] mb-2">🛡️ 30-Day Money-Back Guarantee — No Questions Asked</p>
-      <a href="sms:9162149660&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order" class="btn-gold block text-center py-3.5 text-sm uppercase tracking-wider w-full">Text to Order — (916) 214-9660</a>
+      <a href="checkout.html" class="btn-gold block text-center py-3.5 text-sm uppercase tracking-wider w-full">Checkout</a>
     </div>
   </div>
 
@@ -1651,38 +1651,9 @@
         localStorage.setItem('eidon_age_verified', 'true');
         document.getElementById('age-gate').classList.add('hidden');
         document.body.style.overflow = '';
-        // Show text-to-order popup after age gate (once per session)
-        if (!sessionStorage.getItem('eidon_order_popup_seen')) {
-          setTimeout(() => {
-            document.getElementById('text-order-popup').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-          }, 300);
-        }
       } else {
         window.location.href = 'https://www.google.com';
       }
-    }
-  </script>
-
-  <!-- ========== TEXT TO ORDER POPUP ========== -->
-  <div id="text-order-popup" class="fixed inset-0 z-[190] flex items-center justify-center bg-navy/95 backdrop-blur-sm hidden">
-    <div class="bg-[#111b30] rounded-2xl shadow-floating max-w-sm w-full mx-4 p-8 text-center border border-[#1a2a45]" style="animation: msgIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
-      <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-gold/10 flex items-center justify-center">
-        <svg width="28" height="28" fill="none" stroke="#D4AF37" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </div>
-      <h2 class="font-heading font-bold text-xl text-white mb-2">We're Updating Our Payment System</h2>
-      <p class="text-sm text-[#c0c8d8] mb-6 leading-relaxed">For the fastest service, text us your order directly. Same-day shipping available.</p>
-      <a href="sms:9162149660&body=Hi%2C%20I%27d%20like%20to%20place%20an%20order" class="btn-gold block py-3.5 text-sm uppercase tracking-wider font-bold mb-3 text-center">
-        Text Us — (916) 214-9660
-      </a>
-      <button onclick="closeOrderPopup()" class="text-[#7a8599] text-sm hover:text-white w-full py-2" style="transition: color 0.2s ease;">Browse Catalog</button>
-    </div>
-  </div>
-  <script>
-    function closeOrderPopup() {
-      document.getElementById('text-order-popup').classList.add('hidden');
-      document.body.style.overflow = '';
-      sessionStorage.setItem('eidon_order_popup_seen', 'true');
     }
   </script>
 
