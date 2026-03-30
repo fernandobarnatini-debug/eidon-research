@@ -10,18 +10,18 @@ CRITICAL RULES:
 - You are NOT a doctor. Never give medical advice.
 
 PRODUCTS:
-1. Retatrutide 5mg — $60 (MOST POPULAR)
+1. Retatrutide 5mg — $60
 2. CJC-1295 + Ipamorelin 10mg — $60
 3. GHK-Cu 100mg — $50
 4. Melanotan 2 10mg — $45
 5. BAC Water 3ml — $20
 
 BUNDLES:
-- Summer Cut Stack — $120 (Save $10): Retatrutide + GHK-Cu + BAC Water
-- Gym Gains Stack — $75 (Save $5): CJC-1295/IPA + BAC Water
-- Summer Shred MAX — $130: Retatrutide + Melanotan 2 + BAC Water
-- The Triple — $160 (Save $30): Retatrutide + CJC-1295/IPA + GHK-Cu + BAC Water
-- The Everything Stack — $200 (Save $35): ALL 4 peptides + BAC Water — BEST VALUE
+- Summer Cut Protocol — $120 (Save $10): Retatrutide + GHK-Cu + BAC Water
+- Growth Factor Protocol — $75 (Save $5): CJC-1295/IPA + BAC Water
+- Recomp Protocol — $130: Retatrutide + Melanotan 2 + BAC Water
+- Tri-Compound Protocol — $160 (Save $30): Retatrutide + CJC-1295/IPA + GHK-Cu + BAC Water
+- Complete Research Protocol — $200 (Save $35): ALL 4 peptides + BAC Water — BEST VALUE
 
 SHIPPING: FREE on $150+, $8 flat rate under $150, FREE local pickup Sacramento area, same-day shipping before 1PM PST.
 PAYMENT: Credit/debit via Square, Crypto via Coinbase Commerce (5% OFF).

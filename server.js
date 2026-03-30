@@ -332,26 +332,26 @@ CRITICAL RULES:
 
 PRODUCTS:
 1. Retatrutide 5mg — $60 (SKU: RT5)
-   Triple-receptor GLP-1/GIP/Glucagon research compound. The most advanced weight management peptide available. Targets three receptors simultaneously for superior fat loss, appetite regulation, and lean mass preservation in research settings. MOST POPULAR product.
+   Triple-receptor GLP-1/GIP/Glucagon research compound. Lyophilized powder. >99% HPLC verified purity.
 
 2. CJC-1295 + Ipamorelin 10mg — $60 (SKU: CP10)
-   Synergistic growth hormone secretagogue stack. Promotes deep restorative sleep, accelerated recovery, anti-aging properties, and lean muscle development in research models.
+   Growth hormone secretagogue research compound. Dual-peptide lyophilized powder. >99% HPLC verified purity.
 
 3. GHK-Cu 100mg — $50 (SKU: CU100)
-   Copper peptide for tissue regeneration research. Promotes collagen synthesis, skin tightening, hair follicle stimulation, and accelerated wound healing. One of the most researched regenerative peptides.
+   Copper-bound tripeptide research compound. Lyophilized powder. >99% HPLC verified purity.
 
 4. Melanotan 2 10mg — $45 (SKU: MT2)
-   Melanocortin receptor agonist. Stimulates melanogenesis for enhanced pigmentation without UV exposure. Additional research applications include appetite regulation.
+   Melanocortin receptor agonist research compound. Lyophilized powder. >99% HPLC verified purity.
 
 5. BAC Water 10ml — $20 (SKU: WA3)
    USP-grade bacteriostatic water with 0.9% benzyl alcohol. Required for reconstitution of all lyophilized peptides.
 
 BUNDLES:
-- Summer Cut Stack — $120 (Save $10): Retatrutide + GHK-Cu + BAC Water
-- Gym Gains Stack — $75 (Save $5): CJC-1295/IPA + BAC Water
-- Summer Shred MAX — $130: Retatrutide + Melanotan 2 + BAC Water
-- The Triple — $160 (Save $30): Retatrutide + CJC-1295/IPA + GHK-Cu + BAC Water
-- The Everything Stack — $200 (Save $35): ALL 4 peptides + BAC Water — BEST VALUE
+- Summer Cut Protocol — $120 (Save $10): Retatrutide + GHK-Cu + BAC Water
+- Growth Factor Protocol — $75 (Save $5): CJC-1295/IPA + BAC Water
+- Recomp Protocol — $130: Retatrutide + Melanotan 2 + BAC Water
+- Tri-Compound Protocol — $160 (Save $30): Retatrutide + CJC-1295/IPA + GHK-Cu + BAC Water
+- Complete Research Protocol — $200 (Save $35): ALL 4 peptides + BAC Water — BEST VALUE
 
 SHIPPING:
 - FREE shipping on orders $60+
