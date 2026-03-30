@@ -256,12 +256,8 @@
       </div>
 
       <!-- Payment Method Tabs -->
-      <div class="grid grid-cols-3 gap-2 mb-5">
-        <button onclick="switchPayTab('card')" id="pay-tab-card" class="border-2 border-gold rounded-xl py-3 px-3 text-center" style="transition: border-color 0.2s ease;">
-          <span class="font-heading font-semibold text-sm text-white block">Card</span>
-          <span class="text-[9px] text-[#7a8599]">Visa · MC</span>
-        </button>
-        <button onclick="switchPayTab('applepay')" id="pay-tab-applepay" class="border-2 border-[#1a2a45] rounded-xl py-3 px-3 text-center" style="transition: border-color 0.2s ease;">
+      <div class="grid grid-cols-2 gap-2 mb-5">
+        <button onclick="switchPayTab('applepay')" id="pay-tab-applepay" class="border-2 border-gold rounded-xl py-3 px-3 text-center" style="transition: border-color 0.2s ease;">
           <span class="font-heading font-semibold text-sm text-white block"> Pay</span>
           <span class="text-[9px] text-[#7a8599]">iMessage</span>
         </button>
@@ -271,118 +267,75 @@
         </button>
       </div>
 
-      <!-- CARD TAB CONTENT (MoonPay Commerce / Helio) -->
-      <div id="pay-content-card">
-        <div class="bg-[#0e1a2e] rounded-xl p-4 mb-4">
-          <p class="text-xs text-gold font-semibold mb-3">How to pay with card:</p>
-          <ol class="text-xs text-[#c0c8d8] space-y-3">
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">1</span>
-              <span>Select <strong class="text-white">"Pay with card"</strong> in the widget below</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">2</span>
-              <span>Enter your <strong class="text-white">email address</strong> — you'll receive a confirmation here</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">3</span>
-              <span>Quick verification — enter your <strong class="text-white">name and card details</strong> (first-time only)</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">4</span>
-              <span>Confirm payment — you'll see <strong class="text-white">"Payment complete"</strong> once it goes through</span>
-            </li>
-          </ol>
-          <p class="text-[10px] text-[#5a6478] mt-3">First-time buyers: a quick ID check may be required by the payment provider. This only happens once.</p>
-        </div>
-        <div id="helioCheckoutContainer" class="rounded-xl overflow-hidden mb-4" style="min-height: 350px;"></div>
-        <p class="text-[10px] text-[#5a6478] text-center">Secure card processing by MoonPay · Visa · Mastercard · Apple Pay</p>
-      </div>
-
       <!-- APPLE PAY TAB CONTENT -->
-      <div id="pay-content-applepay" class="hidden">
-        <div class="bg-[#0e1a2e] rounded-xl p-5">
-          <p class="text-xs text-gold font-semibold mb-3">How to pay with Apple Pay:</p>
-          <ol class="text-xs text-[#c0c8d8] space-y-3 mb-5">
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">1</span>
-              <span>Tap <strong class="text-white">"Open iMessage"</strong> below (or copy the number)</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">2</span>
-              <span>In iMessage, tap the <strong class="text-white">Apple Pay</strong> button ($ icon)</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">3</span>
-              <span>Enter exactly <strong class="text-white">$<span id="applepay-amount">0.00</span></strong> and hit Send</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">4</span>
-              <span>Come back here and tap <strong class="text-white">"Done — I've Paid"</strong></span>
-            </li>
-          </ol>
+      <div id="pay-content-applepay">
+        <!-- Big action button first -->
+        <a href="sms:9162149660" class="block w-full bg-black text-white font-bold py-4 rounded-xl text-base tracking-wider text-center mb-4" style="transition: opacity 0.2s ease;">
+           Pay $<span id="applepay-amount">0.00</span> via iMessage
+        </a>
 
-          <!-- Phone number -->
-          <div class="bg-navy rounded-xl border border-[#1a2a45] p-4 mb-4 text-center">
-            <p class="font-heading font-extrabold text-2xl text-white mb-2">(916) 214-9660</p>
-            <button onclick="copyPhone()" id="copy-phone-btn" class="text-xs text-gold border border-gold/30 rounded-lg px-4 py-1.5 hover:bg-gold/10 font-semibold" style="transition: background 0.2s ease;">
-              Tap to copy number
-            </button>
+        <!-- Quick steps -->
+        <div class="bg-[#0e1a2e] rounded-xl p-4 mb-4">
+          <div class="flex items-center gap-3 mb-3 pb-3 border-b border-[#1a2a45]">
+            <span class="w-6 h-6 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">1</span>
+            <span class="text-xs text-[#c0c8d8]">Tap the button above — <strong class="text-white">iMessage will open</strong></span>
           </div>
-
-          <a href="sms:9162149660" class="block w-full bg-black text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider mb-3 text-center" style="transition: opacity 0.2s ease;">
-             Open iMessage
-          </a>
+          <div class="flex items-center gap-3 mb-3 pb-3 border-b border-[#1a2a45]">
+            <span class="w-6 h-6 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">2</span>
+            <span class="text-xs text-[#c0c8d8]">Tap the <strong class="text-white">$</strong> icon → enter <strong class="text-white">$<span id="applepay-amount2">0.00</span></strong> → hit Send</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">3</span>
+            <span class="text-xs text-[#c0c8d8]">Come back and tap <strong class="text-white">"Done"</strong> below</span>
+          </div>
         </div>
 
-        <button onclick="confirmPayment()" id="done-btn-ap" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mt-4 mb-4" style="transition: transform 0.2s ease;">
+        <!-- Copy amount for easy paste -->
+        <button onclick="copyApplePayAmount()" id="copy-ap-amount" class="w-full border border-[#1a2a45] text-[#7a8599] text-xs font-semibold py-2.5 rounded-xl mb-4 hover:border-gold/30 hover:text-gold" style="transition: border-color 0.2s ease, color 0.2s ease;">
+          Tap to copy $<span id="applepay-amount3">0.00</span> to clipboard
+        </button>
+
+        <button onclick="confirmPayment()" id="done-btn-ap" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-4" style="transition: transform 0.2s ease;">
           Done — I've Paid
         </button>
       </div>
 
       <!-- ZELLE TAB CONTENT -->
       <div id="pay-content-zelle" class="hidden">
-        <div class="bg-[#0e1a2e] rounded-xl p-4 mb-4">
-          <p class="text-xs text-gold font-semibold mb-3">How to pay with Zelle:</p>
-          <ol class="text-xs text-[#c0c8d8] space-y-3">
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">1</span>
-              <span>Open your <strong class="text-white">banking app</strong> (Chase, BofA, Wells Fargo, etc.)</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">2</span>
-              <span><strong class="text-white">Scan the QR code</strong> below, or search for the number</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">3</span>
-              <span>Send exactly <strong class="text-white">$<span id="zelle-step-amount">0.00</span></strong></span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-gold/20 text-gold flex items-center justify-center flex-shrink-0 text-[10px] font-bold">4</span>
-              <span>Come back here and tap <strong class="text-white">"Done — I've Paid"</strong></span>
-            </li>
-          </ol>
-        </div>
-
-        <!-- QR Code -->
+        <!-- QR Code front and center -->
         <div class="flex justify-center mb-4">
-          <div class="bg-white rounded-2xl p-2.5">
-            <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-44 h-44 object-contain">
+          <div class="bg-white rounded-2xl p-3">
+            <img src="images/zelle-qr.webp" alt="Zelle QR Code" class="w-48 h-48 object-contain">
           </div>
         </div>
 
-        <!-- Open Zelle button -->
-        <button onclick="openZelle()" id="open-zelle-btn" class="w-full bg-[#6D1ED4] text-white font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-3 flex items-center justify-center gap-2" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Copy Amount — $<span id="sheet-amount-btn">0.00</span>
+        <!-- Copy amount button -->
+        <button onclick="openZelle()" id="open-zelle-btn" class="w-full bg-[#6D1ED4] text-white font-bold py-4 rounded-xl text-sm tracking-wider mb-4 flex items-center justify-center gap-2" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Send $<span id="sheet-amount-btn">0.00</span> via Zelle
         </button>
 
         <!-- Toast -->
         <div id="copy-toast" class="hidden text-center mb-3">
-          <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30">✓ Amount copied to clipboard</span>
+          <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30">✓ $<span id="toast-amount">0.00</span> copied to clipboard</span>
         </div>
 
-        <!-- Done button -->
+        <!-- Quick steps -->
+        <div class="bg-[#0e1a2e] rounded-xl p-4 mb-4">
+          <div class="flex items-center gap-3 mb-3 pb-3 border-b border-[#1a2a45]">
+            <span class="w-6 h-6 rounded-full bg-[#6D1ED4]/30 text-[#a78bfa] flex items-center justify-center flex-shrink-0 text-[10px] font-bold">1</span>
+            <span class="text-xs text-[#c0c8d8]"><strong class="text-white">Scan QR code</strong> above in your banking app</span>
+          </div>
+          <div class="flex items-center gap-3 mb-3 pb-3 border-b border-[#1a2a45]">
+            <span class="w-6 h-6 rounded-full bg-[#6D1ED4]/30 text-[#a78bfa] flex items-center justify-center flex-shrink-0 text-[10px] font-bold">2</span>
+            <span class="text-xs text-[#c0c8d8]">Send exactly <strong class="text-white">$<span id="zelle-step-amount">0.00</span></strong></span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-full bg-[#6D1ED4]/30 text-[#a78bfa] flex items-center justify-center flex-shrink-0 text-[10px] font-bold">3</span>
+            <span class="text-xs text-[#c0c8d8]">Come back and tap <strong class="text-white">"Done"</strong> below</span>
+          </div>
+        </div>
+
         <button onclick="confirmPayment()" id="done-btn" class="w-full bg-gold text-navy font-bold py-4 rounded-xl text-sm uppercase tracking-wider mb-4" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
           Done — I've Paid
         </button>
@@ -397,8 +350,6 @@
     </div>
   </div>
 
-  <!-- MoonPay Commerce (Helio) SDK -->
-  <script type="module" crossorigin src="https://embed.hel.io/assets/index-v1.js"></script>
 
   <!-- ========== FOOTER ========== -->
   <footer class="bg-navy text-white mt-auto">
@@ -888,26 +839,24 @@
     // ====== PAYMENT BOTTOM SHEET ======
     function updateAllAmounts() {
       const total = Math.max(0, getTotal()).toFixed(2);
-      const ids = ['btn-total', 'sheet-amount', 'sheet-amount-btn', 'applepay-amount', 'zelle-step-amount'];
+      const ids = ['btn-total', 'sheet-amount', 'sheet-amount-btn', 'applepay-amount', 'applepay-amount2', 'applepay-amount3', 'zelle-step-amount', 'toast-amount'];
       ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = total; });
     }
     const _origRenderSummary = renderSummary;
     renderSummary = function() { _origRenderSummary(); updateAllAmounts(); };
     updateAllAmounts();
 
-    let helioInitialized = false;
-    let currentPayTab = 'card';
+    let currentPayTab = 'applepay';
 
     function switchPayTab(tab) {
       currentPayTab = tab;
-      const tabs = ['card', 'applepay', 'zelle'];
+      const tabs = ['applepay', 'zelle'];
       tabs.forEach(t => {
         const tabEl = document.getElementById('pay-tab-' + t);
         const content = document.getElementById('pay-content-' + t);
         if (tabEl) tabEl.style.borderColor = t === tab ? '#D4AF37' : '#1a2a45';
         if (content) content.classList.toggle('hidden', t !== tab);
       });
-      if (tab === 'card') initHelio();
     }
 
     function copyPhone() {
@@ -919,64 +868,15 @@
       });
     }
 
-    function initHelio() {
-      if (helioInitialized || !window.helioCheckout) return;
-      const container = document.getElementById('helioCheckoutContainer');
-      if (!container) return;
+    function copyApplePayAmount() {
       const total = Math.max(0, getTotal()).toFixed(2);
-      window.helioCheckout(container, {
-        paylinkId: '69ca11fc9153c496cc8a8852',
-        theme: { themeMode: 'dark' },
-        primaryColor: '#D4AF37',
-        neutralColor: '#0B1426',
-        amount: total,
-        onSuccess: function(event) {
-          // Payment succeeded via card — save order as verified
-          closePaySheet();
-          placeOrderWithStatus('VERIFIED', 'MoonPay Card');
-        },
-        onError: function(event) {
-          console.error('MoonPay error:', event);
-        },
-        onPending: function(event) {
-          console.log('MoonPay pending:', event);
-        },
+      navigator.clipboard.writeText(total).then(() => {
+        const btn = document.getElementById('copy-ap-amount');
+        btn.textContent = '✓ Copied!';
+        btn.style.borderColor = '#D4AF37';
+        btn.style.color = '#D4AF37';
+        setTimeout(() => { btn.innerHTML = 'Tap to copy $<span id="applepay-amount3">' + total + '</span> to clipboard'; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
       });
-      helioInitialized = true;
-    }
-
-    // Place order with a specific status (for card vs zelle)
-    async function placeOrderWithStatus(status, paymentNote) {
-      const total = getTotal();
-      const firstName = document.getElementById('first-name').value.trim();
-      const lastName = document.getElementById('last-name').value.trim();
-      try {
-        const response = await fetch('/api/order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: total,
-            email: document.getElementById('email').value.trim(),
-            name: firstName + ' ' + lastName,
-            paymentMethod: paymentNote || 'card',
-            shipping: {
-              firstName, lastName,
-              address: document.getElementById('address').value.trim(),
-              city: document.getElementById('city').value.trim(),
-              state: document.getElementById('state').value.trim(),
-              zip: document.getElementById('zip').value.trim(),
-            },
-            coupon: appliedCoupon?.code || null,
-            lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-          }),
-        });
-        const data = await response.json();
-        if (data.success) {
-          data.status = status;
-          data.paymentNote = paymentNote;
-          showConfirmation(data);
-        }
-      } catch (e) { console.error('Order save error:', e); }
     }
 
     function openPaySheet() {
