@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "eidon-dev",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "."],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.js"],
       "port": 3000,
       "autoPort": true
     }

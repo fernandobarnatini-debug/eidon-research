@@ -202,6 +202,21 @@
         </div>
       </div>
 
+      <!-- ===== STOCK MANAGEMENT ===== -->
+      <div class="bg-navy-card border border-navy-border rounded-xl p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-heading font-bold text-sm text-white">Stock Management</h3>
+            <p class="text-[10px] text-[#7a8599] mt-0.5">Deducts automatically when you Verify an order. Red = out, amber = low (≤3).</p>
+          </div>
+          <button onclick="loadStockPanel()" class="text-[10px] text-gold hover:text-white uppercase tracking-wider font-bold">↻ Refresh</button>
+        </div>
+        <div id="stock-panel" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <p class="text-sm text-[#7a8599] col-span-4">Loading stock…</p>
+        </div>
+        <p id="stock-msg" class="hidden text-xs mt-3 font-semibold"></p>
+      </div>
+
       <!-- ===== RECENT ORDERS ===== -->
       <div class="bg-navy-card border border-navy-border rounded-xl p-5">
         <div class="flex items-center justify-between mb-4">
@@ -308,7 +323,18 @@
 
   <script>
     // ====== CONFIG ======
-    const API_BASE = 'https://eidonresearch.com';
+    // Same-origin on localhost so local dev talks to server.js; prod URL elsewhere.
+    const API_BASE = /^localhost$|^127\.|^0\.0\.0\.0$/.test(location.hostname) ? location.origin : 'https://eidonresearch.com';
+    // Darwin convenience: allow ?token=... in URL for one-shot auto-login
+    (function () {
+      try {
+        const urlToken = new URLSearchParams(location.search).get('token');
+        if (urlToken) {
+          sessionStorage.setItem('eidon_admin_token', urlToken);
+          history.replaceState({}, '', location.pathname);
+        }
+      } catch (e) {}
+    })();
     let TOKEN = sessionStorage.getItem('eidon_admin_token') || '';
     let currentRange = '30d';
     let ordersData = [];
@@ -330,6 +356,7 @@
           document.getElementById('login-gate').classList.add('hidden');
           document.getElementById('dashboard').classList.remove('hidden');
           await refreshData();
+          loadStockPanel();
           startAutoRefresh();
         } else {
           document.getElementById('login-error').classList.remove('hidden');
@@ -344,7 +371,7 @@
     if (TOKEN) {
       document.getElementById('login-gate').classList.add('hidden');
       document.getElementById('dashboard').classList.remove('hidden');
-      refreshData().then(() => startAutoRefresh());
+      refreshData().then(() => { loadStockPanel(); startAutoRefresh(); });
     }
 
     // ====== DATA FETCHING ======
@@ -375,6 +402,88 @@
           renderLiveView(data.sessions || []);
         }
       } catch (e) {}
+    }
+
+    // ====== STOCK MANAGEMENT PANEL ======
+    const STOCK_LABELS = {
+      RT5: 'Retatrutide 5mg',
+      CP10: 'CJC-1295 + Ipa',
+      CU100: 'GHK-Cu 100mg',
+      MT2: 'Melanotan 2',
+    };
+    const STOCK_SKU_ORDER = ['RT5', 'CP10', 'CU100', 'MT2'];
+
+    async function loadStockPanel() {
+      const panel = document.getElementById('stock-panel');
+      if (!panel) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/stock`);
+        if (!res.ok) {
+          panel.innerHTML = '<p class="text-xs text-red-400 col-span-4">Failed to load stock</p>';
+          return;
+        }
+        const { stock } = await res.json();
+        renderStockPanel(stock || {});
+      } catch (e) {
+        panel.innerHTML = '<p class="text-xs text-red-400 col-span-4">Network error loading stock</p>';
+      }
+    }
+
+    function renderStockPanel(stock) {
+      const panel = document.getElementById('stock-panel');
+      let html = '';
+      for (const sku of STOCK_SKU_ORDER) {
+        const count = Number(stock[sku] ?? 0);
+        const borderColor = count <= 0 ? 'border-red-500' : (count <= 3 ? 'border-gold' : 'border-navy-border');
+        const textColor = count <= 0 ? 'text-red-400' : (count <= 3 ? 'text-gold' : 'text-white');
+        html += `
+          <div class="bg-navy rounded-lg p-3 border ${borderColor}">
+            <p class="text-[10px] text-[#7a8599] uppercase tracking-wider font-bold mb-1">${STOCK_LABELS[sku]}</p>
+            <p class="text-[9px] text-[#5a6478] mb-2">SKU: ${sku}</p>
+            <div class="flex items-center gap-2">
+              <input id="stock-input-${sku}" type="number" min="0" step="1" value="${count}" class="bg-navy-card border border-navy-border rounded px-2 py-1.5 text-sm ${textColor} w-full focus:outline-none focus:border-gold" />
+              <button onclick="saveStockSku('${sku}')" class="bg-gold hover:bg-gold-light text-navy font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded" style="transition: background 0.2s ease;">Save</button>
+            </div>
+            <p class="text-[10px] ${textColor} mt-1.5 font-semibold">
+              ${count <= 0 ? 'OUT OF STOCK' : count <= 3 ? 'Low — only ' + count + ' left' : count + ' in stock'}
+            </p>
+          </div>`;
+      }
+      panel.innerHTML = html;
+    }
+
+    async function saveStockSku(sku) {
+      const input = document.getElementById('stock-input-' + sku);
+      const msg = document.getElementById('stock-msg');
+      const count = parseInt(input.value, 10);
+      if (!Number.isFinite(count) || count < 0) {
+        showStockMsg('Invalid count for ' + sku, 'error');
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/api/stock-update?token=${encodeURIComponent(TOKEN)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sku, count }),
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showStockMsg(STOCK_LABELS[sku] + ' stock set to ' + count, 'ok');
+          loadStockPanel();
+        } else {
+          showStockMsg('Failed: ' + (data.error || 'Unknown error'), 'error');
+        }
+      } catch (e) {
+        showStockMsg('Network error: ' + e.message, 'error');
+      }
+    }
+
+    function showStockMsg(text, kind) {
+      const el = document.getElementById('stock-msg');
+      el.textContent = text;
+      el.className = 'text-xs mt-3 font-semibold ' + (kind === 'ok' ? 'text-green-500' : 'text-red-400');
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 4000);
     }
 
     function startAutoRefresh() {
@@ -877,6 +986,7 @@
             if (data.order?.trackingNumber) order.trackingNumber = data.order.trackingNumber;
           }
           renderOrders();
+          loadStockPanel(); // stock may have just decremented on VERIFIED
           setTimeout(() => closeOrderModal(), 1500);
         } else {
           alert('Failed: ' + (data.error || 'Unknown error'));

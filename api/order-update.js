@@ -1,7 +1,45 @@
 // Vercel serverless function: POST /api/order-update
 // Update order status (verify/deny) + send email notification + add notes
+// On transition TO VERIFIED: decrement stock (idempotent via stockDeducted flag).
+// On transition AWAY from VERIFIED (e.g. DENIED after verify): restock and clear flag.
 
 import { kv } from '@vercel/kv';
+
+const TRACKED_SKUS = new Set(['RT5', 'CP10', 'CU100', 'MT2']);
+const BUNDLE_COMPOSITION = {
+  'summer-cut': ['RT5', 'CU100'],
+  'gym-gains':  ['CP10'],
+  'shred-max':  ['RT5', 'MT2'],
+  'the-triple': ['RT5', 'CP10', 'CU100'],
+  'everything': ['RT5', 'CP10', 'CU100', 'MT2'],
+};
+
+function computeStockDeltas(lineItems = []) {
+  const deltas = {}; // sku -> total qty across all items
+  for (const item of (lineItems || [])) {
+    const qty = Number(item?.qty) || 1;
+    const sku = item?.sku;
+    if (!sku) continue;
+    if (BUNDLE_COMPOSITION[sku]) {
+      for (const comp of BUNDLE_COMPOSITION[sku]) {
+        deltas[comp] = (deltas[comp] || 0) + qty;
+      }
+    } else if (TRACKED_SKUS.has(sku)) {
+      deltas[sku] = (deltas[sku] || 0) + qty;
+    }
+    // Unknown or untracked SKUs (e.g. WA10 BAC Water) are ignored
+  }
+  return deltas;
+}
+
+async function applyStockDelta(deltas, direction /* -1 decrement, +1 increment */) {
+  const pipeline = kv.pipeline();
+  for (const [sku, qty] of Object.entries(deltas)) {
+    if (direction === -1) pipeline.decrby(`stock:${sku}`, qty);
+    else pipeline.incrby(`stock:${sku}`, qty);
+  }
+  await pipeline.exec();
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -40,8 +78,10 @@ export default async function handler(req, res) {
 
     // Find and update the order
     let updatedOrder = null;
+    let prevStatus = null;
     const updatedOrders = orders.map(o => {
       if (o.orderNumber === orderNumber) {
+        prevStatus = o.status;
         o.status = status;
         if (notes) o.notes = notes;
         if (trackingNumber) o.trackingNumber = trackingNumber;
@@ -53,6 +93,26 @@ export default async function handler(req, res) {
 
     if (!updatedOrder) {
       return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // ====== STOCK DEDUCTION (idempotent) ======
+    const deltas = computeStockDeltas(updatedOrder.items);
+    if (status === 'VERIFIED' && !updatedOrder.stockDeducted) {
+      try {
+        await applyStockDelta(deltas, -1);
+        updatedOrder.stockDeducted = true;
+      } catch (stockErr) {
+        console.error('Stock decrement failed:', stockErr);
+        // Continue — order status still updates; admin can reconcile via stock panel
+      }
+    } else if (status !== 'VERIFIED' && prevStatus === 'VERIFIED' && updatedOrder.stockDeducted) {
+      // Reversal (e.g. mistaken verify → deny): return units to the pool
+      try {
+        await applyStockDelta(deltas, +1);
+        updatedOrder.stockDeducted = false;
+      } catch (stockErr) {
+        console.error('Stock restock failed:', stockErr);
+      }
     }
 
     // Rewrite orders list in KV

@@ -54,17 +54,23 @@
     .btn-gold:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
     .btn-gold:active { transform: scale(0.98); }
     .btn-gold:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .payment-tab {
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, background 0.2s ease;
-    }
-    .payment-tab:hover { transform: scale(1.01); }
-    .payment-tab.active { border-color: #D4AF37; background: rgba(212,175,55,0.08); }
-    .payment-tab:focus-visible { outline: 2px solid #D4AF37; outline-offset: 2px; }
     /* Error message */
     .error-banner { background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
     /* Confirmation animation */
     @keyframes checkmark { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
     .check-anim { animation: checkmark 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    /* Reference code callout */
+    .ref-code-box { background: linear-gradient(180deg, rgba(212,175,55,0.08) 0%, rgba(109,30,212,0.06) 100%); border: 1px dashed rgba(212,175,55,0.45); }
+    .ref-code-value { letter-spacing: 0.18em; }
+    /* Progress stepper */
+    @keyframes pulsePing { 0% { transform: scale(1); opacity: 0.75; } 70% { transform: scale(2.2); opacity: 0; } 100% { transform: scale(2.2); opacity: 0; } }
+    .step-dot-active::after {
+      content: ''; position: absolute; inset: 0; border-radius: 9999px;
+      background: #D4AF37; animation: pulsePing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    .step-line { background: #1a2a45; transition: background 0.4s ease; }
+    .step-line.done { background: #16a34a; }
+    .step-dot { transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease; }
   </style>
 </head>
 <body class="bg-[#0B1426] min-h-screen">
@@ -176,10 +182,6 @@
               <span id="coupon-discount-label">Coupon</span>
               <span id="summary-coupon-discount">-$0.00</span>
             </div>
-            <div id="crypto-discount-row" class="hidden flex justify-between text-green-600">
-              <span>Crypto Discount (5%)</span>
-              <span id="summary-discount">-$0.00</span>
-            </div>
             <div class="flex justify-between">
               <span class="text-[#c0c8d8]" id="shipping-label">Shipping</span>
               <span id="summary-shipping" class="font-semibold">$8.00</span>
@@ -207,22 +209,81 @@
   </div>
 
   <!-- ========== CONFIRMATION VIEW ========== -->
-  <div id="confirmation-view" class="hidden max-w-[600px] mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
-    <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-8 sm:p-12">
-      <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6 check-anim">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="#16a34a" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+  <div id="confirmation-view" class="hidden max-w-[640px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6 sm:p-10">
+      <div class="text-center mb-8">
+        <div class="w-14 h-14 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 check-anim">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#16a34a" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h1 class="font-heading font-bold text-2xl sm:text-3xl heading-tight mb-2">Order Submitted</h1>
+        <p class="text-[#c0c8d8] text-sm">We typically verify Zelle payments within <strong class="text-white">15 minutes</strong>. Status updates live below.</p>
       </div>
-      <h1 class="font-heading font-bold text-2xl sm:text-3xl heading-tight mb-3">Order Submitted!</h1>
-      <p class="text-[#c0c8d8] text-sm mb-6">We'll verify your payment and ship within 24 hours. A confirmation email will be sent to your address.</p>
-      <div class="bg-[#0e1a2e] rounded-xl p-5 mb-6 text-left">
+
+      <!-- Progress Stepper -->
+      <div id="progress-stepper" class="bg-[#0e1a2e] rounded-xl border border-[#1a2a45] p-5 mb-6" data-step="1">
+        <!-- Step 1: Order Placed -->
+        <div class="flex items-start gap-4 relative">
+          <div class="flex flex-col items-center">
+            <div class="step-dot w-8 h-8 rounded-full bg-green-900/40 border-2 border-green-600 flex items-center justify-center flex-shrink-0" data-step-dot="1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <div class="step-line done w-[2px] h-8 my-1" data-step-line="1"></div>
+          </div>
+          <div class="flex-1 pb-6">
+            <p class="font-heading font-bold text-white text-sm">Order Placed</p>
+            <p id="step-time-placed" class="text-xs text-[#7a8599] mt-0.5">Just now</p>
+          </div>
+        </div>
+        <!-- Step 2: Verifying Payment -->
+        <div class="flex items-start gap-4 relative -mt-4">
+          <div class="flex flex-col items-center">
+            <div class="step-dot step-dot-active w-8 h-8 rounded-full bg-gold/20 border-2 border-gold flex items-center justify-center flex-shrink-0 relative" data-step-dot="2">
+              <span class="w-2 h-2 rounded-full bg-gold relative z-10"></span>
+            </div>
+            <div class="step-line w-[2px] h-8 my-1" data-step-line="2"></div>
+          </div>
+          <div class="flex-1 pb-6">
+            <p class="font-heading font-bold text-white text-sm" id="step-label-verify">Verifying Payment</p>
+            <p class="text-xs text-[#7a8599] mt-0.5">Usually within 15 min — we'll update this in real time</p>
+          </div>
+        </div>
+        <!-- Step 3: Shipping Soon -->
+        <div class="flex items-start gap-4 relative -mt-4">
+          <div class="flex flex-col items-center">
+            <div class="step-dot w-8 h-8 rounded-full bg-[#111b30] border-2 border-[#2a3a55] flex items-center justify-center flex-shrink-0" data-step-dot="3">
+              <span class="w-2 h-2 rounded-full bg-[#4a5570]"></span>
+            </div>
+            <div class="step-line w-[2px] h-8 my-1" data-step-line="3"></div>
+          </div>
+          <div class="flex-1 pb-6">
+            <p class="font-heading font-bold text-[#7a8599] text-sm">Shipping Soon</p>
+            <p class="text-xs text-[#5a6478] mt-0.5">Same-day ship if verified before 1PM PST</p>
+          </div>
+        </div>
+        <!-- Step 4: Delivered -->
+        <div class="flex items-start gap-4 relative -mt-4">
+          <div class="flex flex-col items-center">
+            <div class="step-dot w-8 h-8 rounded-full bg-[#111b30] border-2 border-[#2a3a55] flex items-center justify-center flex-shrink-0" data-step-dot="4">
+              <span class="w-2 h-2 rounded-full bg-[#4a5570]"></span>
+            </div>
+          </div>
+          <div class="flex-1">
+            <p class="font-heading font-bold text-[#7a8599] text-sm">Delivered</p>
+            <p class="text-xs text-[#5a6478] mt-0.5">Tracking link emailed when it ships</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order details -->
+      <div class="bg-[#0e1a2e] rounded-xl p-5 mb-6">
         <div class="grid grid-cols-2 gap-3 text-sm">
           <div>
             <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Order Number</p>
-            <p id="conf-order-num" class="font-heading font-bold text-white mt-0.5">EIDON-000000</p>
+            <p id="conf-order-num" class="font-heading font-bold text-white mt-0.5 ref-code-value">EIDON-000000</p>
           </div>
           <div>
             <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Payment</p>
-            <p id="conf-payment" class="font-heading font-bold text-white mt-0.5">Card</p>
+            <p id="conf-payment" class="font-heading font-bold text-white mt-0.5">Zelle</p>
           </div>
           <div>
             <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Total</p>
@@ -230,13 +291,16 @@
           </div>
           <div>
             <p class="text-xs text-[#7a8599] uppercase tracking-wider font-semibold">Status</p>
-            <p id="conf-status" class="font-heading font-bold text-green-600 mt-0.5">Paid</p>
+            <p id="conf-status" class="font-heading font-bold text-gold mt-0.5">Pending Verification</p>
           </div>
         </div>
       </div>
-      <div id="conf-item-list" class="text-left text-sm space-y-2 mb-6 pb-6 border-b border-[#1a2a45]"></div>
-      <a href="index.html" class="btn-gold inline-block px-8 py-3.5 text-sm uppercase tracking-wider">Continue Shopping</a>
-      <p class="text-xs text-[#7a8599] mt-6">Products are for research use only. Not for human consumption.</p>
+      <div id="conf-item-list" class="text-sm space-y-2 mb-6 pb-6 border-b border-[#1a2a45]"></div>
+      <div class="text-center">
+        <a href="index.html" class="btn-gold inline-block px-8 py-3.5 text-sm uppercase tracking-wider">Continue Shopping</a>
+        <p class="text-xs text-[#7a8599] mt-6">Questions? Text <strong class="text-white">(916) 214-9660</strong> or email <strong class="text-white">support@eidonresearch.com</strong></p>
+        <p class="text-[10px] text-[#5a6478] mt-3">Products are for research use only. Not for human consumption.</p>
+      </div>
     </div>
   </div>
 
@@ -255,7 +319,6 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
           Secure Direct Payment
         </p>
-        <p class="text-[10px] text-[#7a8599] mt-0.5">Card payments returning this week</p>
       </div>
 
       <!-- Pay with Zelle Card -->
@@ -277,16 +340,46 @@
           </div>
 
           <!-- Send To Info -->
-          <div class="bg-[#111b30] rounded-lg p-3.5 mb-4 border border-[#1a2a45]">
+          <div class="bg-[#111b30] rounded-lg p-3.5 mb-3 border border-[#1a2a45]">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs text-[#7a8599] mb-0.5">Send to</p>
-                <p class="font-heading font-bold text-white text-sm">EIDON Research</p>
-                <p class="text-[11px] text-[#7a8599] mt-0.5">Zelle registered to: (916) 214-9660</p>
+                <p class="text-xs text-[#7a8599] mb-0.5">Send to this number</p>
+                <p class="font-heading font-extrabold text-white text-lg tracking-tight">(916) 214-9660</p>
+                <p class="text-[11px] text-[#7a8599] mt-0.5">Search this number in your Zelle</p>
               </div>
               <div class="w-9 h-9 rounded-full bg-[#6D1ED4]/20 flex items-center justify-center flex-shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
+            </div>
+          </div>
+
+          <!-- Reference Code — critical for admin matching -->
+          <div class="ref-code-box rounded-lg p-3.5 mb-4">
+            <div class="flex items-center justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-[10px] text-gold uppercase tracking-widest font-bold mb-1">Add to Zelle Memo</p>
+                <p id="ref-code" class="font-heading font-extrabold text-white text-xl sm:text-2xl ref-code-value">EIDON-------</p>
+                <p class="text-[10px] text-[#7a8599] mt-1 leading-snug">Required — lets us verify your payment instantly</p>
+              </div>
+              <button onclick="copyRefCode()" id="ref-code-copy-btn" class="flex-shrink-0 bg-gold text-navy font-bold text-[11px] uppercase tracking-wider px-3.5 py-2.5 rounded-lg flex items-center gap-1.5 hover:bg-gold-light active:scale-95" style="transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Supported Banks Pills -->
+          <div class="mb-4">
+            <p class="text-[10px] text-[#7a8599] text-center uppercase tracking-widest mb-2">Works with every major bank</p>
+            <div class="flex flex-wrap justify-center gap-1.5">
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">Chase</span>
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">Bank of America</span>
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">Wells Fargo</span>
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">Citi</span>
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">Capital One</span>
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">Discover</span>
+              <span class="text-[10px] font-semibold text-[#c0c8d8] bg-[#111b30] border border-[#1a2a45] rounded-full px-2.5 py-1">USAA</span>
+              <span class="text-[10px] font-semibold text-gold bg-gold/10 border border-gold/30 rounded-full px-2.5 py-1">+1,600 more</span>
             </div>
           </div>
 
@@ -306,11 +399,11 @@
             </div>
             <div class="flex items-start gap-3 py-2.5 border-b border-[#1a2a45]">
               <span class="w-6 h-6 rounded-full bg-[#6D1ED4]/20 text-[#a78bfa] flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5">2</span>
-              <span class="text-xs text-[#c0c8d8]">Search <strong class="text-white">"EIDON Research"</strong> or scan the QR code above</span>
+              <span class="text-xs text-[#c0c8d8]">Search <strong class="text-white">(916) 214-9660</strong> or scan the QR code above</span>
             </div>
             <div class="flex items-start gap-3 py-2.5 border-b border-[#1a2a45]">
               <span class="w-6 h-6 rounded-full bg-[#6D1ED4]/20 text-[#a78bfa] flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5">3</span>
-              <span class="text-xs text-[#c0c8d8]">Send exactly <strong class="text-white">$<span id="zelle-step-amount">0.00</span></strong></span>
+              <span class="text-xs text-[#c0c8d8]">Send <strong class="text-white">$<span id="zelle-step-amount">0.00</span></strong> and paste <strong class="text-gold ref-code-value" id="zelle-step-code">EIDON------</strong> into the memo field</span>
             </div>
             <div class="flex items-start gap-3 py-2.5">
               <span class="w-6 h-6 rounded-full bg-[#6D1ED4]/20 text-[#a78bfa] flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5">4</span>
@@ -324,15 +417,15 @@
             You're sending directly to our verified business account
           </p>
 
-          <!-- Copy amount + Open Zelle -->
+          <!-- Copy memo code + Open Zelle -->
           <button onclick="openZelle()" id="open-zelle-btn" class="w-full bg-[#6D1ED4] text-white font-bold py-3.5 rounded-xl text-sm tracking-wider mb-3 flex items-center justify-center gap-2 hover:bg-[#7c3aed] active:scale-[0.98]" style="transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 8h10L7 16h10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Open Zelle &amp; Copy $<span id="sheet-amount-btn">0.00</span>
+            Open Zelle &amp; Copy Memo Code
           </button>
 
           <!-- Toast -->
           <div id="copy-toast" class="hidden text-center mb-3">
-            <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30">$<span id="toast-amount">0.00</span> copied to clipboard</span>
+            <span class="inline-block bg-green-900/40 text-green-400 text-xs font-semibold px-4 py-2 rounded-full border border-green-700/30"><span id="toast-amount">Memo</span> copied to clipboard</span>
           </div>
 
           <!-- Done Button -->
@@ -456,18 +549,40 @@
       'everything': 'images/The Everything Stack.png',
     };
     let cart = JSON.parse(localStorage.getItem('eidon_cart') || '[]');
-    let paymentMethod = 'zelle';
     let appliedCoupon = null; // { code, discount (0-1) }
+
+    // ====== ORDER REFERENCE CODE (becomes the orderNumber; matches Zelle memo) ======
+    function generateOrderCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // omit O/0/I/1 for legibility
+      let code = '';
+      for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      return 'EIDON-' + code;
+    }
+    const currentOrderCode = generateOrderCode();
+    function paintRefCode() {
+      const boxEl = document.getElementById('ref-code');
+      const stepEl = document.getElementById('zelle-step-code');
+      if (boxEl) boxEl.textContent = currentOrderCode;
+      if (stepEl) stepEl.textContent = currentOrderCode;
+    }
+    document.addEventListener('DOMContentLoaded', paintRefCode);
+    // Also paint immediately in case DOM is already parsed by this point
+    paintRefCode();
+
+    function copyRefCode() {
+      navigator.clipboard.writeText(currentOrderCode).then(() => {
+        const btn = document.getElementById('ref-code-copy-btn');
+        if (!btn) return;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Copied</span>';
+        setTimeout(() => { btn.innerHTML = originalHTML; }, 1800);
+      });
+    }
 
     // ====== COUPON CODES ======
     const COUPONS = {
-      'DEVTEST': { discount: 1.0, label: 'DEV MODE (Free Order)', freeShipping: true },
-      'DEVTEST1': { flat: 'leave1', label: 'DEV $1 Test Charge', freeShipping: true },
-      'EIDON100': { discount: 1.0, label: 'EIDON100 (100% Off)' },
-      'EIDON50': { discount: 0.5, label: 'EIDON50 (50% Off)' },
-      'EIDON10': { discount: 0.1, label: 'EIDON10 (10% Off)' },
-      'ISAAC10': { discount: 0.1, label: 'ISAAC10 (10% Off)', minOrder: 50 },
-      'ISAAC': { discount: 0.1, label: 'ISAAC (10% Off)' },
+      'ISAAC10': { discount: 0.1, label: 'ISAAC10 (10% Off)', minOrder: 60 },
+      '10OFF': { discount: 0.1, label: '10OFF (10% Off)', minOrder: 60 },
     };
 
     function applyCoupon() {
@@ -498,20 +613,6 @@
         document.getElementById('coupon-btn').textContent = 'Applied';
         document.getElementById('coupon-btn').disabled = true;
         document.getElementById('coupon-btn').style.opacity = '0.5';
-        renderSummary();
-      } else if (code.length >= 2 && /^[A-Z0-9]+$/.test(code)) {
-        // Treat any other alphanumeric code as an affiliate code — 10% off
-        appliedCoupon = { code, discount: 0.1, label: 'Affiliate code: ' + code + ' (10% Off)', isAffiliate: true };
-        msg.textContent = 'Affiliate discount applied! 10% off your order.';
-        msg.className = 'text-xs mt-2 font-semibold text-green-600';
-        msg.classList.remove('hidden');
-        input.disabled = true;
-        input.style.opacity = '0.5';
-        document.getElementById('coupon-btn').textContent = 'Applied';
-        document.getElementById('coupon-btn').disabled = true;
-        document.getElementById('coupon-btn').style.opacity = '0.5';
-        // Store affiliate code used for tracking
-        localStorage.setItem('eidon_last_affiliate_used', code);
         renderSummary();
       } else {
         appliedCoupon = null;
@@ -574,10 +675,6 @@
       return getShippingRaw();
     }
 
-    function getCryptoDiscount() {
-      return 0;
-    }
-
     function addBacWaterFromCheckout() {
       const existing = cart.find(item => item.sku === 'WA10');
       if (existing) { existing.qty += 1; }
@@ -587,7 +684,7 @@
     }
 
     function getTotal() {
-      return getSubtotal() - getCouponDiscount() - getCryptoDiscount() + getShipping();
+      return getSubtotal() - getCouponDiscount() + getShipping();
     }
 
     // ====== UI ======
@@ -628,17 +725,6 @@
       } else {
         couponRow.classList.add('hidden');
         couponRow.classList.remove('flex');
-      }
-
-      const discountRow = document.getElementById('crypto-discount-row');
-      if (paymentMethod === 'crypto') {
-        discountRow.classList.remove('hidden');
-        discountRow.classList.add('flex');
-        document.getElementById('summary-discount').textContent = '-$' + getCryptoDiscount().toFixed(2);
-        document.getElementById('crypto-savings').textContent = '$' + getCryptoDiscount().toFixed(2);
-      } else {
-        discountRow.classList.add('hidden');
-        discountRow.classList.remove('flex');
       }
 
       const shipping = getShipping();
@@ -734,6 +820,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             amount: total,
+            orderNumber: currentOrderCode,
             email: document.getElementById('email').value.trim(),
             name: firstName + ' ' + lastName,
             paymentMethod: 'zelle',
@@ -747,7 +834,7 @@
             },
             coupon: appliedCoupon?.code || null,
             affiliateCode: appliedCoupon?.isAffiliate ? appliedCoupon.code : null,
-            lineItems: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+            lineItems: cart.map(i => ({ sku: i.sku, name: i.name, qty: i.qty, price: i.price })),
           }),
         });
 
@@ -786,15 +873,15 @@
           amount: data.amount,
           items,
           coupon: document.getElementById('coupon')?.value || null,
-          payment: data.paymentNote || 'card',
+          payment: 'zelle',
           checkoutSeconds,
         });
       }
 
       document.getElementById('conf-order-num').textContent = data.orderNumber;
-      document.getElementById('conf-payment').textContent = data.paymentNote || 'Credit/Debit Card';
+      document.getElementById('conf-payment').textContent = 'Zelle';
       document.getElementById('conf-total').textContent = '$' + data.amount.toFixed(2);
-      document.getElementById('conf-status').textContent = data.status === 'COMPLETED' ? 'Paid' : 'Pending Verification';
+      applyOrderStatus(data.status || 'PENDING_VERIFICATION');
 
       let itemHtml = '';
       cart.forEach(item => {
@@ -808,6 +895,80 @@
       // Clear cart
       localStorage.removeItem('eidon_cart');
       cart = [];
+
+      // Start live status polling
+      startOrderStatusPolling(data.orderNumber);
+    }
+
+    // ====== PROGRESS STEPPER + LIVE STATUS POLLING ======
+    function setStepState(n, state) {
+      const dot = document.querySelector(`[data-step-dot="${n}"]`);
+      const line = document.querySelector(`[data-step-line="${n}"]`);
+      if (!dot) return;
+      dot.classList.remove('step-dot-active');
+      if (state === 'done') {
+        dot.className = 'step-dot w-8 h-8 rounded-full bg-green-900/40 border-2 border-green-600 flex items-center justify-center flex-shrink-0';
+        dot.setAttribute('data-step-dot', n);
+        dot.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>';
+        if (line) line.classList.add('done');
+        const label = dot.closest('.flex.items-start')?.querySelector('.font-heading');
+        if (label) label.classList.remove('text-[#7a8599]'), label.classList.add('text-white');
+      } else if (state === 'active') {
+        dot.className = 'step-dot step-dot-active w-8 h-8 rounded-full bg-gold/20 border-2 border-gold flex items-center justify-center flex-shrink-0 relative';
+        dot.setAttribute('data-step-dot', n);
+        dot.innerHTML = '<span class="w-2 h-2 rounded-full bg-gold relative z-10"></span>';
+        const label = dot.closest('.flex.items-start')?.querySelector('.font-heading');
+        if (label) label.classList.remove('text-[#7a8599]'), label.classList.add('text-white');
+      }
+    }
+
+    function applyOrderStatus(status) {
+      const confStatus = document.getElementById('conf-status');
+      const verifyLabel = document.getElementById('step-label-verify');
+      if (status === 'SHIPPED') {
+        if (confStatus) { confStatus.textContent = 'Shipped'; confStatus.className = 'font-heading font-bold text-green-500 mt-0.5'; }
+        setStepState(1, 'done');
+        setStepState(2, 'done');
+        setStepState(3, 'done');
+        setStepState(4, 'active');
+        if (verifyLabel) verifyLabel.textContent = 'Payment Verified';
+      } else if (status === 'PAID' || status === 'COMPLETED' || status === 'VERIFIED') {
+        if (confStatus) { confStatus.textContent = 'Paid'; confStatus.className = 'font-heading font-bold text-green-500 mt-0.5'; }
+        setStepState(1, 'done');
+        setStepState(2, 'done');
+        setStepState(3, 'active');
+        if (verifyLabel) verifyLabel.textContent = 'Payment Verified';
+      } else if (status === 'DENIED' || status === 'CANCELLED') {
+        if (confStatus) { confStatus.textContent = 'Payment Not Found'; confStatus.className = 'font-heading font-bold text-red-400 mt-0.5'; }
+      }
+      // PENDING_VERIFICATION = default DOM state (step 2 pulsing), no change needed
+    }
+
+    let _statusPollTimer = null;
+    let _statusPollStart = 0;
+    function startOrderStatusPolling(orderNumber) {
+      if (!orderNumber) return;
+      _statusPollStart = Date.now();
+      let lastStatus = 'PENDING_VERIFICATION';
+      const tick = async () => {
+        // Stop after 30 minutes or on terminal status
+        if (Date.now() - _statusPollStart > 30 * 60 * 1000) {
+          clearInterval(_statusPollTimer);
+          return;
+        }
+        try {
+          const r = await fetch('/api/order-status?orderNumber=' + encodeURIComponent(orderNumber));
+          if (!r.ok) return;
+          const d = await r.json();
+          if (d.status && d.status !== lastStatus) {
+            lastStatus = d.status;
+            applyOrderStatus(d.status);
+            if (d.status === 'SHIPPED') clearInterval(_statusPollTimer);
+          }
+        } catch (e) { /* non-blocking */ }
+      };
+      tick();
+      _statusPollTimer = setInterval(tick, 15000);
     }
 
     // Notify affiliate of their commission
@@ -864,7 +1025,7 @@
     // ====== PAYMENT BOTTOM SHEET ======
     function updateAllAmounts() {
       const total = Math.max(0, getTotal()).toFixed(2);
-      const ids = ['btn-total', 'sheet-amount', 'sheet-amount-btn', 'zelle-step-amount', 'toast-amount'];
+      const ids = ['btn-total', 'sheet-amount', 'zelle-step-amount'];
       ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = total; });
     }
     const _origRenderSummary = renderSummary;
@@ -900,10 +1061,11 @@
     }
 
     function openZelle() {
-      const total = Math.max(0, getTotal()).toFixed(2);
-      // Copy amount to clipboard
-      navigator.clipboard.writeText(total).then(() => {
+      // Copy reference code to clipboard — the critical field users must paste into Zelle memo
+      navigator.clipboard.writeText(currentOrderCode).then(() => {
         const toast = document.getElementById('copy-toast');
+        const toastAmount = document.getElementById('toast-amount');
+        if (toastAmount) toastAmount.textContent = currentOrderCode;
         toast.classList.remove('hidden');
         setTimeout(() => toast.classList.add('hidden'), 3000);
       }).catch(() => {});

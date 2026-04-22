@@ -64,7 +64,7 @@
 - **Colors:** Navy #0B1426, Gold #D4AF37 (sparingly), Electric Blue #00D4FF (rare accent), White #FFFFFF, Off-white #f8f9fa
 
 ### Payment (TWO methods only)
-1. **Square** — Square Web Payments SDK for credit/debit card checkout
+1. **Zelle** — Primary manual payment method. Customer sends Zelle, order saved as PENDING_VERIFICATION for admin review.
 2. **Crypto** — Coinbase Commerce for Bitcoin/Ethereum. Customers paying crypto get **5% off** entire order. Show discounted total when crypto is selected.
 - After payment, show confirmation screen with order number and details.
 

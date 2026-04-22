@@ -638,7 +638,7 @@
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
           </div>
           <h3 class="font-heading font-bold text-sm text-white mb-2">Secure Payment</h3>
-          <p class="text-xs text-[#c0c8d8] leading-relaxed">Pay securely with credit/debit cards via Square, or save 5% with crypto through Coinbase Commerce.</p>
+          <p class="text-xs text-[#c0c8d8] leading-relaxed">Pay securely with Zelle, or save 5% with crypto through Coinbase Commerce.</p>
         </div>
         <div class="bg-[#111b30] rounded-xl border border-[#1a2a45] shadow-elevated p-6 text-center">
           <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
@@ -1010,6 +1010,56 @@
     }
   </script>
 
+  <!-- ====== STOCK CHECK ====== -->
+  <script>
+  (function() {
+    const TRACKED = new Set(['RT5', 'CP10', 'CU100', 'MT2']);
+    let _stockCache = null;
+    function stockFor(sku) {
+      if (!_stockCache) return null;
+      if (TRACKED.has(sku)) return Number(_stockCache[sku] ?? 0);
+      return null;
+    }
+    window.stockForSku = stockFor;
+    function paint() {
+      document.querySelectorAll('[onclick^="addToCart"]').forEach(btn => {
+        const m = (btn.getAttribute('onclick') || '').match(/addToCart\s*\(\s*['"]([^'"]+)['"]/);
+        if (!m) return;
+        const sku = m[1];
+        const stock = stockFor(sku);
+        if (stock === null) return;
+        const nxt = btn.nextElementSibling;
+        if (nxt && nxt.dataset && nxt.dataset.lowStockNote === '1') nxt.remove();
+        if (btn.dataset.origText) { btn.textContent = btn.dataset.origText; delete btn.dataset.origText; }
+        btn.style.background = ''; btn.style.color = ''; btn.style.cursor = '';
+        btn.disabled = false;
+        if (stock <= 0) {
+          btn.style.background = '#2a3a55'; btn.style.color = '#7a8599'; btn.style.cursor = 'not-allowed';
+          btn.disabled = true;
+          btn.dataset.origText = btn.textContent;
+          btn.textContent = 'Out of Stock';
+        } else if (stock <= 3) {
+          const note = document.createElement('p');
+          note.dataset.lowStockNote = '1';
+          note.style.cssText = 'color:#D4AF37;font-size:12px;font-weight:700;margin-top:10px;letter-spacing:0.08em;';
+          note.textContent = stock === 1 ? '🔥 Only 1 left in stock' : '🔥 Only ' + stock + ' left in stock';
+          btn.parentNode.insertBefore(note, btn.nextSibling);
+        }
+      });
+    }
+    if (typeof window.addToCart === 'function') {
+      const orig = window.addToCart;
+      window.addToCart = function(sku, name, price) {
+        const s = stockFor(sku);
+        if (s !== null && s <= 0) { alert('Sorry — this item is out of stock.'); return; }
+        return orig.apply(this, arguments);
+      };
+    }
+    fetch('/api/stock').then(r => r.ok ? r.json() : null).then(d => {
+      if (d && d.stock) { _stockCache = d.stock; paint(); }
+    }).catch(() => {});
+  })();
+  </script>
   <script src="chat.js"></script>
 </body>
 </html>

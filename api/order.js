@@ -20,13 +20,16 @@ export default async function handler(req, res) {
     try { body = JSON.parse(body); } catch { return res.status(400).json({ error: 'Invalid JSON' }); }
   }
 
-  const { amount, email, name, paymentMethod, shipping, coupon, affiliateCode, lineItems } = body;
+  const { amount, email, name, paymentMethod, shipping, coupon, affiliateCode, lineItems, orderNumber: clientOrderNumber } = body;
 
   if (!email || !name || !shipping || !lineItems) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const orderNumber = 'EIDON-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+  const isValidCode = typeof clientOrderNumber === 'string' && /^EIDON-[A-Z0-9]{4,10}$/.test(clientOrderNumber);
+  const orderNumber = isValidCode
+    ? clientOrderNumber
+    : 'EIDON-' + Math.random().toString(36).substring(2, 10).toUpperCase();
 
   const order = {
     orderNumber,

@@ -24,7 +24,7 @@ BUNDLES:
 - Complete Research Protocol — $200 (Save $35): ALL 4 peptides + BAC Water — BEST VALUE
 
 SHIPPING: FREE on $150+, $8 flat rate under $150, FREE local pickup Sacramento area, same-day shipping before 1PM PST.
-PAYMENT: Credit/debit via Square, Crypto via Coinbase Commerce (5% OFF).
+PAYMENT: Zelle (primary), Crypto via Coinbase Commerce (5% OFF).
 PURITY: Third-party tested, >99% purity, COAs available on request.
 RETURNS: All sales final. Damaged/incorrect products replaced within 48 hours.
 

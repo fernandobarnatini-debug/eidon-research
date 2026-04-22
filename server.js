@@ -21,16 +21,43 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.static('.'));
 
-const SQUARE_API = 'https://connect.squareup.com';
-const ACCESS_TOKEN = process.env.SQUARE_ACCESS_TOKEN;
-const LOCATION_ID = process.env.SQUARE_LOCATION_ID;
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
 const ANALYTICS_FILE = path.join(__dirname, 'analytics.json');
+const STOCK_FILE = path.join(__dirname, 'stock.json');
 
 // Load existing orders
 function loadOrders() {
   try { return JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8')); }
   catch { return []; }
+}
+
+// ====== STOCK ======
+const TRACKED_SKUS = new Set(['RT5', 'CP10', 'CU100', 'MT2']);
+const BUNDLE_COMPOSITION = {
+  'summer-cut': ['RT5', 'CU100'],
+  'gym-gains':  ['CP10'],
+  'shred-max':  ['RT5', 'MT2'],
+  'the-triple': ['RT5', 'CP10', 'CU100'],
+  'everything': ['RT5', 'CP10', 'CU100', 'MT2'],
+};
+function loadStock() {
+  try { return JSON.parse(fs.readFileSync(STOCK_FILE, 'utf8')); }
+  catch { return { RT5: 0, CP10: 0, CU100: 0, MT2: 0 }; }
+}
+function saveStock(s) { fs.writeFileSync(STOCK_FILE, JSON.stringify(s, null, 2)); }
+function computeStockDeltas(lineItems) {
+  const d = {};
+  for (const item of (lineItems || [])) {
+    const qty = Number(item?.qty) || 1;
+    const sku = item?.sku;
+    if (!sku) continue;
+    if (BUNDLE_COMPOSITION[sku]) {
+      for (const comp of BUNDLE_COMPOSITION[sku]) d[comp] = (d[comp] || 0) + qty;
+    } else if (TRACKED_SKUS.has(sku)) {
+      d[sku] = (d[sku] || 0) + qty;
+    }
+  }
+  return d;
 }
 
 // ====== ANALYTICS ENGINE ======
@@ -74,103 +101,6 @@ function saveOrder(order) {
   fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
 }
 
-// Process a Square payment
-app.post('/api/pay', async (req, res) => {
-  const { sourceId, amount, email, name, shipping, coupon, lineItems } = req.body;
-
-  if (!sourceId || !amount) {
-    return res.status(400).json({ error: 'Missing sourceId or amount' });
-  }
-
-  const amountCents = Math.round(amount * 100);
-  const idempotencyKey = crypto.randomUUID();
-
-  // Build note with shipping info
-  const shippingNote = shipping
-    ? `Ship to: ${name}, ${shipping.address}, ${shipping.city}, ${shipping.state} ${shipping.zip}`
-    : '';
-  const itemsNote = lineItems
-    ? lineItems.map(i => `${i.name} x${i.qty}`).join(', ')
-    : '';
-  const note = [
-    `EIDON Research Order`,
-    shippingNote,
-    `Email: ${email || 'N/A'}`,
-    `Items: ${itemsNote}`,
-    coupon ? `Coupon: ${coupon}` : '',
-  ].filter(Boolean).join(' | ');
-
-  try {
-    const response = await fetch(`${SQUARE_API}/v2/payments`, {
-      method: 'POST',
-      headers: {
-        'Square-Version': '2024-01-18',
-        'Authorization': `Bearer ${ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        source_id: sourceId,
-        idempotency_key: idempotencyKey,
-        amount_money: {
-          amount: amountCents,
-          currency: 'USD',
-        },
-        location_id: LOCATION_ID,
-        buyer_email_address: email || undefined,
-        note: note.slice(0, 500), // Square note max 500 chars
-        shipping_address: shipping ? {
-          address_line_1: shipping.address,
-          locality: shipping.city,
-          administrative_district_level_1: shipping.state,
-          postal_code: shipping.zip,
-          country: 'US',
-          first_name: shipping.firstName,
-          last_name: shipping.lastName,
-        } : undefined,
-        statement_description_identifier: 'EIDON',
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('Square API error:', JSON.stringify(data, null, 2));
-      const errMsg = data.errors?.[0]?.detail || 'Payment failed';
-      return res.status(response.status).json({ error: errMsg });
-    }
-
-    const payment = data.payment;
-    const orderNumber = 'EIDON-' + payment.id.slice(-8).toUpperCase();
-
-    // Save order locally
-    saveOrder({
-      orderNumber,
-      paymentId: payment.id,
-      date: new Date().toISOString(),
-      amount: payment.amount_money.amount / 100,
-      status: payment.status,
-      email: email || '',
-      name: name || '',
-      shipping: shipping || {},
-      coupon: coupon || null,
-      items: lineItems || [],
-    });
-
-    console.log(`✅ Order ${orderNumber} — $${(payment.amount_money.amount / 100).toFixed(2)} — ${name}`);
-
-    res.json({
-      success: true,
-      orderNumber,
-      paymentId: payment.id,
-      amount: payment.amount_money.amount / 100,
-      status: payment.status,
-    });
-  } catch (err) {
-    console.error('Server error:', err);
-    res.status(500).json({ error: 'Server error processing payment' });
-  }
-});
-
 // View all orders (admin — requires token)
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 app.get('/api/orders', (req, res) => {
@@ -183,13 +113,16 @@ app.get('/api/orders', (req, res) => {
 
 // ====== MANUAL PAYMENT ORDER (Zelle/PayPal) ======
 app.post('/api/order', (req, res) => {
-  const { amount, email, name, paymentMethod, shipping, coupon, affiliateCode, lineItems } = req.body;
+  const { amount, email, name, paymentMethod, shipping, coupon, affiliateCode, lineItems, orderNumber: clientOrderNumber } = req.body;
 
   if (!email || !name || !shipping || !lineItems) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const orderNumber = 'EIDON-' + crypto.randomUUID().slice(0, 8).toUpperCase();
+  const isValidCode = typeof clientOrderNumber === 'string' && /^EIDON-[A-Z0-9]{4,10}$/.test(clientOrderNumber);
+  const orderNumber = isValidCode
+    ? clientOrderNumber
+    : 'EIDON-' + crypto.randomUUID().slice(0, 8).toUpperCase();
 
   saveOrder({
     orderNumber,
@@ -212,6 +145,83 @@ app.post('/api/order', (req, res) => {
     amount: amount || 0,
     status: 'PENDING_VERIFICATION',
   });
+});
+
+// ====== ORDER STATUS (public, keyed by orderNumber) ======
+app.get('/api/order-status', (req, res) => {
+  const orderNumber = req.query.orderNumber;
+  if (!orderNumber || typeof orderNumber !== 'string') {
+    return res.status(400).json({ error: 'Missing orderNumber' });
+  }
+  const orders = loadOrders();
+  const order = orders.find(o => o.orderNumber === orderNumber);
+  if (!order) return res.status(404).json({ error: 'Order not found' });
+  res.json({ orderNumber: order.orderNumber, status: order.status });
+});
+
+// ====== STOCK (public read) ======
+app.get('/api/stock', (req, res) => {
+  const stock = loadStock();
+  const out = {};
+  for (const sku of TRACKED_SKUS) out[sku] = Number(stock[sku] ?? 0);
+  res.json({ stock: out });
+});
+
+// ====== STOCK UPDATE (admin) ======
+app.post('/api/stock-update', (req, res) => {
+  const token = req.query.token || req.headers.authorization?.replace('Bearer ', '');
+  if (!token || token !== ADMIN_TOKEN) return res.status(401).json({ error: 'Unauthorized' });
+  const { sku, count } = req.body || {};
+  if (!TRACKED_SKUS.has(sku)) return res.status(400).json({ error: 'Invalid SKU' });
+  const n = Number(count);
+  if (!Number.isFinite(n) || n < 0) return res.status(400).json({ error: 'Invalid count' });
+  const stock = loadStock();
+  stock[sku] = Math.floor(n);
+  saveStock(stock);
+  res.json({ success: true, sku, count: Math.floor(n) });
+});
+
+// ====== ORDER UPDATE (admin) — decrements stock on VERIFIED, mirrors api/order-update.js ======
+app.post('/api/order-update', (req, res) => {
+  const token = req.query.token || req.headers.authorization?.replace('Bearer ', '');
+  if (!token || token !== ADMIN_TOKEN) return res.status(401).json({ error: 'Unauthorized' });
+  const { orderNumber, status, notes, trackingNumber } = req.body || {};
+  if (!orderNumber || !status) return res.status(400).json({ error: 'Missing orderNumber or status' });
+  if (!['VERIFIED', 'DENIED', 'SHIPPED', 'PENDING_VERIFICATION'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status' });
+  }
+
+  const orders = loadOrders();
+  const idx = orders.findIndex(o => o.orderNumber === orderNumber);
+  if (idx < 0) return res.status(404).json({ error: 'Order not found' });
+
+  const prevStatus = orders[idx].status;
+  orders[idx].status = status;
+  if (notes) orders[idx].notes = notes;
+  if (trackingNumber) orders[idx].trackingNumber = trackingNumber;
+  orders[idx].updatedAt = new Date().toISOString();
+
+  // Stock side-effects (idempotent)
+  const deltas = computeStockDeltas(orders[idx].items);
+  if (status === 'VERIFIED' && !orders[idx].stockDeducted) {
+    const stock = loadStock();
+    for (const [sku, qty] of Object.entries(deltas)) {
+      stock[sku] = Number(stock[sku] ?? 0) - qty;
+    }
+    saveStock(stock);
+    orders[idx].stockDeducted = true;
+  } else if (status !== 'VERIFIED' && prevStatus === 'VERIFIED' && orders[idx].stockDeducted) {
+    const stock = loadStock();
+    for (const [sku, qty] of Object.entries(deltas)) {
+      stock[sku] = Number(stock[sku] ?? 0) + qty;
+    }
+    saveStock(stock);
+    orders[idx].stockDeducted = false;
+  }
+
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+  console.log(`📋 Order ${orderNumber} → ${status}`);
+  res.json({ success: true, order: orders[idx] });
 });
 
 // ====== ANALYTICS: Receive tracking events ======
@@ -361,7 +371,7 @@ SHIPPING:
 - Local deliveries typically arrive same day or next day
 
 PAYMENT:
-- Credit/debit cards via Square
+- Zelle (primary method)
 - Cryptocurrency (Bitcoin/Ethereum) via Coinbase Commerce — 5% OFF entire order when paying crypto
 
 PURITY & QUALITY:
